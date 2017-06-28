@@ -1,0 +1,23 @@
+use ast::{Definition, GraphQLType};
+
+grammar;
+
+pub schema: Vec<Definition> =
+  <Definition*> => <>;
+
+Definition: Definition = {
+  <s:Description> <d:Definition> => {
+    Definition { gql_type: d.gql_type, name: d.name, description: s }
+  },
+  <t:GQLType> <n:Name> => {
+    Definition { gql_type: t, name: n, description: String::new() }
+  }
+};
+
+GQLType: GraphQLType = {
+  "scalar" => GraphQLType::ScalarType,
+  "type" => GraphQLType::ObjectType
+};
+
+Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_string();
+Description: String = <s:r"#\s*[^\n]*"> => s[1..s.len()].trim().to_string();
