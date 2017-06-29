@@ -2,6 +2,7 @@ pub struct Definition {
     pub description: String,
     pub typename: GraphQLType,
     pub name: String,
+    pub implements: Vec<String>,
     pub fields: Vec<Field>
 }
 

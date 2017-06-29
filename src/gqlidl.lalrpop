@@ -16,6 +16,28 @@ Definition: Definition = {
       },
       typename: g,
       name: n,
+      implements: Vec::new(),
+      fields: f
+    }
+  },
+  <s:Description?> <g:GQLTypeWithFields> <n:Name> "implements" <v:(<Name> ",")*> <e:Name?> "{" <f:(<Field>)*> "}" => {
+    Definition {
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      },
+      typename: g,
+      name: n,
+      implements: match e {
+          None => v,
+          Some(e) => {
+              let mut v = v;
+              v.push(e);
+              v
+          }
+      },
       fields: f
     }
   },
@@ -29,6 +51,7 @@ Definition: Definition = {
       },
       typename: g,
       name: n,
+      implements: Vec::new(),
       fields: Vec::new()
     }
   }

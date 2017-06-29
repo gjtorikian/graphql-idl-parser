@@ -57,6 +57,36 @@ fn type_with_field() {
 }
 
 #[test]
+fn type_with_one_implements() {
+    let def = gqlidl::parse_schema("type PushAllowance implements Node {}").unwrap().pop().unwrap();
+
+    assert_eq!("", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("PushAllowance", def.name);
+
+    let mut d = def;
+    let implement = d.implements.pop().unwrap();
+
+    assert_eq!("Node", implement);
+}
+
+#[test]
+fn type_with_multiple_implements() {
+    let def = gqlidl::parse_schema("type Release implements Node, UniformResourceLocatable {}").unwrap().pop().unwrap();
+
+    assert_eq!("", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("Release", def.name);
+
+    let mut d = def;
+    let mut implement = d.implements.remove(0);
+
+    assert_eq!("Node", implement);
+    implement = d.implements.remove(0);
+    assert_eq!("UniformResourceLocatable", implement);
+}
+
+#[test]
 fn type_with_field_and_description() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { \n# The body of the CoC\n body: String }").unwrap().pop().unwrap();
 
