@@ -1,4 +1,4 @@
-use ast::{Definition, Field, GraphQLType};
+use ast::{Definition, Field, FieldType, GraphQLType};
 
 grammar;
 
@@ -39,7 +39,7 @@ Fields: Vec<Field> = {
 };
 
 Field: Field = {
-  <s:Description?> <n:Name> ":" <t:Type> => {
+  <s:Description?> <n:Name> ":" <t:FieldType> <r:"!"?> => {
     Field {
       description: match s {
         None => String::new(),
@@ -48,13 +48,33 @@ Field: Field = {
         }
       },
       name: n,
-      typename: t
+      fieldtype: t,
+      nullable: match r {
+        None => true,
+        Some(r) => false
+      }
     }
   }
 };
 
-Type: String = {
-  Name => <>.to_string()
+FieldType: FieldType = {
+  <n:Name> => {
+    FieldType {
+      list: false,
+      name: n,
+      nullable: true
+    }
+  },
+  "[" <n:Name> <r:"!"?> "]" => {
+    FieldType {
+      name: n,
+      list: true,
+      nullable: match r {
+        None => true,
+        Some(r) => false
+      }
+    }
+  }
 };
 
 GQLTypeWithFields: GraphQLType = {

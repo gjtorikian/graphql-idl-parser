@@ -32,6 +32,12 @@ impl GraphQLType {
 pub struct Field {
     pub description: String,
     pub name: String,
-    pub typename: String,
-    // pub required: Boolean
+    pub fieldtype: FieldType,
+    pub nullable: bool
+}
+
+pub struct FieldType {
+    pub name: String,
+    pub list: bool,
+    pub nullable: bool
 }
