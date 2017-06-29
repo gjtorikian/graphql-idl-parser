@@ -1,8 +1,8 @@
 pub struct Definition {
-    pub gql_type: GraphQLType,
-    pub name: String,
     pub description: String,
-    // pub fields: Vec<Field>
+    pub typename: GraphQLType,
+    pub name: String,
+    pub fields: Vec<Field>
 }
 
 pub enum GraphQLType {
@@ -30,7 +30,8 @@ impl GraphQLType {
 }
 
 pub struct Field {
-    // pub gql_type: String,
+    pub description: String,
     pub name: String,
+    pub typename: String,
     // pub required: Boolean
 }

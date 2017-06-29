@@ -1,4 +1,4 @@
-use ast::{Definition, GraphQLType};
+use ast::{Definition, Field, GraphQLType};
 
 grammar;
 
@@ -6,23 +6,66 @@ pub schema: Vec<Definition> =
   <Definition*> => <>;
 
 Definition: Definition = {
-  <s:Description?> <g:GQLType> <n:Name> => {
+  <s:Description?> <g:GQLTypeWithFields> <n:Name> "{" <f:(<Field>)*> "}" => {
     Definition {
-      gql_type: g,
-      name: n,
       description: match s {
         None => String::new(),
         Some(s) => {
             s
         }
-      }
+      },
+      typename: g,
+      name: n,
+      fields: f
+    }
+  },
+  <s:Description?> <g:GQLTypeWithoutFields> <n:Name> => {
+    Definition {
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      },
+      typename: g,
+      name: n,
+      fields: Vec::new()
     }
   }
 };
 
-GQLType: GraphQLType = {
+Fields: Vec<Field> = {
+  <f:(<Field>)*> => f
+};
+
+Field: Field = {
+  <s:Description?> <n:Name> ":" <t:Type> => {
+    Field {
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      },
+      name: n,
+      typename: t
+    }
+  }
+};
+
+Type: String = {
+  Name => <>.to_string()
+};
+
+GQLTypeWithFields: GraphQLType = {
+  "type" => GraphQLType::ObjectType,
+  "interface" => GraphQLType::InterfaceType,
+  "input" => GraphQLType::InputObjectType
+};
+
+GQLTypeWithoutFields: GraphQLType = {
   "scalar" => GraphQLType::ScalarType,
-  "type" => GraphQLType::ObjectType
+  "union" => GraphQLType::UnionType
 };
 
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_string();
