@@ -16,6 +16,7 @@ mod __parse__schema {
         NtDefinition_2a(::std::vec::Vec<Definition>),
         NtDefinition_2b(::std::vec::Vec<Definition>),
         NtDescription(String),
+        NtDescription_3f(::std::option::Option<String>),
         NtGQLType(GraphQLType),
         NtName(String),
         Nt____schema(Vec<Definition>),
@@ -29,68 +30,73 @@ mod __parse__schema {
         // State 2
         7, 8, 9, 0,
         // State 3
-        7, 8, 9, 0,
+        7, 8, 0, 0,
         // State 4
         0, 0, 0, 13,
         // State 5
         0, 0, 0, 0,
         // State 6
-        0, 0, 0, -8,
+        0, 0, 0, -10,
         // State 7
-        0, 0, 0, -9,
+        0, 0, 0, -11,
         // State 8
-        -7, -7, -7, 0,
+        -7, -7, 0, 0,
         // State 9
         -6, -6, -6, 0,
         // State 10
-        -1, -1, -1, 0,
+        0, 0, 0, 13,
         // State 11
         -2, -2, -2, 0,
         // State 12
-        -10, -10, -10, 0,
+        -12, -12, -12, 0,
+        // State 13
+        -1, -1, -1, 0,
     ];
     const __EOF_ACTION: &'static [i32] = &[
-        -12,
+        -14,
         -5,
+        -15,
+        0,
+        0,
         -13,
-        0,
-        0,
-        -11,
         0,
         0,
         0,
         -6,
-        -1,
+        0,
         -2,
-        -10,
+        -12,
+        -1,
     ];
     const __GOTO: &'static [i32] = &[
         // State 0
-        2, 0, 3, 4, 5, 0, 0, 6,
+        2, 0, 3, 4, 0, 5, 0, 0, 6,
         // State 1
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 2
-        10, 0, 0, 4, 5, 0, 0, 0,
+        10, 0, 0, 4, 0, 5, 0, 0, 0,
         // State 3
-        11, 0, 0, 4, 5, 0, 0, 0,
+        0, 0, 0, 0, 0, 11, 0, 0, 0,
         // State 4
-        0, 0, 0, 0, 0, 12, 0, 0,
+        0, 0, 0, 0, 0, 0, 12, 0, 0,
         // State 5
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 6
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 7
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 8
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 9
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 10
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 14, 0, 0,
         // State 11
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 12
-        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        // State 13
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
     fn __expected_tokens(__state: usize) -> Vec<::std::string::String> {
         const __TERMINAL: &'static [&'static str] = &[
@@ -210,118 +216,140 @@ mod __parse__schema {
     {
         let __nonterminal = match -__action {
             1 => {
-                // Definition = Description, Definition => ActionFn(2);
-                let __sym1 = __pop_NtDefinition(__symbols);
+                // Definition = Description, GQLType, Name => ActionFn(15);
+                let __sym2 = __pop_NtName(__symbols);
+                let __sym1 = __pop_NtGQLType(__symbols);
                 let __sym0 = __pop_NtDescription(__symbols);
                 let __start = __sym0.0.clone();
-                let __end = __sym1.2.clone();
-                let __nt = super::__action2::<>(input, __sym0, __sym1);
+                let __end = __sym2.2.clone();
+                let __nt = super::__action15::<>(input, __sym0, __sym1, __sym2);
                 let __states_len = __states.len();
-                __states.truncate(__states_len - 2);
+                __states.truncate(__states_len - 3);
                 __symbols.push((__start, __Symbol::NtDefinition(__nt), __end));
                 0
             }
             2 => {
-                // Definition = GQLType, Name => ActionFn(3);
+                // Definition = GQLType, Name => ActionFn(16);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtGQLType(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym1.2.clone();
-                let __nt = super::__action3::<>(input, __sym0, __sym1);
+                let __nt = super::__action16::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
                 __symbols.push((__start, __Symbol::NtDefinition(__nt), __end));
                 0
             }
             3 => {
-                // Definition* =  => ActionFn(8);
+                // Definition* =  => ActionFn(9);
                 let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
                 let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
-                let __nt = super::__action8::<>(input, &__start, &__end);
+                let __nt = super::__action9::<>(input, &__start, &__end);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 0);
                 __symbols.push((__start, __Symbol::NtDefinition_2a(__nt), __end));
                 1
             }
             4 => {
-                // Definition* = Definition+ => ActionFn(9);
+                // Definition* = Definition+ => ActionFn(10);
                 let __sym0 = __pop_NtDefinition_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
-                let __nt = super::__action9::<>(input, __sym0);
+                let __nt = super::__action10::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::NtDefinition_2a(__nt), __end));
                 1
             }
             5 => {
-                // Definition+ = Definition => ActionFn(10);
+                // Definition+ = Definition => ActionFn(11);
                 let __sym0 = __pop_NtDefinition(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
-                let __nt = super::__action10::<>(input, __sym0);
+                let __nt = super::__action11::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::NtDefinition_2b(__nt), __end));
                 2
             }
             6 => {
-                // Definition+ = Definition+, Definition => ActionFn(11);
+                // Definition+ = Definition+, Definition => ActionFn(12);
                 let __sym1 = __pop_NtDefinition(__symbols);
                 let __sym0 = __pop_NtDefinition_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym1.2.clone();
-                let __nt = super::__action11::<>(input, __sym0, __sym1);
+                let __nt = super::__action12::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
                 __symbols.push((__start, __Symbol::NtDefinition_2b(__nt), __end));
                 2
             }
             7 => {
-                // Description = r#"#\\s*[^\\n]*"# => ActionFn(7);
+                // Description = r#"#\\s*[^\\n]*"# => ActionFn(6);
                 let __sym0 = __pop_Termr_23_22_23_5c_5cs_2a_5b_5e_5c_5cn_5d_2a_22_23(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
-                let __nt = super::__action7::<>(input, __sym0);
+                let __nt = super::__action6::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::NtDescription(__nt), __end));
                 3
             }
             8 => {
-                // GQLType = "scalar" => ActionFn(4);
+                // Description? = Description => ActionFn(7);
+                let __sym0 = __pop_NtDescription(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym0.2.clone();
+                let __nt = super::__action7::<>(input, __sym0);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 1);
+                __symbols.push((__start, __Symbol::NtDescription_3f(__nt), __end));
+                4
+            }
+            9 => {
+                // Description? =  => ActionFn(8);
+                let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
+                let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
+                let __nt = super::__action8::<>(input, &__start, &__end);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 0);
+                __symbols.push((__start, __Symbol::NtDescription_3f(__nt), __end));
+                4
+            }
+            10 => {
+                // GQLType = "scalar" => ActionFn(3);
                 let __sym0 = __pop_Term_22scalar_22(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym0.2.clone();
+                let __nt = super::__action3::<>(input, __sym0);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 1);
+                __symbols.push((__start, __Symbol::NtGQLType(__nt), __end));
+                5
+            }
+            11 => {
+                // GQLType = "type" => ActionFn(4);
+                let __sym0 = __pop_Term_22type_22(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action4::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::NtGQLType(__nt), __end));
-                4
+                5
             }
-            9 => {
-                // GQLType = "type" => ActionFn(5);
-                let __sym0 = __pop_Term_22type_22(__symbols);
+            12 => {
+                // Name = r#"[_A-Za-z][_0-9A-Za-z]*"# => ActionFn(5);
+                let __sym0 = __pop_Termr_23_22_5b__A_2dZa_2dz_5d_5b__0_2d9A_2dZa_2dz_5d_2a_22_23(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action5::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::NtGQLType(__nt), __end));
-                4
-            }
-            10 => {
-                // Name = r#"[_A-Za-z][_0-9A-Za-z]*"# => ActionFn(6);
-                let __sym0 = __pop_Termr_23_22_5b__A_2dZa_2dz_5d_5b__0_2d9A_2dZa_2dz_5d_2a_22_23(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym0.2.clone();
-                let __nt = super::__action6::<>(input, __sym0);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::NtName(__nt), __end));
-                5
+                6
             }
-            11 => {
+            13 => {
                 // __schema = schema => ActionFn(0);
                 let __sym0 = __pop_Ntschema(__symbols);
                 let __start = __sym0.0.clone();
@@ -329,31 +357,31 @@ mod __parse__schema {
                 let __nt = super::__action0::<>(input, __sym0);
                 return Some(Ok(__nt));
             }
-            12 => {
-                // schema =  => ActionFn(12);
+            14 => {
+                // schema =  => ActionFn(13);
                 let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
                 let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
-                let __nt = super::__action12::<>(input, &__start, &__end);
+                let __nt = super::__action13::<>(input, &__start, &__end);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 0);
                 __symbols.push((__start, __Symbol::Ntschema(__nt), __end));
-                7
+                8
             }
-            13 => {
-                // schema = Definition+ => ActionFn(13);
+            15 => {
+                // schema = Definition+ => ActionFn(14);
                 let __sym0 = __pop_NtDefinition_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
-                let __nt = super::__action13::<>(input, __sym0);
+                let __nt = super::__action14::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
                 __symbols.push((__start, __Symbol::Ntschema(__nt), __end));
-                7
+                8
             }
             _ => panic!("invalid action code {}", __action)
         };
         let __state = *__states.last().unwrap() as usize;
-        let __next_state = __GOTO[__state * 8 + __nonterminal] - 1;
+        let __next_state = __GOTO[__state * 9 + __nonterminal] - 1;
         __states.push(__next_state);
         None
     }
@@ -434,6 +462,16 @@ mod __parse__schema {
     ) -> (usize, String, usize) {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::NtDescription(__v), __r) => (__l, __v, __r),
+            _ => panic!("symbol type mismatch")
+        }
+    }
+    fn __pop_NtDescription_3f<
+      'input,
+    >(
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
+    ) -> (usize, ::std::option::Option<String>, usize) {
+        match __symbols.pop().unwrap() {
+            (__l, __Symbol::NtDescription_3f(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -582,31 +620,27 @@ pub fn __action2<
     'input,
 >(
     input: &'input str,
-    (_, s, _): (usize, String, usize),
-    (_, d, _): (usize, Definition, usize),
+    (_, s, _): (usize, ::std::option::Option<String>, usize),
+    (_, g, _): (usize, GraphQLType, usize),
+    (_, n, _): (usize, String, usize),
 ) -> Definition
 {
     {
-    Definition { gql_type: d.gql_type, name: d.name, description: s }
+    Definition {
+      gql_type: g,
+      name: n,
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      }
+    }
   }
 }
 
 #[allow(unused_variables)]
 pub fn __action3<
-    'input,
->(
-    input: &'input str,
-    (_, t, _): (usize, GraphQLType, usize),
-    (_, n, _): (usize, String, usize),
-) -> Definition
-{
-    {
-    Definition { gql_type: t, name: n, description: String::new() }
-  }
-}
-
-#[allow(unused_variables)]
-pub fn __action4<
     'input,
 >(
     input: &'input str,
@@ -617,7 +651,7 @@ pub fn __action4<
 }
 
 #[allow(unused_variables)]
-pub fn __action5<
+pub fn __action4<
     'input,
 >(
     input: &'input str,
@@ -628,7 +662,7 @@ pub fn __action5<
 }
 
 #[allow(unused_variables)]
-pub fn __action6<
+pub fn __action5<
     'input,
 >(
     input: &'input str,
@@ -639,7 +673,7 @@ pub fn __action6<
 }
 
 #[allow(unused_variables)]
-pub fn __action7<
+pub fn __action6<
     'input,
 >(
     input: &'input str,
@@ -650,7 +684,30 @@ pub fn __action7<
 }
 
 #[allow(unused_variables)]
+pub fn __action7<
+    'input,
+>(
+    input: &'input str,
+    (_, __0, _): (usize, String, usize),
+) -> ::std::option::Option<String>
+{
+    Some(__0)
+}
+
+#[allow(unused_variables)]
 pub fn __action8<
+    'input,
+>(
+    input: &'input str,
+    __lookbehind: &usize,
+    __lookahead: &usize,
+) -> ::std::option::Option<String>
+{
+    None
+}
+
+#[allow(unused_variables)]
+pub fn __action9<
     'input,
 >(
     input: &'input str,
@@ -662,7 +719,7 @@ pub fn __action8<
 }
 
 #[allow(unused_variables)]
-pub fn __action9<
+pub fn __action10<
     'input,
 >(
     input: &'input str,
@@ -673,7 +730,7 @@ pub fn __action9<
 }
 
 #[allow(unused_variables)]
-pub fn __action10<
+pub fn __action11<
     'input,
 >(
     input: &'input str,
@@ -684,7 +741,7 @@ pub fn __action10<
 }
 
 #[allow(unused_variables)]
-pub fn __action11<
+pub fn __action12<
     'input,
 >(
     input: &'input str,
@@ -696,7 +753,7 @@ pub fn __action11<
 }
 
 #[allow(unused_variables)]
-pub fn __action12<
+pub fn __action13<
     'input,
 >(
     input: &'input str,
@@ -706,7 +763,7 @@ pub fn __action12<
 {
     let __start0 = __lookbehind.clone();
     let __end0 = __lookahead.clone();
-    let __temp0 = __action8(
+    let __temp0 = __action9(
         input,
         &__start0,
         &__end0,
@@ -719,7 +776,7 @@ pub fn __action12<
 }
 
 #[allow(unused_variables)]
-pub fn __action13<
+pub fn __action14<
     'input,
 >(
     input: &'input str,
@@ -728,7 +785,7 @@ pub fn __action13<
 {
     let __start0 = __0.0.clone();
     let __end0 = __0.2.clone();
-    let __temp0 = __action9(
+    let __temp0 = __action10(
         input,
         __0,
     );
@@ -736,6 +793,56 @@ pub fn __action13<
     __action1(
         input,
         __temp0,
+    )
+}
+
+#[allow(unused_variables)]
+pub fn __action15<
+    'input,
+>(
+    input: &'input str,
+    __0: (usize, String, usize),
+    __1: (usize, GraphQLType, usize),
+    __2: (usize, String, usize),
+) -> Definition
+{
+    let __start0 = __0.0.clone();
+    let __end0 = __0.2.clone();
+    let __temp0 = __action7(
+        input,
+        __0,
+    );
+    let __temp0 = (__start0, __temp0, __end0);
+    __action2(
+        input,
+        __temp0,
+        __1,
+        __2,
+    )
+}
+
+#[allow(unused_variables)]
+pub fn __action16<
+    'input,
+>(
+    input: &'input str,
+    __0: (usize, GraphQLType, usize),
+    __1: (usize, String, usize),
+) -> Definition
+{
+    let __start0 = __0.0.clone();
+    let __end0 = __0.0.clone();
+    let __temp0 = __action8(
+        input,
+        &__start0,
+        &__end0,
+    );
+    let __temp0 = (__start0, __temp0, __end0);
+    __action2(
+        input,
+        __temp0,
+        __0,
+        __1,
     )
 }
 

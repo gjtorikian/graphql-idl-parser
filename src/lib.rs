@@ -7,6 +7,7 @@ extern crate regex;
 fn scalar_no_description() {
     let defs = gqlidl::parse_schema("scalar DateTime").unwrap().pop().unwrap();
 
+    assert_eq!("", defs.description.as_str());
     assert_eq!("scalar", defs.gql_type.as_str());
     assert_eq!("DateTime", defs.name);
 }
@@ -24,6 +25,7 @@ fn scalar_with_description() {
 fn type_no_description() {
     let defs = gqlidl::parse_schema("type CodeOfConduct").unwrap().pop().unwrap();
 
+    assert_eq!("", defs.description.as_str());
     assert_eq!("object", defs.gql_type.as_str());
     assert_eq!("CodeOfConduct", defs.name);
 }

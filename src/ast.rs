@@ -1,8 +1,8 @@
 pub struct Definition {
     pub gql_type: GraphQLType,
     pub name: String,
-    pub description: String
-    // fields: Vec<Field>
+    pub description: String,
+    // pub fields: Vec<Field>
 }
 
 pub enum GraphQLType {
@@ -29,13 +29,8 @@ impl GraphQLType {
     }
 }
 
-// impl PartialEq for GraphQLType {
-//     fn eq(&self, other: &GraphQLType) -> bool {
-//         self == other
-//     }
-// }
-
-// pub struct Field {
-//     gql_type: String,
-//     name: String,
-// }
+pub struct Field {
+    // pub gql_type: String,
+    pub name: String,
+    // pub required: Boolean
+}

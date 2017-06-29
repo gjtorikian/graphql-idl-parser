@@ -6,11 +6,17 @@ pub schema: Vec<Definition> =
   <Definition*> => <>;
 
 Definition: Definition = {
-  <s:Description> <d:Definition> => {
-    Definition { gql_type: d.gql_type, name: d.name, description: s }
-  },
-  <t:GQLType> <n:Name> => {
-    Definition { gql_type: t, name: n, description: String::new() }
+  <s:Description?> <g:GQLType> <n:Name> => {
+    Definition {
+      gql_type: g,
+      name: n,
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      }
+    }
   }
 };
 
