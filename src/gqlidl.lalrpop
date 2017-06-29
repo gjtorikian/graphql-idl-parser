@@ -1,4 +1,4 @@
-use ast::{Definition, Field, FieldType, GraphQLType};
+use ast::{Definition, Connection, Argument, Field, FieldType, GraphQLType, TypeInfo};
 
 grammar;
 
@@ -6,7 +6,7 @@ pub schema: Vec<Definition> =
   <Definition*> => <>;
 
 Definition: Definition = {
-  <s:Description?> <g:GQLTypeWithFields> <n:Name> "{" <f:(<Field>)*> "}" => {
+  <s:Description?> <g:GQLTypeWithFields> <n:Name> "{" <c:(<Connection>)*> <f:(<Field>)*> "}" => {
     Definition {
       description: match s {
         None => String::new(),
@@ -17,10 +17,11 @@ Definition: Definition = {
       typename: g,
       name: n,
       implements: Vec::new(),
+      connections: c,
       fields: f
     }
   },
-  <s:Description?> <g:GQLTypeWithFields> <n:Name> "implements" <v:(<Name> ",")*> <e:Name?> "{" <f:(<Field>)*> "}" => {
+  <s:Description?> <g:GQLTypeWithFields> <n:Name> "implements" <v:(<Name> ",")*> <e:Name?> "{" <c:(<Connection>)*> <f:(<Field>)*> "}" => {
     Definition {
       description: match s {
         None => String::new(),
@@ -38,6 +39,7 @@ Definition: Definition = {
               v
           }
       },
+      connections: c,
       fields: f
     }
   },
@@ -52,17 +54,38 @@ Definition: Definition = {
       typename: g,
       name: n,
       implements: Vec::new(),
+      connections: Vec::new(),
       fields: Vec::new()
     }
   }
 };
 
-Fields: Vec<Field> = {
-  <f:(<Field>)*> => f
+Connection: Connection = {
+  <s:Description?> <n:Name> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <d:Deprecated?> <e:DeprecatedReason?> => {
+    Connection {
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      },
+      name: n,
+      arguments: a,
+      fieldtype: t,
+      deprecated: match d {
+        None => false,
+        Some(d) => true
+      },
+      deprecated_reason: match e {
+        None => String::new(),
+        Some(e) => e.to_string()
+      }
+    }
+  }
 };
 
 Field: Field = {
-  <s:Description?> <n:Name> ":" <t:FieldType> <r:"!"?> => {
+  <s:Description?> <n:Name> ":" <t:FieldType> <d:Deprecated?> <e:DeprecatedReason?> => {
     Field {
       description: match s {
         None => String::new(),
@@ -72,31 +95,67 @@ Field: Field = {
       },
       name: n,
       fieldtype: t,
-      nullable: match r {
-        None => true,
-        Some(r) => false
+      deprecated: match d {
+        None => false,
+        Some(d) => true
+      },
+      deprecated_reason: match e {
+        None => String::new(),
+        Some(e) => e.to_string()
       }
     }
   }
 };
 
-FieldType: FieldType = {
-  <n:Name> => {
-    FieldType {
-      list: false,
+Argument: Argument = {
+  <s:Description?> <n:Name> ":" <t:FieldType> => {
+    Argument {
+      description: match s {
+        None => String::new(),
+        Some(s) => {
+            s
+        }
+      },
       name: n,
-      nullable: true
+      fieldtype: t
     }
-  },
-  "[" <n:Name> <r:"!"?> "]" => {
+  }
+};
+
+FieldType: FieldType = {
+  <n:Name> <r:"!"?> => {
     FieldType {
       name: n,
-      list: true,
-      nullable: match r {
-        None => true,
-        Some(r) => false
+      info: match r {
+        None => TypeInfo::Nullable,
+        Some(r) => TypeInfo::NonNullable,
       }
     }
+  },
+  "[" <n:Name> <r:"!"?> "]" <l:"!"?> => {
+    FieldType {
+      name: n,
+      info: match r {
+        None => match l {
+          None => TypeInfo::NullableListNullableElements,
+          Some(l) => TypeInfo::NonNullableListNullableElements
+        },
+        Some(r) => match l {
+          None => TypeInfo::NonNullableListNullableElements,
+          Some(l) => TypeInfo::NonNullableListNonNullableElements
+        }
+      }
+    }
+  }
+};
+
+Deprecated: String = {
+  "@deprecated" => <>.to_string()
+};
+// (reason: \"Exposed database IDs will eventually be removed in favor of global Relay IDs.\")
+DeprecatedReason: String = {
+  "(reason: " <s:r#""[^"]*""#> ")" => {
+    s[1..s.len()-1].to_string()
   }
 };
 

@@ -40,23 +40,6 @@ fn type_with_description() {
 }
 
 #[test]
-fn type_with_field() {
-    let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { body: String }").unwrap().pop().unwrap();
-
-    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
-
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
-
-    assert_eq!("", field.description.as_str());
-    assert_eq!("String", field.fieldtype.name.as_str());
-    assert_eq!("body", field.name);
-    assert_eq!(true, field.nullable);
-}
-
-#[test]
 fn type_with_one_implements() {
     let def = gqlidl::parse_schema("type PushAllowance implements Node {}").unwrap().pop().unwrap();
 
@@ -86,6 +69,24 @@ fn type_with_multiple_implements() {
     assert_eq!("UniformResourceLocatable", implement);
 }
 
+
+#[test]
+fn type_with_field() {
+    let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { body: String }").unwrap().pop().unwrap();
+
+    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("CodeOfConduct", def.name);
+
+    let mut d = def;
+    let field = d.fields.pop().unwrap();
+
+    assert_eq!("", field.description.as_str());
+    assert_eq!("body", field.name);
+    assert_eq!("String", field.fieldtype.name.as_str());
+    assert_eq!("", field.fieldtype.info.as_str());
+}
+
 #[test]
 fn type_with_field_and_description() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { \n# The body of the CoC\n body: String }").unwrap().pop().unwrap();
@@ -98,9 +99,9 @@ fn type_with_field_and_description() {
     let field = d.fields.pop().unwrap();
 
     assert_eq!("The body of the CoC", field.description.as_str());
-    assert_eq!("String", field.fieldtype.name.as_str());
     assert_eq!("body", field.name);
-    assert_eq!(true, field.nullable);
+    assert_eq!("String", field.fieldtype.name.as_str());
+    assert_eq!("", field.fieldtype.info.as_str());
 }
 
 #[test]
@@ -115,9 +116,9 @@ fn type_with_required_field() {
     let field = d.fields.pop().unwrap();
 
     assert_eq!("", field.description.as_str());
-    assert_eq!("String", field.fieldtype.name.as_str());
     assert_eq!("key", field.name);
-    assert_eq!(false, field.nullable);
+    assert_eq!("String", field.fieldtype.name.as_str());
+    assert_eq!("!", field.fieldtype.info.as_str());
 }
 
 #[test]
@@ -133,10 +134,8 @@ fn type_with_nullable_field_list() {
 
     assert_eq!("", field.description.as_str());
     assert_eq!("edges", field.name);
-    assert_eq!(true, field.nullable);
     assert_eq!("CommitCommentEdge", field.fieldtype.name.as_str());
-    assert_eq!(true, field.fieldtype.list);
-    assert_eq!(true, field.fieldtype.nullable);
+    assert_eq!("[]", field.fieldtype.info.as_str());
 }
 
 #[test]
@@ -152,10 +151,8 @@ fn type_with_non_nullable_field_non_nullable_list() {
 
     assert_eq!("", field.description.as_str());
     assert_eq!("viewerCannotUpdateReasons", field.name);
-    assert_eq!(false, field.nullable);
     assert_eq!("CommentCannotUpdateReason", field.fieldtype.name.as_str());
-    assert_eq!(true, field.fieldtype.list);
-    assert_eq!(false, field.fieldtype.nullable);
+    assert_eq!("[!]!", field.fieldtype.info.as_str());
 }
 
 #[test]
@@ -171,8 +168,88 @@ fn type_with_nullable_field_non_nullable_list() {
 
     assert_eq!("", field.description.as_str());
     assert_eq!("suggestedReviewers", field.name);
-    assert_eq!(false, field.nullable);
     assert_eq!("SuggestedReviewer", field.fieldtype.name.as_str());
-    assert_eq!(true, field.fieldtype.list);
-    assert_eq!(true, field.fieldtype.nullable);
+    assert_eq!("[]!", field.fieldtype.info.as_str());
+}
+
+#[test]
+fn type_with_nullable_connection() {
+    let def = gqlidl::parse_schema("type User {
+        # A list of users the given user is followed by.
+        followers(
+          # Returns the elements in the list that come after the specified global ID.
+          after: String
+
+          # Returns the first _n_ elements from the list.
+          first: Int!
+        ): FollowerConnection!
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("User", def.name);
+
+    let mut d = def;
+    let connection = d.connections.pop().unwrap();
+
+    assert_eq!("A list of users the given user is followed by.", connection.description.as_str());
+    assert_eq!("followers", connection.name);
+    assert_eq!("FollowerConnection", connection.fieldtype.name.as_str());
+    assert_eq!("!", connection.fieldtype.info.as_str());
+
+    let mut c = connection;
+    let mut argument = c.arguments.remove(0);
+
+    assert_eq!("Returns the elements in the list that come after the specified global ID.", argument.description);
+    assert_eq!("String", argument.fieldtype.name.as_str());
+    assert_eq!("", argument.fieldtype.info.as_str());
+
+    argument = c.arguments.remove(0);
+
+    assert_eq!("Returns the first _n_ elements from the list.", argument.description);
+    assert_eq!("Int", argument.fieldtype.name.as_str());
+    assert_eq!("!", argument.fieldtype.info.as_str());
+}
+
+#[test]
+fn type_with_deprecated_field() {
+    let def = gqlidl::parse_schema("type User {
+        databaseId: Int @deprecated
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("User", def.name);
+
+    let mut d = def;
+    let field = d.fields.pop().unwrap();
+
+    assert_eq!("databaseId", field.name);
+    assert_eq!("Int", field.fieldtype.name.as_str());
+    assert_eq!("", field.fieldtype.info.as_str());
+    assert_eq!(true, field.deprecated);
+    assert_eq!("", field.deprecated_reason.as_str());
+}
+
+#[test]
+fn type_with_deprecated_field_and_reason() {
+    let def = gqlidl::parse_schema("type User {
+        databaseId: Int @deprecated(reason: \"Exposed database IDs will eventually be removed in favor of global Relay IDs.\")
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("", def.description.as_str());
+    assert_eq!("object", def.typename.as_str());
+    assert_eq!("User", def.name);
+
+    let mut d = def;
+    let field = d.fields.pop().unwrap();
+
+    assert_eq!("databaseId", field.name);
+    assert_eq!("Int", field.fieldtype.name.as_str());
+    assert_eq!("", field.fieldtype.info.as_str());
+    assert_eq!(true, field.deprecated);
+    assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", field.deprecated_reason.as_str());
 }
