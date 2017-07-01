@@ -1,174 +1,103 @@
-use ast::{Definition, Connection, Argument, Field, FieldType, GraphQLType, TypeInfo};
+use ast::*;
 
 grammar;
 
-pub schema: Vec<Definition> =
-  <Definition*> => <>;
+pub schema: Vec<GraphQLType> =
+    <GraphQLType*> => <>;
 
-Definition: Definition = {
-  <s:Description?> <g:GQLTypeWithFields> <n:Name> "{" <c:(<Connection>)*> <f:(<Field>)*> "}" => {
-    Definition {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
-        }
-      },
-      typename: g,
-      name: n,
-      implements: Vec::new(),
-      connections: c,
-      fields: f
-    }
-  },
-  <s:Description?> <g:GQLTypeWithFields> <n:Name> "implements" <v:(<Name> ",")*> <e:Name?> "{" <c:(<Connection>)*> <f:(<Field>)*> "}" => {
-    Definition {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
-        }
-      },
-      typename: g,
-      name: n,
-      implements: match e {
-          None => v,
-          Some(e) => {
-              let mut v = v;
-              v.push(e);
-              v
-          }
-      },
-      connections: c,
-      fields: f
-    }
-  },
-  <s:Description?> <g:GQLTypeWithoutFields> <n:Name> => {
-    Definition {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
-        }
-      },
-      typename: g,
-      name: n,
-      implements: Vec::new(),
-      connections: Vec::new(),
-      fields: Vec::new()
-    }
-  }
+GraphQLType: GraphQLType = {
+    <d:Description?> "scalar" <n:Name> => {
+        GraphQLType::ScalarType(GraphQLScalar::new(d, n))
+    },
+    <d:Description?> "type" <n:Name> "{" <f:(<Fields>)*> "}" => {
+        GraphQLType::ObjectType(GraphQLObject::new(d, n, Vec::new(), f))
+    },
+    <d:Description?> "type" <n:Name> "implements" <i:(<Implements>)> "{" <f:(<Fields>)*> "}" => {
+        GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
+    },
+    <d:Description?> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
+        GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
+    },
 };
 
-Connection: Connection = {
-  <s:Description?> <n:Name> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <d:Deprecated?> <e:DeprecatedReason?> => {
-    Connection {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
+Implements: Vec<String> = {
+    <v:(<Name> ",")*> <e:Name?> => {
+        match e {
+            None => v,
+            Some(e) => {
+                let mut v = v;
+                v.push(e);
+                v
+            }
         }
-      },
-      name: n,
-      arguments: a,
-      fieldtype: t,
-      deprecated: match d {
-        None => false,
-        Some(d) => true
-      },
-      deprecated_reason: match e {
-        None => String::new(),
-        Some(e) => e.to_string()
-      }
     }
-  }
 };
 
-Field: Field = {
-  <s:Description?> <n:Name> ":" <t:FieldType> <d:Deprecated?> <e:DeprecatedReason?> => {
-    Field {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
-        }
-      },
-      name: n,
-      fieldtype: t,
-      deprecated: match d {
-        None => false,
-        Some(d) => true
-      },
-      deprecated_reason: match e {
-        None => String::new(),
-        Some(e) => e.to_string()
-      }
-    }
-  }
+Fields: GraphQLField = {
+    <d:Description?> <n:Name> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+        let deprecated = match e {
+                          None => false,
+                          Some(e) => true
+                      };
+        GraphQLField::new(d, n, t, Vec::new(), deprecated, r)
+    },
+    <d:Description?> <n:Name> "(" <a:(<Arguments>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+        let deprecated = match e {
+                          None => false,
+                          Some(e) => true
+                      };
+        GraphQLField::new(d, n, t, a, deprecated, r)
+    },
 };
 
-Argument: Argument = {
-  <s:Description?> <n:Name> ":" <t:FieldType> => {
-    Argument {
-      description: match s {
-        None => String::new(),
-        Some(s) => {
-            s
-        }
-      },
-      name: n,
-      fieldtype: t
+Values: GraphQLValue = {
+    <d:Description?> <n:Name> => {
+        GraphQLValue::new(d, n)
     }
-  }
 };
 
 FieldType: FieldType = {
-  <n:Name> <r:"!"?> => {
-    FieldType {
-      name: n,
-      info: match r {
-        None => TypeInfo::Nullable,
-        Some(r) => TypeInfo::NonNullable,
-      }
-    }
-  },
-  "[" <n:Name> <r:"!"?> "]" <l:"!"?> => {
-    FieldType {
-      name: n,
-      info: match r {
-        None => match l {
-          None => TypeInfo::NullableListNullableElements,
-          Some(l) => TypeInfo::NonNullableListNullableElements
-        },
-        Some(r) => match l {
-          None => TypeInfo::NonNullableListNullableElements,
-          Some(l) => TypeInfo::NonNullableListNonNullableElements
+    <n:Name> <r:"!"?> => {
+        FieldType {
+            name: n,
+            info: match r {
+              None => TypeInfo::Nullable,
+              Some(r) => TypeInfo::NonNullable,
+            }
         }
-      }
+    },
+    "[" <n:Name> <r:"!"?> "]" <l:"!"?> => {
+        FieldType {
+            name: n,
+            info: match r {
+              None => match l {
+                  None => TypeInfo::NullableListNullableElements,
+                  Some(l) => TypeInfo::NonNullableListNullableElements
+              },
+              Some(r) => match l {
+                  None => TypeInfo::NonNullableListNullableElements,
+                  Some(l) => TypeInfo::NonNullableListNonNullableElements
+              }
+            }
+        }
     }
-  }
+};
+
+Arguments: GraphQLArgument = {
+    <d:Description?> <n:Name> ":" <t:FieldType> => {
+      GraphQLArgument::new(d, n, t)
+    }
 };
 
 Deprecated: String = {
-  "@deprecated" => <>.to_string()
+    "@deprecated" => <>.to_string()
 };
-// (reason: \"Exposed database IDs will eventually be removed in favor of global Relay IDs.\")
+
 DeprecatedReason: String = {
-  "(reason: " <s:r#""[^"]*""#> ")" => {
-    s[1..s.len()-1].to_string()
-  }
+    "(reason: " <s:r#""[^"]*""#> ")" => {
+      s[1..s.len()-1].to_string()
+    }
 };
 
-GQLTypeWithFields: GraphQLType = {
-  "type" => GraphQLType::ObjectType,
-  "interface" => GraphQLType::InterfaceType,
-  "input" => GraphQLType::InputObjectType
-};
-
-GQLTypeWithoutFields: GraphQLType = {
-  "scalar" => GraphQLType::ScalarType,
-  "union" => GraphQLType::UnionType
-};
-
-Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_string();
-Description: String = <s:r"#\s*[^\n]*"> => s[1..s.len()].trim().to_string();
+Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
+Description: String = <s:r"#\s*[^\n]*"> => s[1..s.len()].trim().to_owned();

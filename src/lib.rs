@@ -7,48 +7,48 @@ extern crate regex;
 fn scalar_no_description() {
     let def = gqlidl::parse_schema("scalar DateTime").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("scalar", def.typename.as_str());
-    assert_eq!("DateTime", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("scalar", def.typename());
+    assert_eq!("DateTime", def.name());
 }
 
 #[test]
 fn scalar_with_description() {
     let def = gqlidl::parse_schema("# An ISO-8601 encoded UTC date string.\nscalar DateTime").unwrap().pop().unwrap();
 
-    assert_eq!("An ISO-8601 encoded UTC date string.", def.description);
-    assert_eq!("scalar", def.typename.as_str());
-    assert_eq!("DateTime", def.name);
+    assert_eq!("An ISO-8601 encoded UTC date string.", def.description().unwrap());
+    assert_eq!("scalar", def.typename());
+    assert_eq!("DateTime", def.name());
 }
 
 #[test]
 fn type_no_description() {
     let def = gqlidl::parse_schema("type CodeOfConduct {}").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("CodeOfConduct", def.name());
 }
 
 #[test]
 fn type_with_description() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct {}").unwrap().pop().unwrap();
 
-    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
+    assert_eq!("The Code of Conduct for a repository", def.description().unwrap());
+    assert_eq!("object", def.typename());
+    assert_eq!("CodeOfConduct", def.name());
+    assert_eq!(None, def.implements());
 }
 
 #[test]
 fn type_with_one_implements() {
     let def = gqlidl::parse_schema("type PushAllowance implements Node {}").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("PushAllowance", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("PushAllowance", def.name());
 
-    let mut d = def;
-    let implement = d.implements.pop().unwrap();
+    let implement = def.implements().unwrap().pop().unwrap();
 
     assert_eq!("Node", implement);
 }
@@ -57,15 +57,14 @@ fn type_with_one_implements() {
 fn type_with_multiple_implements() {
     let def = gqlidl::parse_schema("type Release implements Node, UniformResourceLocatable {}").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("Release", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("Release", def.name());
 
-    let mut d = def;
-    let mut implement = d.implements.remove(0);
+    let mut implement = def.implements().unwrap().remove(0);
 
     assert_eq!("Node", implement);
-    implement = d.implements.remove(0);
+    implement = def.implements().unwrap().remove(1);
     assert_eq!("UniformResourceLocatable", implement);
 }
 
@@ -74,106 +73,100 @@ fn type_with_multiple_implements() {
 fn type_with_field() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { body: String }").unwrap().pop().unwrap();
 
-    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
+    assert_eq!("The Code of Conduct for a repository", def.description().unwrap());
+    assert_eq!("object", def.typename());
+    assert_eq!("CodeOfConduct", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("", field.description.as_str());
-    assert_eq!("body", field.name);
-    assert_eq!("String", field.fieldtype.name.as_str());
-    assert_eq!("", field.fieldtype.info.as_str());
+    assert_eq!(None, field.description());
+    assert_eq!("body", field.name());
+    assert_eq!("String", field.typeinfo().name());
+    assert_eq!("", field.typeinfo().info());
 }
 
 #[test]
 fn type_with_field_and_description() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { \n# The body of the CoC\n body: String }").unwrap().pop().unwrap();
 
-    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
+    assert_eq!("The Code of Conduct for a repository", def.description().unwrap());
+    assert_eq!("object", def.typename());
+    assert_eq!("CodeOfConduct", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("The body of the CoC", field.description.as_str());
-    assert_eq!("body", field.name);
-    assert_eq!("String", field.fieldtype.name.as_str());
-    assert_eq!("", field.fieldtype.info.as_str());
+    assert_eq!("The body of the CoC", field.description().unwrap());
+    assert_eq!("body", field.name());
+    assert_eq!("String", field.typeinfo().name());
+    assert_eq!("", field.typeinfo().info());
 }
 
 #[test]
 fn type_with_required_field() {
     let def = gqlidl::parse_schema("# The Code of Conduct for a repository\ntype CodeOfConduct { key: String! }").unwrap().pop().unwrap();
 
-    assert_eq!("The Code of Conduct for a repository", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CodeOfConduct", def.name);
+    assert_eq!("The Code of Conduct for a repository", def.description().unwrap());
+    assert_eq!("object", def.typename());
+    assert_eq!("CodeOfConduct", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("", field.description.as_str());
-    assert_eq!("key", field.name);
-    assert_eq!("String", field.fieldtype.name.as_str());
-    assert_eq!("!", field.fieldtype.info.as_str());
+    assert_eq!(None, field.description());
+    assert_eq!("key", field.name());
+    assert_eq!("String", field.typeinfo().name());
+    assert_eq!("!", field.typeinfo().info());
 }
 
 #[test]
 fn type_with_nullable_field_list() {
     let def = gqlidl::parse_schema("type CommitCommentConnection { edges: [CommitCommentEdge] }").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CommitCommentConnection", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("CommitCommentConnection", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("", field.description.as_str());
-    assert_eq!("edges", field.name);
-    assert_eq!("CommitCommentEdge", field.fieldtype.name.as_str());
-    assert_eq!("[]", field.fieldtype.info.as_str());
+    assert_eq!(None, field.description());
+    assert_eq!("edges", field.name());
+    assert_eq!("CommitCommentEdge", field.typeinfo().name());
+    assert_eq!("[]", field.typeinfo().info());
 }
 
 #[test]
 fn type_with_non_nullable_field_non_nullable_list() {
     let def = gqlidl::parse_schema("type CommitComment { viewerCannotUpdateReasons: [CommentCannotUpdateReason!]! }").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("CommitComment", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("CommitComment", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("", field.description.as_str());
-    assert_eq!("viewerCannotUpdateReasons", field.name);
-    assert_eq!("CommentCannotUpdateReason", field.fieldtype.name.as_str());
-    assert_eq!("[!]!", field.fieldtype.info.as_str());
+    assert_eq!(None, field.description());
+    assert_eq!("viewerCannotUpdateReasons", field.name());
+    assert_eq!("CommentCannotUpdateReason", field.typeinfo().name());
+    assert_eq!("[!]!", field.typeinfo().info());
 }
 
 #[test]
 fn type_with_nullable_field_non_nullable_list() {
     let def = gqlidl::parse_schema("type PullRequest { suggestedReviewers: [SuggestedReviewer]! }").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("PullRequest", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("PullRequest", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("", field.description.as_str());
-    assert_eq!("suggestedReviewers", field.name);
-    assert_eq!("SuggestedReviewer", field.fieldtype.name.as_str());
-    assert_eq!("[]!", field.fieldtype.info.as_str());
+    assert_eq!(None, field.description());
+    assert_eq!("suggestedReviewers", field.name());
+    assert_eq!("SuggestedReviewer", field.typeinfo().name());
+    assert_eq!("[]!", field.typeinfo().info());
 }
 
 #[test]
-fn type_with_nullable_connection() {
+fn type_with_non_nullable_connection() {
     let def = gqlidl::parse_schema("type User {
         # A list of users the given user is followed by.
         followers(
@@ -186,30 +179,28 @@ fn type_with_nullable_connection() {
     }
     ").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("User", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("User", def.name());
 
-    let mut d = def;
-    let connection = d.connections.pop().unwrap();
+    let connection = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("A list of users the given user is followed by.", connection.description.as_str());
-    assert_eq!("followers", connection.name);
-    assert_eq!("FollowerConnection", connection.fieldtype.name.as_str());
-    assert_eq!("!", connection.fieldtype.info.as_str());
+    assert_eq!("A list of users the given user is followed by.", connection.description().unwrap());
+    assert_eq!("followers", connection.name());
+    assert_eq!("FollowerConnection", connection.typeinfo().name());
+    assert_eq!("!", connection.typeinfo().info());
 
-    let mut c = connection;
-    let mut argument = c.arguments.remove(0);
+    let mut argument = connection.arguments().unwrap().remove(0);
 
-    assert_eq!("Returns the elements in the list that come after the specified global ID.", argument.description);
-    assert_eq!("String", argument.fieldtype.name.as_str());
-    assert_eq!("", argument.fieldtype.info.as_str());
+    assert_eq!("Returns the elements in the list that come after the specified global ID.", argument.description().unwrap());
+    assert_eq!("String", argument.typeinfo().name());
+    assert_eq!("", argument.typeinfo().info());
 
-    argument = c.arguments.remove(0);
+    argument = connection.arguments().unwrap().remove(1);
 
-    assert_eq!("Returns the first _n_ elements from the list.", argument.description);
-    assert_eq!("Int", argument.fieldtype.name.as_str());
-    assert_eq!("!", argument.fieldtype.info.as_str());
+    assert_eq!("Returns the first _n_ elements from the list.", argument.description().unwrap());
+    assert_eq!("Int", argument.typeinfo().name());
+    assert_eq!("!", argument.typeinfo().info());
 }
 
 #[test]
@@ -219,18 +210,17 @@ fn type_with_deprecated_field() {
     }
     ").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("User", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("User", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("databaseId", field.name);
-    assert_eq!("Int", field.fieldtype.name.as_str());
-    assert_eq!("", field.fieldtype.info.as_str());
-    assert_eq!(true, field.deprecated);
-    assert_eq!("", field.deprecated_reason.as_str());
+    assert_eq!("databaseId", field.name());
+    assert_eq!("Int", field.typeinfo().name());
+    assert_eq!("", field.typeinfo().info());
+    assert_eq!(true, field.deprecated());
+    assert_eq!(None, field.deprecation_reason());
 }
 
 #[test]
@@ -240,16 +230,43 @@ fn type_with_deprecated_field_and_reason() {
     }
     ").unwrap().pop().unwrap();
 
-    assert_eq!("", def.description.as_str());
-    assert_eq!("object", def.typename.as_str());
-    assert_eq!("User", def.name);
+    assert_eq!(None, def.description());
+    assert_eq!("object", def.typename());
+    assert_eq!("User", def.name());
 
-    let mut d = def;
-    let field = d.fields.pop().unwrap();
+    let field = def.fields().unwrap().pop().unwrap();
 
-    assert_eq!("databaseId", field.name);
-    assert_eq!("Int", field.fieldtype.name.as_str());
-    assert_eq!("", field.fieldtype.info.as_str());
-    assert_eq!(true, field.deprecated);
-    assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", field.deprecated_reason.as_str());
+    assert_eq!("databaseId", field.name());
+    assert_eq!("Int", field.typeinfo().name());
+    assert_eq!("", field.typeinfo().info());
+    assert_eq!(true, field.deprecated());
+    assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", field.deprecation_reason().unwrap());
+}
+
+#[test]
+fn enum_with_fields() {
+    let def = gqlidl::parse_schema("
+    # State of the project; either 'open' or 'closed'
+    enum ProjectState {
+      # The project is closed.
+      CLOSED
+
+      # The project is open.
+      OPEN
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("State of the project; either 'open' or 'closed'", def.description().unwrap());
+    assert_eq!("enum", def.typename());
+    assert_eq!("ProjectState", def.name());
+
+    let mut value = def.values().unwrap().remove(0);
+
+    assert_eq!("The project is closed.", value.description().unwrap());
+    assert_eq!("CLOSED", value.name());
+
+    value = def.values().unwrap().remove(1);
+
+    assert_eq!("The project is open.", value.description().unwrap());
+    assert_eq!("OPEN", value.name());
 }
