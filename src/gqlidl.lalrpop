@@ -6,38 +6,38 @@ pub schema: Vec<GraphQLType> =
     <GraphQLType*> => <>;
 
 GraphQLType: GraphQLType = {
-    <d:Description?> "scalar" <n:Name> => {
+    <d:Description*> "scalar" <n:Name> => {
         GraphQLType::ScalarType(GraphQLScalar::new(d, n))
     },
-    <d:Description?> "type" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "type" <n:Name> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::ObjectType(GraphQLObject::new(d, n, vec![], f))
     },
-    <d:Description?> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
     },
-    <d:Description?> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
+    <d:Description*> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
         GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
     },
-    <d:Description?> "interface" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "interface" <n:Name> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
     },
-    <d:Description?> "union" <n:Name> "=" <t:Pipe<Name>> => {
+    <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
         GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
     },
-    <d:Description?> "input" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "input" <n:Name> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::InputObjectType(GraphQLInputObject::new(d, n, f))
     },
 };
 
 Fields: GraphQLField = {
-    <d:Description?> <n:Name> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+    <d:Description*> <n:Name> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
                           Some(e) => true
                       };
         GraphQLField::new(d, n, t, Vec::new(), deprecated, r)
     },
-    <d:Description?> <n:Name> "(" <a:(<Arguments>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+    <d:Description*> <n:Name> "(" <a:(<Arguments>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
                           Some(e) => true
@@ -47,7 +47,7 @@ Fields: GraphQLField = {
 };
 
 Values: GraphQLValue = {
-    <d:Description?> <n:Name> => {
+    <d:Description*> <n:Name> => {
         GraphQLValue::new(d, n)
     }
 };
@@ -80,7 +80,7 @@ FieldType: FieldType = {
 };
 
 Arguments: GraphQLArgument = {
-    <d:Description?> <n:Name> ":" <t:FieldType> => {
+    <d:Description*> <n:Name> ":" <t:FieldType> => {
       GraphQLArgument::new(d, n, t)
     }
 };
@@ -122,4 +122,4 @@ Pipe1<T>: Vec<T> = {
 };
 
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
-Description: String = <s:r"#\s*[^\n]*"> => s[1..s.len()].trim().to_owned();
+Description: String = <s:r"#\s*.+"> => s[1..s.len()].trim().to_owned();

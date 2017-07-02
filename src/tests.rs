@@ -1,4 +1,15 @@
+use std::fs::File;
+use std::io::Read;
+
 use gqlidl;
+
+// #[test]
+// fn sanity_check() {
+//     let mut file = File::open("test/file.graphql").expect("Unable to open file");
+//     let mut contents = String::new();
+//     file.read_to_string(&mut contents);
+//     gqlidl::parse_schema(contents.as_str()).unwrap();
+// }
 
 #[test]
 fn scalar_no_description() {
@@ -64,7 +75,6 @@ fn type_with_multiple_implements() {
     implement = def.implements().unwrap().remove(1);
     assert_eq!("UniformResourceLocatable", implement);
 }
-
 
 #[test]
 fn type_with_field() {
@@ -238,6 +248,27 @@ fn type_with_deprecated_field_and_reason() {
     assert_eq!("", field.typeinfo().info());
     assert_eq!(true, field.deprecated());
     assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", field.deprecation_reason().unwrap());
+}
+
+#[test]
+fn type_with_multiline_field_description() {
+    let def = gqlidl::parse_schema("
+    # Represents a range of information from a Git blame.
+    type BlameRange {
+      # Identifies the recency of the change, from 1 (new) to 10 (old). This is
+      # calculated as a 2-quantile and determines the length of distance between the
+      # median age of all the changes in the file and the recency of the current
+      # range's change.
+      age: Int!
+    }
+    ").unwrap().pop().unwrap();
+
+    let mut field = def.fields().unwrap().remove(0);
+
+    assert_eq!("Identifies the recency of the change, from 1 (new) to 10 (old). This is calculated as a 2-quantile and determines the length of distance between the median age of all the changes in the file and the recency of the current range's change.", field.description().unwrap());
+    assert_eq!("age", field.name());
+    assert_eq!("Int", field.typeinfo().name());
+    assert_eq!("!", field.typeinfo().info());
 }
 
 #[test]

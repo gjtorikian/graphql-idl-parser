@@ -6,44 +6,44 @@ static UNION: &'static str = "union";
 static INPUT_OBJECT: &'static str = "input_object";
 
 pub struct GraphQLScalar {
-    description: Option<String>,
+    description: Vec<String>,
     name: String
 }
 
 pub struct GraphQLObject {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     implements: Vec<String>,
     fields: Vec<GraphQLField>,
 }
 
 pub struct GraphQLEnum {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     values: Vec<GraphQLValue>,
 }
 
 pub struct GraphQLInterface {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     fields: Vec<GraphQLField>,
 }
 
 pub struct GraphQLUnion {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     types: Vec<String>,
 }
 
 pub struct GraphQLInputObject {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     fields: Vec<GraphQLField>,
 }
 
 #[derive(Clone)]
 pub struct GraphQLField {
-  description: Option<String>,
+  description: Vec<String>,
   name: String,
   typeinfo: FieldType,
   arguments: Vec<GraphQLArgument>,
@@ -53,13 +53,13 @@ pub struct GraphQLField {
 
 #[derive(Clone)]
 pub struct GraphQLValue {
-  description: Option<String>,
+  description: Vec<String>,
   name: String
 }
 
 #[derive(Clone)]
 pub struct GraphQLArgument {
-    description: Option<String>,
+    description: Vec<String>,
     name: String,
     typeinfo: FieldType,
 }
@@ -80,7 +80,7 @@ pub enum GraphQLType {
 }
 
 impl GraphQLScalar {
-    pub fn new(description: Option<String>, name: String) -> GraphQLScalar {
+    pub fn new(description: Vec<String>, name: String) -> GraphQLScalar {
       GraphQLScalar {
           description: description,
           name: name
@@ -89,7 +89,7 @@ impl GraphQLScalar {
 }
 
 impl GraphQLObject {
-    pub fn new(description: Option<String>, name: String, implements: Vec<String>, fields: Vec<GraphQLField>) -> GraphQLObject {
+    pub fn new(description: Vec<String>, name: String, implements: Vec<String>, fields: Vec<GraphQLField>) -> GraphQLObject {
       GraphQLObject {
           description: description,
           name: name,
@@ -100,7 +100,7 @@ impl GraphQLObject {
 }
 
 impl GraphQLEnum {
-    pub fn new(description: Option<String>, name: String, values: Vec<GraphQLValue>) -> GraphQLEnum {
+    pub fn new(description: Vec<String>, name: String, values: Vec<GraphQLValue>) -> GraphQLEnum {
       GraphQLEnum {
           description: description,
           name: name,
@@ -110,7 +110,7 @@ impl GraphQLEnum {
 }
 
 impl GraphQLInterface {
-    pub fn new(description: Option<String>, name: String, fields: Vec<GraphQLField>) -> GraphQLInterface {
+    pub fn new(description: Vec<String>, name: String, fields: Vec<GraphQLField>) -> GraphQLInterface {
       GraphQLInterface {
           description: description,
           name: name,
@@ -120,7 +120,7 @@ impl GraphQLInterface {
 }
 
 impl GraphQLUnion {
-    pub fn new(description: Option<String>, name: String, types: Vec<String>) -> GraphQLUnion {
+    pub fn new(description: Vec<String>, name: String, types: Vec<String>) -> GraphQLUnion {
       GraphQLUnion {
           description: description,
           name: name,
@@ -130,7 +130,7 @@ impl GraphQLUnion {
 }
 
 impl GraphQLInputObject {
-    pub fn new(description: Option<String>, name: String, fields: Vec<GraphQLField>) -> GraphQLInputObject {
+    pub fn new(description: Vec<String>, name: String, fields: Vec<GraphQLField>) -> GraphQLInputObject {
       GraphQLInputObject {
           description: description,
           name: name,
@@ -169,10 +169,15 @@ macro_rules! impl_graphql_objects_common_methods {
             $x:ident:$y:ident
         ),*
     ) => {
-        pub fn description(&self) -> Option<&str> {
+        pub fn description(&self) -> Option<String> {
             match *self {
                 $(
-                    GraphQLType::$x($y{ ref description, .. }) => description.as_ref().map(|s| s.as_ref())
+                    GraphQLType::$x($y{ ref description, .. }) => {
+                        if description.len() > 0 {
+                            return Some(description.join(" "))
+                        }
+                        None
+                    }
                 ),*
             }
         }
@@ -263,8 +268,11 @@ macro_rules! impl_graphql_meta_methods {
     ($($type_: ty),*) => {
       $(
         impl $type_ {
-            pub fn description(&self) -> Option<&str> {
-                self.description.as_ref().map(|s| s.as_ref())
+            pub fn description(&self) -> Option<String> {
+                if self.description.len() > 0 {
+                    return Some(self.description.join(" "))
+                }
+                None
             }
 
             pub fn name(&self) -> &str { self.name.as_ref() }
@@ -308,7 +316,7 @@ macro_rules! impl_graphql_type_methods {
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
-    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, arguments: Vec<GraphQLArgument>, deprecated: bool, deprecation_reason: Option<String>) -> GraphQLField {
+    pub fn new(description: Vec<String>, name: String, typeinfo: FieldType, arguments: Vec<GraphQLArgument>, deprecated: bool, deprecation_reason: Option<String>) -> GraphQLField {
       GraphQLField {
           description: description,
           name: name,
@@ -328,7 +336,7 @@ impl GraphQLField {
 }
 
 impl GraphQLArgument {
-    pub fn new(description: Option<String>, name: String, typeinfo: FieldType) -> GraphQLArgument {
+    pub fn new(description: Vec<String>, name: String, typeinfo: FieldType) -> GraphQLArgument {
       GraphQLArgument {
           description: description,
           name: name,
@@ -338,7 +346,7 @@ impl GraphQLArgument {
 }
 
 impl GraphQLValue {
-    pub fn new(description: Option<String>, name: String) -> GraphQLValue {
+    pub fn new(description: Vec<String>, name: String) -> GraphQLValue {
       GraphQLValue {
           description: description,
           name: name
