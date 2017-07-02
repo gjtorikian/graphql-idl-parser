@@ -3,13 +3,13 @@ use std::io::Read;
 
 use gqlidl;
 
-// #[test]
-// fn sanity_check() {
-//     let mut file = File::open("test/file.graphql").expect("Unable to open file");
-//     let mut contents = String::new();
-//     file.read_to_string(&mut contents);
-//     gqlidl::parse_schema(contents.as_str()).unwrap();
-// }
+#[test]
+fn sanity_check() {
+    let mut file = File::open("test/file.graphql").expect("Unable to open file");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents);
+    gqlidl::parse_schema(contents.as_str()).unwrap();
+}
 
 #[test]
 fn scalar_no_description() {
