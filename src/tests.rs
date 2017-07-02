@@ -267,3 +267,25 @@ fn enum_with_fields() {
     assert_eq!("The project is open.", value.description().unwrap());
     assert_eq!("OPEN", value.name());
 }
+
+#[test]
+fn interface_with_field() {
+    let def = gqlidl::parse_schema("
+    # An object that can be closed
+    interface Closable {
+      # `true` if the object is closed (definition of closed may depend on type)
+      closed: Boolean!
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("An object that can be closed", def.description().unwrap());
+    assert_eq!("interface", def.typename());
+    assert_eq!("Closable", def.name());
+
+    let field = def.fields().unwrap().pop().unwrap();
+
+    assert_eq!("`true` if the object is closed (definition of closed may depend on type)", field.description().unwrap());
+    assert_eq!("closed", field.name());
+    assert_eq!("Boolean", field.typeinfo().name());
+    assert_eq!("!", field.typeinfo().info());
+}

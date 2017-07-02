@@ -18,6 +18,9 @@ GraphQLType: GraphQLType = {
     <d:Description?> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
         GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
     },
+    <d:Description?> "interface" <n:Name> "{" <f:(<Fields>)*> "}" => {
+        GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
+    },
 };
 
 Implements: Vec<String> = {
