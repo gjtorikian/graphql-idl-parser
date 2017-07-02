@@ -43,6 +43,12 @@ pub struct GraphQLArgument {
     typeinfo: FieldType,
 }
 
+#[derive(Clone)]
+pub struct FieldType {
+    pub name: String,
+    pub info: TypeInfo,
+}
+
 pub enum GraphQLType {
     ScalarType(GraphQLScalar),
     ObjectType(GraphQLObject),
@@ -80,12 +86,6 @@ impl GraphQLEnum {
 }
 
 #[derive(Clone)]
-pub struct FieldType {
-    pub name: String,
-    pub info: TypeInfo,
-}
-
-#[derive(Clone)]
 pub enum TypeInfo {
     Nullable,
     NonNullable,
@@ -108,29 +108,43 @@ impl TypeInfo {
     }
 }
 
+macro_rules! impl_graphql_objects_common_methods {
+    (
+        $(
+            $x:ident;$y:ident
+        ),*
+    ) => {
+        pub fn description(&self) -> Option<&str> {
+            match *self {
+                $(
+                    GraphQLType::$x($y{ ref description, .. }) => description.as_ref().map(|s| s.as_ref())
+                ),*
+            }
+        }
+
+        pub fn name(&self) -> &str {
+            match *self {
+                $(
+                    GraphQLType::$x($y{ ref name, .. }) => &name
+                ),*
+            }
+        }
+    }
+}
+
 impl GraphQLType {
     pub fn typename(&self) -> &str {
         match *self {
             GraphQLType::ScalarType { .. } => SCALAR,
             GraphQLType::ObjectType { .. } => OBJECT,
-            GraphQLType::EnumType { .. } => ENUM,
+            GraphQLType::EnumType   { .. } => ENUM,
         }
     }
 
-    pub fn name(&self) -> &str {
-        match *self {
-            GraphQLType::ScalarType(GraphQLScalar{ ref name, .. }) => &name,
-            GraphQLType::ObjectType(GraphQLObject{ ref name, .. }) => &name,
-            GraphQLType::EnumType(GraphQLEnum{ ref name, .. }) => &name,
-        }
-    }
-
-    pub fn description(&self) -> Option<&str> {
-        match *self {
-            GraphQLType::ScalarType(GraphQLScalar{ ref description, .. }) => description.as_ref().map(|s| s.as_ref()),
-            GraphQLType::ObjectType(GraphQLObject{ ref description, .. }) => description.as_ref().map(|s| s.as_ref()),
-            GraphQLType::EnumType(GraphQLEnum{ ref description, .. }) => description.as_ref().map(|s| s.as_ref()),
-        }
+    impl_graphql_objects_common_methods! {
+        ScalarType;GraphQLScalar,
+        ObjectType;GraphQLObject,
+        EnumType;GraphQLEnum
     }
 
     pub fn implements(&self) -> Option<Vec<String>> {
@@ -170,6 +184,54 @@ impl GraphQLType {
     }
 }
 
+macro_rules! impl_graphql_meta_methods {
+    ($($type_: ty),*) => {
+      $(
+        impl $type_ {
+            pub fn description(&self) -> Option<&str> {
+                self.description.as_ref().map(|s| s.as_ref())
+            }
+
+            pub fn name(&self) -> &str { self.name.as_ref() }
+        }
+      )*
+    };
+}
+
+impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
+
+macro_rules! impl_graphql_deprecated_methods {
+    ($($type_: ty),*) => {
+      $(
+        impl $type_ {
+            pub fn deprecated(&self) -> bool {
+                self.deprecated
+            }
+
+            pub fn deprecation_reason(&self) -> Option<&str> {
+                self.deprecation_reason.as_ref().map(|s| s.as_ref())
+            }
+        }
+      )*
+    };
+}
+
+impl_graphql_deprecated_methods! { GraphQLField }
+
+macro_rules! impl_graphql_type_methods {
+    ($($type_: ty),*) => {
+      $(
+        impl $type_ {
+            pub fn typeinfo(&self) -> FieldType {
+                self.typeinfo.to_owned()
+            }
+        }
+      )*
+    };
+}
+
+impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
+
 impl GraphQLField {
     pub fn new(description: Option<String>, name: String, typeinfo: FieldType, arguments: Vec<GraphQLArgument>, deprecated: bool, deprecation_reason: Option<String>) -> GraphQLField {
       GraphQLField {
@@ -182,31 +244,11 @@ impl GraphQLField {
       }
     }
 
-    pub fn description(&self) -> Option<&str> {
-        self.description.as_ref().map(|s| s.as_ref())
-    }
-
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    pub fn typeinfo(&self) -> FieldType {
-        self.typeinfo.to_owned()
-    }
-
     pub fn arguments(&self) -> Option<Vec<GraphQLArgument>> {
         if self.arguments.len() > 0 {
             return Some(self.arguments.to_vec())
         }
         None
-    }
-
-    pub fn deprecated(&self) -> bool {
-        self.deprecated
-    }
-
-    pub fn deprecation_reason(&self) -> Option<&str> {
-        self.deprecation_reason.as_ref().map(|s| s.as_ref())
     }
 }
 
@@ -218,18 +260,6 @@ impl GraphQLArgument {
           typeinfo: typeinfo
       }
     }
-
-    pub fn description(&self) -> Option<&str> {
-        self.description.as_ref().map(|s| s.as_ref())
-    }
-
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    pub fn typeinfo(&self) -> FieldType {
-        self.typeinfo.to_owned()
-    }
 }
 
 impl GraphQLValue {
@@ -238,14 +268,6 @@ impl GraphQLValue {
           description: description,
           name: name
       }
-    }
-
-    pub fn description(&self) -> Option<&str> {
-        self.description.as_ref().map(|s| s.as_ref())
-    }
-
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
