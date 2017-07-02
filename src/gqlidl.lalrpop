@@ -24,6 +24,9 @@ GraphQLType: GraphQLType = {
     <d:Description?> "union" <n:Name> "=" <t:Pipe<Name>> => {
         GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
     },
+    <d:Description?> "input" <n:Name> "{" <f:(<Fields>)*> "}" => {
+        GraphQLType::InputObjectType(GraphQLInputObject::new(d, n, f))
+    },
 };
 
 Fields: GraphQLField = {

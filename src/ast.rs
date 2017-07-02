@@ -3,6 +3,7 @@ static OBJECT: &'static str = "object";
 static ENUM: &'static str = "enum";
 static INTERFACE: &'static str = "interface";
 static UNION: &'static str = "union";
+static INPUT_OBJECT: &'static str = "input_object";
 
 pub struct GraphQLScalar {
     description: Option<String>,
@@ -32,6 +33,12 @@ pub struct GraphQLUnion {
     description: Option<String>,
     name: String,
     types: Vec<String>,
+}
+
+pub struct GraphQLInputObject {
+    description: Option<String>,
+    name: String,
+    fields: Vec<GraphQLField>,
 }
 
 #[derive(Clone)]
@@ -69,6 +76,7 @@ pub enum GraphQLType {
     EnumType(GraphQLEnum),
     InterfaceType(GraphQLInterface),
     UnionType(GraphQLUnion),
+    InputObjectType(GraphQLInputObject),
 }
 
 impl GraphQLScalar {
@@ -120,6 +128,17 @@ impl GraphQLUnion {
       }
     }
 }
+
+impl GraphQLInputObject {
+    pub fn new(description: Option<String>, name: String, fields: Vec<GraphQLField>) -> GraphQLInputObject {
+      GraphQLInputObject {
+          description: description,
+          name: name,
+          fields: fields
+      }
+    }
+}
+
 
 #[derive(Clone)]
 pub enum TypeInfo {
@@ -176,6 +195,7 @@ impl GraphQLType {
             GraphQLType::EnumType        { .. } => ENUM,
             GraphQLType::InterfaceType   { .. } => INTERFACE,
             GraphQLType::UnionType       { .. } => UNION,
+            GraphQLType::InputObjectType { .. } => INPUT_OBJECT,
         }
     }
 
@@ -184,7 +204,8 @@ impl GraphQLType {
         ObjectType:GraphQLObject,
         EnumType:GraphQLEnum,
         InterfaceType:GraphQLInterface,
-        UnionType:GraphQLUnion
+        UnionType:GraphQLUnion,
+        InputObjectType:GraphQLInputObject
     }
 
     pub fn implements(&self) -> Option<Vec<String>> {
@@ -202,7 +223,8 @@ impl GraphQLType {
     pub fn fields(&self) -> Option<Vec<GraphQLField>> {
         match *self {
             GraphQLType::ObjectType(GraphQLObject{ ref fields, .. }) |
-            GraphQLType::InterfaceType(GraphQLInterface{ ref fields, .. }) => {
+            GraphQLType::InterfaceType(GraphQLInterface{ ref fields, .. }) |
+            GraphQLType::InputObjectType(GraphQLInputObject{ ref fields, .. }) => {
                 if fields.len() > 0 {
                     return Some(fields.to_vec())
                 }
