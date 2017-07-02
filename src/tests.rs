@@ -289,3 +289,24 @@ fn interface_with_field() {
     assert_eq!("Boolean", field.typeinfo().name());
     assert_eq!("!", field.typeinfo().info());
 }
+
+
+#[test]
+fn union_with_descriptions() {
+    let def = gqlidl::parse_schema("
+    # Any referencable object
+    union ReferencedSubject = Issue | PullRequest
+    ").unwrap().pop().unwrap();
+
+    assert_eq!("Any referencable object", def.description().unwrap());
+    assert_eq!("union", def.typename());
+    assert_eq!("ReferencedSubject", def.name());
+
+    let mut _type = def.types().unwrap().remove(0);
+
+    assert_eq!("Issue", _type);
+
+    _type = def.types().unwrap().remove(1);
+
+    assert_eq!("PullRequest", _type);
+}

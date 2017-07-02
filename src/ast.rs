@@ -2,6 +2,7 @@ static SCALAR: &'static str = "scalar";
 static OBJECT: &'static str = "object";
 static ENUM: &'static str = "enum";
 static INTERFACE: &'static str = "interface";
+static UNION: &'static str = "union";
 
 pub struct GraphQLScalar {
     description: Option<String>,
@@ -25,6 +26,12 @@ pub struct GraphQLInterface {
     description: Option<String>,
     name: String,
     fields: Vec<GraphQLField>,
+}
+
+pub struct GraphQLUnion {
+    description: Option<String>,
+    name: String,
+    types: Vec<String>,
 }
 
 #[derive(Clone)]
@@ -61,6 +68,7 @@ pub enum GraphQLType {
     ObjectType(GraphQLObject),
     EnumType(GraphQLEnum),
     InterfaceType(GraphQLInterface),
+    UnionType(GraphQLUnion),
 }
 
 impl GraphQLScalar {
@@ -103,6 +111,16 @@ impl GraphQLInterface {
     }
 }
 
+impl GraphQLUnion {
+    pub fn new(description: Option<String>, name: String, types: Vec<String>) -> GraphQLUnion {
+      GraphQLUnion {
+          description: description,
+          name: name,
+          types: types
+      }
+    }
+}
+
 #[derive(Clone)]
 pub enum TypeInfo {
     Nullable,
@@ -129,7 +147,7 @@ impl TypeInfo {
 macro_rules! impl_graphql_objects_common_methods {
     (
         $(
-            $x:ident;$y:ident
+            $x:ident:$y:ident
         ),*
     ) => {
         pub fn description(&self) -> Option<&str> {
@@ -157,14 +175,16 @@ impl GraphQLType {
             GraphQLType::ObjectType      { .. } => OBJECT,
             GraphQLType::EnumType        { .. } => ENUM,
             GraphQLType::InterfaceType   { .. } => INTERFACE,
+            GraphQLType::UnionType       { .. } => UNION,
         }
     }
 
     impl_graphql_objects_common_methods! {
-        ScalarType;GraphQLScalar,
-        ObjectType;GraphQLObject,
-        EnumType;GraphQLEnum,
-        InterfaceType;GraphQLInterface
+        ScalarType:GraphQLScalar,
+        ObjectType:GraphQLObject,
+        EnumType:GraphQLEnum,
+        InterfaceType:GraphQLInterface,
+        UnionType:GraphQLUnion
     }
 
     pub fn implements(&self) -> Option<Vec<String>> {
@@ -197,6 +217,18 @@ impl GraphQLType {
             GraphQLType::EnumType(GraphQLEnum{ ref values, .. }) => {
                 if values.len() > 0 {
                     return Some(values.to_vec())
+                }
+                None
+            },
+            _ => panic!("That method does not exist for this type.")
+        }
+    }
+
+    pub fn types(&self) -> Option<Vec<String>> {
+        match *self {
+            GraphQLType::UnionType(GraphQLUnion{ ref types, .. }) => {
+                if types.len() > 0 {
+                    return Some(types.to_vec())
                 }
                 None
             },

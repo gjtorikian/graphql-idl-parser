@@ -63,3 +63,6 @@ interface Closable {
   # `true` if the object is closed (definition of closed may depend on type)
   closed: Boolean!
 }
+
+# Any referencable object
+union ReferencedSubject = Issue | PullRequest

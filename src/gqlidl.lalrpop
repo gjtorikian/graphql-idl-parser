@@ -10,9 +10,9 @@ GraphQLType: GraphQLType = {
         GraphQLType::ScalarType(GraphQLScalar::new(d, n))
     },
     <d:Description?> "type" <n:Name> "{" <f:(<Fields>)*> "}" => {
-        GraphQLType::ObjectType(GraphQLObject::new(d, n, Vec::new(), f))
+        GraphQLType::ObjectType(GraphQLObject::new(d, n, vec![], f))
     },
-    <d:Description?> "type" <n:Name> "implements" <i:(<Implements>)> "{" <f:(<Fields>)*> "}" => {
+    <d:Description?> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
     },
     <d:Description?> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
@@ -21,19 +21,9 @@ GraphQLType: GraphQLType = {
     <d:Description?> "interface" <n:Name> "{" <f:(<Fields>)*> "}" => {
         GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
     },
-};
-
-Implements: Vec<String> = {
-    <v:(<Name> ",")*> <e:Name?> => {
-        match e {
-            None => v,
-            Some(e) => {
-                let mut v = v;
-                v.push(e);
-                v
-            }
-        }
-    }
+    <d:Description?> "union" <n:Name> "=" <t:Pipe<Name>> => {
+        GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
+    },
 };
 
 Fields: GraphQLField = {
@@ -99,6 +89,32 @@ Deprecated: String = {
 DeprecatedReason: String = {
     "(reason: " <s:r#""[^"]*""#> ")" => {
       s[1..s.len()-1].to_string()
+    }
+};
+
+Comma<T>: Vec<T> = {
+    Comma1<T>? => <>.unwrap_or(vec![])
+};
+
+Comma1<T>: Vec<T> = {
+    <t:T> => vec![t],
+    <v:Comma<T>> "," <t:T> => {
+        let mut v = v;
+        v.push(t);
+        v
+    }
+};
+
+Pipe<T>: Vec<T> = {
+    Pipe1<T>? => <>.unwrap_or(vec![])
+};
+
+Pipe1<T>: Vec<T> = {
+    <t:T> => vec![t],
+    <v:Pipe<T>> "|" <t:T> => {
+        let mut v = v;
+        v.push(t);
+        v
     }
 };
 
