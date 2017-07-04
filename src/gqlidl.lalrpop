@@ -35,7 +35,7 @@ Field: GraphQLField = {
                           None => false,
                           Some(e) => true
                       };
-        GraphQLField::new(d, n, t, Vec::new(), deprecated, r)
+        GraphQLField::new(d, n, t, vec![], deprecated, r)
     },
     <d:Description*> <n:Name> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
