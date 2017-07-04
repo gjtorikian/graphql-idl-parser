@@ -9,27 +9,27 @@ GraphQLType: GraphQLType = {
     <d:Description*> "scalar" <n:Name> => {
         GraphQLType::ScalarType(GraphQLScalar::new(d, n))
     },
-    <d:Description*> "type" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
         GraphQLType::ObjectType(GraphQLObject::new(d, n, vec![], f))
     },
-    <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Field>)*> "}" => {
         GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
     },
-    <d:Description*> "enum" <n:Name> "{" <f:(<Values>)+> "}" => {
+    <d:Description*> "enum" <n:Name> "{" <f:(<Value>)+> "}" => {
         GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
     },
-    <d:Description*> "interface" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "interface" <n:Name> "{" <f:(<Field>)*> "}" => {
         GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
     },
     <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
         GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
     },
-    <d:Description*> "input" <n:Name> "{" <f:(<Fields>)*> "}" => {
+    <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
         GraphQLType::InputObjectType(GraphQLInputObject::new(d, n, f))
     },
 };
 
-Fields: GraphQLField = {
+Field: GraphQLField = {
     <d:Description*> <n:Name> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
@@ -37,7 +37,7 @@ Fields: GraphQLField = {
                       };
         GraphQLField::new(d, n, t, Vec::new(), deprecated, r)
     },
-    <d:Description*> <n:Name> "(" <a:(<Arguments>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+    <d:Description*> <n:Name> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
                           Some(e) => true
@@ -46,7 +46,7 @@ Fields: GraphQLField = {
     },
 };
 
-Values: GraphQLValue = {
+Value: GraphQLValue = {
     <d:Description*> <n:Name> => {
         GraphQLValue::new(d, n)
     }
@@ -79,7 +79,7 @@ FieldType: FieldType = {
     }
 };
 
-Arguments: GraphQLArgument = {
+Argument: GraphQLArgument = {
     <d:Description*> <n:Name> ":" <t:FieldType> => {
       GraphQLArgument::new(d, n, t)
     }

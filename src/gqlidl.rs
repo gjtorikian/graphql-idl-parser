@@ -32,15 +32,15 @@ mod __parse__schema {
         Termr_23_22_23_5c_5cs_2a_2e_2b_22_23(&'input str),
         Termr_23_22_5b__A_2dZa_2dz_5d_5b__0_2d9A_2dZa_2dz_5d_2a_22_23(&'input str),
         Nt_22_21_22_3f(::std::option::Option<&'input str>),
-        Nt_28_3cArguments_3e_29(GraphQLArgument),
-        Nt_28_3cArguments_3e_29_2a(::std::vec::Vec<GraphQLArgument>),
-        Nt_28_3cArguments_3e_29_2b(::std::vec::Vec<GraphQLArgument>),
-        Nt_28_3cFields_3e_29(GraphQLField),
-        Nt_28_3cFields_3e_29_2a(::std::vec::Vec<GraphQLField>),
-        Nt_28_3cFields_3e_29_2b(::std::vec::Vec<GraphQLField>),
-        Nt_28_3cValues_3e_29(GraphQLValue),
-        Nt_28_3cValues_3e_29_2b(::std::vec::Vec<GraphQLValue>),
-        NtArguments(GraphQLArgument),
+        Nt_28_3cArgument_3e_29(GraphQLArgument),
+        Nt_28_3cArgument_3e_29_2a(::std::vec::Vec<GraphQLArgument>),
+        Nt_28_3cArgument_3e_29_2b(::std::vec::Vec<GraphQLArgument>),
+        Nt_28_3cField_3e_29(GraphQLField),
+        Nt_28_3cField_3e_29_2a(::std::vec::Vec<GraphQLField>),
+        Nt_28_3cField_3e_29_2b(::std::vec::Vec<GraphQLField>),
+        Nt_28_3cValue_3e_29(GraphQLValue),
+        Nt_28_3cValue_3e_29_2b(::std::vec::Vec<GraphQLValue>),
+        NtArgument(GraphQLArgument),
         NtComma1_3cName_3e(Vec<String>),
         NtComma1_3cName_3e_3f(::std::option::Option<Vec<String>>),
         NtComma_3cName_3e(Vec<String>),
@@ -51,8 +51,8 @@ mod __parse__schema {
         NtDescription(String),
         NtDescription_2a(::std::vec::Vec<String>),
         NtDescription_2b(::std::vec::Vec<String>),
+        NtField(GraphQLField),
         NtFieldType(FieldType),
-        NtFields(GraphQLField),
         NtGraphQLType(GraphQLType),
         NtGraphQLType_2a(::std::vec::Vec<GraphQLType>),
         NtGraphQLType_2b(::std::vec::Vec<GraphQLType>),
@@ -60,7 +60,7 @@ mod __parse__schema {
         NtPipe1_3cName_3e(Vec<String>),
         NtPipe1_3cName_3e_3f(::std::option::Option<Vec<String>>),
         NtPipe_3cName_3e(Vec<String>),
-        NtValues(GraphQLValue),
+        NtValue(GraphQLValue),
         Nt____schema(Vec<GraphQLType>),
         Ntschema(Vec<GraphQLType>),
     }
@@ -286,9 +286,9 @@ mod __parse__schema {
         // State 109
         0, 0, 0, 0, 0, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 110
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -47, 0, -47, -47,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -41, 0, -41, -41,
         // State 111
-        133, 0, -36, 0, 0, 0, 0, -36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -36, 0, -36, -36,
+        133, 0, -60, 0, 0, 0, 0, -60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -60, 0, -60, -60,
         // State 112
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 135,
         // State 113
@@ -310,7 +310,7 @@ mod __parse__schema {
         // State 121
         0, 0, 0, 0, 0, 139, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 122
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -48, 0, -48, -48,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -42, 0, -42, -42,
         // State 123
         0, 0, 0, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -7, -7,
         // State 124
@@ -322,15 +322,15 @@ mod __parse__schema {
         // State 127
         0, 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 114,
         // State 128
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -43, 0, -43, -43,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -37, 0, -37, -37,
         // State 129
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -45, 0, -45, -45,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -39, 0, -39, -39,
         // State 130
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, 0, 0,
         // State 131
         0, 0, -24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -24, 0, -24, -24,
         // State 132
-        0, 0, -35, 0, 0, 0, 0, -35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -35, 0, -35, -35,
+        0, 0, -59, 0, 0, 0, 0, -59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -59, 0, -59, -59,
         // State 133
         151, 0, 0, 0, 0, 0, 0, 0, 0, 152, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 134
@@ -344,9 +344,9 @@ mod __parse__schema {
         // State 138
         0, 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 114,
         // State 139
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -44, 0, -44, -44,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -38, 0, -38, -38,
         // State 140
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -46, 0, -46, -46,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -40, 0, -40, -40,
         // State 141
         0, 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 114,
         // State 142
@@ -354,79 +354,79 @@ mod __parse__schema {
         // State 143
         0, 0, 0, -16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -16, -16,
         // State 144
-        158, 0, 0, -36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -36, -36,
+        158, 0, 0, -60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -60, -60,
         // State 145
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 135,
         // State 146
         -91, 0, 0, -91, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -91, -91,
         // State 147
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -55, 0, -55, -55,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -49, 0, -49, -49,
         // State 148
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -41, 0, -41, -41,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -35, 0, -35, -35,
         // State 149
         0, 0, 0, 162, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 150
         0, 0, 0, 0, 0, 0, 0, 0, 0, 163, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 151
-        164, 0, -40, 0, 0, 0, 0, -40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -40, 0, -40, -40,
+        164, 0, -64, 0, 0, 0, 0, -64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -64, 0, -64, -64,
         // State 152
         0, 0, 0, 0, 0, 0, 0, 0, 113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 114,
         // State 153
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -56, 0, -56, -56,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -50, 0, -50, -50,
         // State 154
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -42, 0, -42, -42,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -36, 0, -36, -36,
         // State 155
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -63, 0, -63, -63,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -57, 0, -57, -57,
         // State 156
         0, 0, 0, -17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -17, -17,
         // State 157
-        0, 0, 0, -35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -35, -35,
+        0, 0, 0, -59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -59, -59,
         // State 158
         170, 0, 0, 0, 0, 0, 0, 0, 0, 171, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 159
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -51, 0, -51, -51,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -45, 0, -45, -45,
         // State 160
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -53, 0, -53, -53,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -47, 0, -47, -47,
         // State 161
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -27, 0, -27, -27,
         // State 162
-        173, 0, -38, 0, 0, 0, 0, -38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -38, 0, -38, -38,
+        173, 0, -62, 0, 0, 0, 0, -62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -62, 0, -62, -62,
         // State 163
-        0, 0, -39, 0, 0, 0, 0, -39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -39, 0, -39, -39,
+        0, 0, -63, 0, 0, 0, 0, -63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -63, 0, -63, -63,
         // State 164
-        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -64, 0, -64, -64,
+        0, 0, 131, 0, 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -58, 0, -58, -58,
         // State 165
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -52, 0, -52, -52,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -46, 0, -46, -46,
         // State 166
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -54, 0, -54, -54,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -48, 0, -48, -48,
         // State 167
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -59, 0, -59, -59,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -53, 0, -53, -53,
         // State 168
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -61, 0, -61, -61,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -55, 0, -55, -55,
         // State 169
         0, 0, 0, 0, 0, 0, 0, 0, 0, 178, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 170
-        179, 0, 0, -40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -40, -40,
+        179, 0, 0, -64, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -64, -64,
         // State 171
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -49, 0, -49, -49,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -43, 0, -43, -43,
         // State 172
-        0, 0, -37, 0, 0, 0, 0, -37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -37, 0, -37, -37,
+        0, 0, -61, 0, 0, 0, 0, -61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -61, 0, -61, -61,
         // State 173
-        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -60, 0, -60, -60,
+        0, 0, 131, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -54, 0, -54, -54,
         // State 174
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -62, 0, -62, -62,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -56, 0, -56, -56,
         // State 175
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -50, 0, -50, -50,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -44, 0, -44, -44,
         // State 176
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -57, 0, -57, -57,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -51, 0, -51, -51,
         // State 177
-        181, 0, 0, -38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -38, -38,
+        181, 0, 0, -62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -62, -62,
         // State 178
-        0, 0, 0, -39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -39, -39,
+        0, 0, 0, -63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -63, -63,
         // State 179
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -58, 0, -58, -58,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -52, 0, -52, -52,
         // State 180
-        0, 0, 0, -37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -37, -37,
+        0, 0, 0, -61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -61, -61,
     ];
     const __EOF_ACTION: &'static [i32] = &[
         -101,
@@ -689,25 +689,25 @@ mod __parse__schema {
         // State 37
         0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 52, 0, 0, 0, 0, 0, 53, 0, 0, 0, 54, 0, 0,
         // State 38
-        0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 39
-        0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 40
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 66, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 0, 0, 0, 0, 0,
         // State 41
-        0, 0, 0, 0, 0, 0, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 42
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 71, 72, 0, 73, 0, 0, 0,
         // State 43
         0, 0, 0, 0, 0, 0, 0, 0, 75, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 52, 0, 0, 0, 0, 0, 53, 0, 0, 0, 54, 0, 0,
         // State 44
-        0, 0, 0, 0, 0, 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 45
-        0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 46
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 0, 0, 0, 0, 0,
         // State 47
-        0, 0, 0, 0, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 81, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 48
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 71, 72, 0, 83, 0, 0, 0,
         // State 49
@@ -725,7 +725,7 @@ mod __parse__schema {
         // State 55
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 56
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 57
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 86, 0, 0, 0, 0, 0, 0, 0, 90, 0, 0, 0, 0, 0, 0,
         // State 58
@@ -737,7 +737,7 @@ mod __parse__schema {
         // State 61
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 62
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 63
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 64
@@ -749,7 +749,7 @@ mod __parse__schema {
         // State 67
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 68
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 69
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 70
@@ -763,17 +763,17 @@ mod __parse__schema {
         // State 74
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 52, 0, 0, 0, 0, 0, 53, 0, 0, 0, 84, 0, 0,
         // State 75
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 76
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 77
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 78
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 79
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 80
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 81
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 82
@@ -795,13 +795,13 @@ mod __parse__schema {
         // State 90
         0, 0, 0, 105, 0, 0, 0, 0, 0, 106, 0, 0, 0, 0, 0, 0, 0, 51, 0, 107, 0, 0, 0, 0, 0, 108, 0, 0, 0, 0, 0, 0,
         // State 91
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 92
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 93
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 115, 0, 0, 0, 0, 0, 0,
         // State 94
-        0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 95
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 96
@@ -813,13 +813,13 @@ mod __parse__schema {
         // State 99
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 100
-        0, 0, 0, 0, 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 59, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 119, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 59, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 101
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 102
         0, 0, 0, 121, 0, 0, 0, 0, 0, 106, 0, 0, 0, 0, 0, 0, 0, 51, 0, 107, 0, 0, 0, 0, 0, 108, 0, 0, 0, 0, 0, 0,
         // State 103
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 123, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 104
         0, 0, 0, 0, 0, 0, 0, 0, 0, 124, 0, 0, 0, 0, 0, 0, 0, 51, 0, 107, 0, 0, 0, 0, 0, 108, 0, 0, 0, 0, 0, 0,
         // State 105
@@ -843,13 +843,13 @@ mod __parse__schema {
         // State 114
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 115
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 116
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 117
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 118
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 0, 88, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 0, 58, 88, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0,
         // State 119
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 120
@@ -865,9 +865,9 @@ mod __parse__schema {
         // State 125
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 126
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 144, 0, 0, 0, 0, 145, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 144, 0, 0, 0, 145, 0, 0, 0, 0, 0, 0,
         // State 127
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 148, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 148, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 128
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 149, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 129
@@ -889,15 +889,15 @@ mod __parse__schema {
         // State 137
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 138
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 154, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 154, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 139
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 155, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 140
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 141
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 156, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 156, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 142
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 0, 0, 145, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 0, 145, 0, 0, 0, 0, 0, 0,
         // State 143
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 144
@@ -917,7 +917,7 @@ mod __parse__schema {
         // State 151
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 152
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 165, 0, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 165, 0, 0, 0, 112, 0, 0, 0, 0, 0, 0,
         // State 153
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 166, 0, 167, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
         // State 154
@@ -1228,151 +1228,151 @@ mod __parse__schema {
                 0
             }
             3 => {
-                // (<Arguments>) = Arguments => ActionFn(23);
-                let __sym0 = __pop_NtArguments(__symbols);
+                // (<Argument>) = Argument => ActionFn(23);
+                let __sym0 = __pop_NtArgument(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action23::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cArguments_3e_29(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cArgument_3e_29(__nt), __end));
                 1
             }
             4 => {
-                // (<Arguments>)* =  => ActionFn(21);
+                // (<Argument>)* =  => ActionFn(21);
                 let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
                 let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
                 let __nt = super::__action21::<>(input, &__start, &__end);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 0);
-                __symbols.push((__start, __Symbol::Nt_28_3cArguments_3e_29_2a(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cArgument_3e_29_2a(__nt), __end));
                 2
             }
             5 => {
-                // (<Arguments>)* = (<Arguments>)+ => ActionFn(22);
-                let __sym0 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                // (<Argument>)* = (<Argument>)+ => ActionFn(22);
+                let __sym0 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action22::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cArguments_3e_29_2a(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cArgument_3e_29_2a(__nt), __end));
                 2
             }
             6 => {
-                // (<Arguments>)+ = Arguments => ActionFn(62);
-                let __sym0 = __pop_NtArguments(__symbols);
+                // (<Argument>)+ = Argument => ActionFn(62);
+                let __sym0 = __pop_NtArgument(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action62::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cArguments_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cArgument_3e_29_2b(__nt), __end));
                 3
             }
             7 => {
-                // (<Arguments>)+ = (<Arguments>)+, Arguments => ActionFn(63);
-                let __sym1 = __pop_NtArguments(__symbols);
-                let __sym0 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                // (<Argument>)+ = (<Argument>)+, Argument => ActionFn(63);
+                let __sym1 = __pop_NtArgument(__symbols);
+                let __sym0 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym1.2.clone();
                 let __nt = super::__action63::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
-                __symbols.push((__start, __Symbol::Nt_28_3cArguments_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cArgument_3e_29_2b(__nt), __end));
                 3
             }
             8 => {
-                // (<Fields>) = Fields => ActionFn(35);
-                let __sym0 = __pop_NtFields(__symbols);
+                // (<Field>) = Field => ActionFn(35);
+                let __sym0 = __pop_NtField(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action35::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cFields_3e_29(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cField_3e_29(__nt), __end));
                 4
             }
             9 => {
-                // (<Fields>)* =  => ActionFn(33);
+                // (<Field>)* =  => ActionFn(33);
                 let __start = __symbols.last().map(|s| s.2.clone()).unwrap_or_default();
                 let __end = __lookahead_start.cloned().unwrap_or_else(|| __start.clone());
                 let __nt = super::__action33::<>(input, &__start, &__end);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 0);
-                __symbols.push((__start, __Symbol::Nt_28_3cFields_3e_29_2a(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cField_3e_29_2a(__nt), __end));
                 5
             }
             10 => {
-                // (<Fields>)* = (<Fields>)+ => ActionFn(34);
-                let __sym0 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                // (<Field>)* = (<Field>)+ => ActionFn(34);
+                let __sym0 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action34::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cFields_3e_29_2a(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cField_3e_29_2a(__nt), __end));
                 5
             }
             11 => {
-                // (<Fields>)+ = Fields => ActionFn(66);
-                let __sym0 = __pop_NtFields(__symbols);
+                // (<Field>)+ = Field => ActionFn(66);
+                let __sym0 = __pop_NtField(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action66::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cFields_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cField_3e_29_2b(__nt), __end));
                 6
             }
             12 => {
-                // (<Fields>)+ = (<Fields>)+, Fields => ActionFn(67);
-                let __sym1 = __pop_NtFields(__symbols);
-                let __sym0 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                // (<Field>)+ = (<Field>)+, Field => ActionFn(67);
+                let __sym1 = __pop_NtField(__symbols);
+                let __sym0 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym1.2.clone();
                 let __nt = super::__action67::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
-                __symbols.push((__start, __Symbol::Nt_28_3cFields_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cField_3e_29_2b(__nt), __end));
                 6
             }
             13 => {
-                // (<Values>) = Values => ActionFn(31);
-                let __sym0 = __pop_NtValues(__symbols);
+                // (<Value>) = Value => ActionFn(31);
+                let __sym0 = __pop_NtValue(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action31::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cValues_3e_29(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cValue_3e_29(__nt), __end));
                 7
             }
             14 => {
-                // (<Values>)+ = Values => ActionFn(76);
-                let __sym0 = __pop_NtValues(__symbols);
+                // (<Value>)+ = Value => ActionFn(76);
+                let __sym0 = __pop_NtValue(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action76::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::Nt_28_3cValues_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cValue_3e_29_2b(__nt), __end));
                 8
             }
             15 => {
-                // (<Values>)+ = (<Values>)+, Values => ActionFn(77);
-                let __sym1 = __pop_NtValues(__symbols);
-                let __sym0 = __pop_Nt_28_3cValues_3e_29_2b(__symbols);
+                // (<Value>)+ = (<Value>)+, Value => ActionFn(77);
+                let __sym1 = __pop_NtValue(__symbols);
+                let __sym0 = __pop_Nt_28_3cValue_3e_29_2b(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym1.2.clone();
                 let __nt = super::__action77::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
-                __symbols.push((__start, __Symbol::Nt_28_3cValues_3e_29_2b(__nt), __end));
+                __symbols.push((__start, __Symbol::Nt_28_3cValue_3e_29_2b(__nt), __end));
                 8
             }
             16 => {
-                // Arguments = Name, ":", FieldType => ActionFn(98);
+                // Argument = Name, ":", FieldType => ActionFn(98);
                 let __sym2 = __pop_NtFieldType(__symbols);
                 let __sym1 = __pop_Term_22_3a_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
@@ -1381,11 +1381,11 @@ mod __parse__schema {
                 let __nt = super::__action98::<>(input, __sym0, __sym1, __sym2);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 3);
-                __symbols.push((__start, __Symbol::NtArguments(__nt), __end));
+                __symbols.push((__start, __Symbol::NtArgument(__nt), __end));
                 9
             }
             17 => {
-                // Arguments = Description+, Name, ":", FieldType => ActionFn(99);
+                // Argument = Description+, Name, ":", FieldType => ActionFn(99);
                 let __sym3 = __pop_NtFieldType(__symbols);
                 let __sym2 = __pop_Term_22_3a_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
@@ -1395,7 +1395,7 @@ mod __parse__schema {
                 let __nt = super::__action99::<>(input, __sym0, __sym1, __sym2, __sym3);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtArguments(__nt), __end));
+                __symbols.push((__start, __Symbol::NtArgument(__nt), __end));
                 9
             }
             18 => {
@@ -1586,86 +1586,7 @@ mod __parse__schema {
                 19
             }
             35 => {
-                // FieldType = Name, "!" => ActionFn(56);
-                let __sym1 = __pop_Term_22_21_22(__symbols);
-                let __sym0 = __pop_NtName(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym1.2.clone();
-                let __nt = super::__action56::<>(input, __sym0, __sym1);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 2);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            36 => {
-                // FieldType = Name => ActionFn(57);
-                let __sym0 = __pop_NtName(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym0.2.clone();
-                let __nt = super::__action57::<>(input, __sym0);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            37 => {
-                // FieldType = "[", Name, "!", "]", "!" => ActionFn(58);
-                let __sym4 = __pop_Term_22_21_22(__symbols);
-                let __sym3 = __pop_Term_22_5d_22(__symbols);
-                let __sym2 = __pop_Term_22_21_22(__symbols);
-                let __sym1 = __pop_NtName(__symbols);
-                let __sym0 = __pop_Term_22_5b_22(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym4.2.clone();
-                let __nt = super::__action58::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 5);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            38 => {
-                // FieldType = "[", Name, "!", "]" => ActionFn(59);
-                let __sym3 = __pop_Term_22_5d_22(__symbols);
-                let __sym2 = __pop_Term_22_21_22(__symbols);
-                let __sym1 = __pop_NtName(__symbols);
-                let __sym0 = __pop_Term_22_5b_22(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym3.2.clone();
-                let __nt = super::__action59::<>(input, __sym0, __sym1, __sym2, __sym3);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            39 => {
-                // FieldType = "[", Name, "]", "!" => ActionFn(60);
-                let __sym3 = __pop_Term_22_21_22(__symbols);
-                let __sym2 = __pop_Term_22_5d_22(__symbols);
-                let __sym1 = __pop_NtName(__symbols);
-                let __sym0 = __pop_Term_22_5b_22(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym3.2.clone();
-                let __nt = super::__action60::<>(input, __sym0, __sym1, __sym2, __sym3);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            40 => {
-                // FieldType = "[", Name, "]" => ActionFn(61);
-                let __sym2 = __pop_Term_22_5d_22(__symbols);
-                let __sym1 = __pop_NtName(__symbols);
-                let __sym0 = __pop_Term_22_5b_22(__symbols);
-                let __start = __sym0.0.clone();
-                let __end = __sym2.2.clone();
-                let __nt = super::__action61::<>(input, __sym0, __sym1, __sym2);
-                let __states_len = __states.len();
-                __states.truncate(__states_len - 3);
-                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
-                20
-            }
-            41 => {
-                // Fields = Name, ":", FieldType, Deprecated, DeprecatedReason => ActionFn(100);
+                // Field = Name, ":", FieldType, Deprecated, DeprecatedReason => ActionFn(100);
                 let __sym4 = __pop_NtDeprecatedReason(__symbols);
                 let __sym3 = __pop_NtDeprecated(__symbols);
                 let __sym2 = __pop_NtFieldType(__symbols);
@@ -1676,11 +1597,11 @@ mod __parse__schema {
                 let __nt = super::__action100::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 5);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            42 => {
-                // Fields = Description+, Name, ":", FieldType, Deprecated, DeprecatedReason => ActionFn(101);
+            36 => {
+                // Field = Description+, Name, ":", FieldType, Deprecated, DeprecatedReason => ActionFn(101);
                 let __sym5 = __pop_NtDeprecatedReason(__symbols);
                 let __sym4 = __pop_NtDeprecated(__symbols);
                 let __sym3 = __pop_NtFieldType(__symbols);
@@ -1692,11 +1613,11 @@ mod __parse__schema {
                 let __nt = super::__action101::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 6);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            43 => {
-                // Fields = Name, ":", FieldType, Deprecated => ActionFn(102);
+            37 => {
+                // Field = Name, ":", FieldType, Deprecated => ActionFn(102);
                 let __sym3 = __pop_NtDeprecated(__symbols);
                 let __sym2 = __pop_NtFieldType(__symbols);
                 let __sym1 = __pop_Term_22_3a_22(__symbols);
@@ -1706,11 +1627,11 @@ mod __parse__schema {
                 let __nt = super::__action102::<>(input, __sym0, __sym1, __sym2, __sym3);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            44 => {
-                // Fields = Description+, Name, ":", FieldType, Deprecated => ActionFn(103);
+            38 => {
+                // Field = Description+, Name, ":", FieldType, Deprecated => ActionFn(103);
                 let __sym4 = __pop_NtDeprecated(__symbols);
                 let __sym3 = __pop_NtFieldType(__symbols);
                 let __sym2 = __pop_Term_22_3a_22(__symbols);
@@ -1721,11 +1642,11 @@ mod __parse__schema {
                 let __nt = super::__action103::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 5);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            45 => {
-                // Fields = Name, ":", FieldType, DeprecatedReason => ActionFn(104);
+            39 => {
+                // Field = Name, ":", FieldType, DeprecatedReason => ActionFn(104);
                 let __sym3 = __pop_NtDeprecatedReason(__symbols);
                 let __sym2 = __pop_NtFieldType(__symbols);
                 let __sym1 = __pop_Term_22_3a_22(__symbols);
@@ -1735,11 +1656,11 @@ mod __parse__schema {
                 let __nt = super::__action104::<>(input, __sym0, __sym1, __sym2, __sym3);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            46 => {
-                // Fields = Description+, Name, ":", FieldType, DeprecatedReason => ActionFn(105);
+            40 => {
+                // Field = Description+, Name, ":", FieldType, DeprecatedReason => ActionFn(105);
                 let __sym4 = __pop_NtDeprecatedReason(__symbols);
                 let __sym3 = __pop_NtFieldType(__symbols);
                 let __sym2 = __pop_Term_22_3a_22(__symbols);
@@ -1750,11 +1671,11 @@ mod __parse__schema {
                 let __nt = super::__action105::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 5);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            47 => {
-                // Fields = Name, ":", FieldType => ActionFn(106);
+            41 => {
+                // Field = Name, ":", FieldType => ActionFn(106);
                 let __sym2 = __pop_NtFieldType(__symbols);
                 let __sym1 = __pop_Term_22_3a_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
@@ -1763,11 +1684,11 @@ mod __parse__schema {
                 let __nt = super::__action106::<>(input, __sym0, __sym1, __sym2);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 3);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            48 => {
-                // Fields = Description+, Name, ":", FieldType => ActionFn(107);
+            42 => {
+                // Field = Description+, Name, ":", FieldType => ActionFn(107);
                 let __sym3 = __pop_NtFieldType(__symbols);
                 let __sym2 = __pop_Term_22_3a_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
@@ -1777,11 +1698,11 @@ mod __parse__schema {
                 let __nt = super::__action107::<>(input, __sym0, __sym1, __sym2, __sym3);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 4);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            49 => {
-                // Fields = Name, "(", ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(108);
+            43 => {
+                // Field = Name, "(", ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(108);
                 let __sym6 = __pop_NtDeprecatedReason(__symbols);
                 let __sym5 = __pop_NtDeprecated(__symbols);
                 let __sym4 = __pop_NtFieldType(__symbols);
@@ -1794,11 +1715,11 @@ mod __parse__schema {
                 let __nt = super::__action108::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            50 => {
-                // Fields = Description+, Name, "(", ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(109);
+            44 => {
+                // Field = Description+, Name, "(", ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(109);
                 let __sym7 = __pop_NtDeprecatedReason(__symbols);
                 let __sym6 = __pop_NtDeprecated(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
@@ -1812,11 +1733,11 @@ mod __parse__schema {
                 let __nt = super::__action109::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 8);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            51 => {
-                // Fields = Name, "(", ")", ":", FieldType, Deprecated => ActionFn(110);
+            45 => {
+                // Field = Name, "(", ")", ":", FieldType, Deprecated => ActionFn(110);
                 let __sym5 = __pop_NtDeprecated(__symbols);
                 let __sym4 = __pop_NtFieldType(__symbols);
                 let __sym3 = __pop_Term_22_3a_22(__symbols);
@@ -1828,11 +1749,11 @@ mod __parse__schema {
                 let __nt = super::__action110::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 6);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            52 => {
-                // Fields = Description+, Name, "(", ")", ":", FieldType, Deprecated => ActionFn(111);
+            46 => {
+                // Field = Description+, Name, "(", ")", ":", FieldType, Deprecated => ActionFn(111);
                 let __sym6 = __pop_NtDeprecated(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
@@ -1845,11 +1766,11 @@ mod __parse__schema {
                 let __nt = super::__action111::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            53 => {
-                // Fields = Name, "(", ")", ":", FieldType, DeprecatedReason => ActionFn(112);
+            47 => {
+                // Field = Name, "(", ")", ":", FieldType, DeprecatedReason => ActionFn(112);
                 let __sym5 = __pop_NtDeprecatedReason(__symbols);
                 let __sym4 = __pop_NtFieldType(__symbols);
                 let __sym3 = __pop_Term_22_3a_22(__symbols);
@@ -1861,11 +1782,11 @@ mod __parse__schema {
                 let __nt = super::__action112::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 6);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            54 => {
-                // Fields = Description+, Name, "(", ")", ":", FieldType, DeprecatedReason => ActionFn(113);
+            48 => {
+                // Field = Description+, Name, "(", ")", ":", FieldType, DeprecatedReason => ActionFn(113);
                 let __sym6 = __pop_NtDeprecatedReason(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
@@ -1878,11 +1799,11 @@ mod __parse__schema {
                 let __nt = super::__action113::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            55 => {
-                // Fields = Name, "(", ")", ":", FieldType => ActionFn(114);
+            49 => {
+                // Field = Name, "(", ")", ":", FieldType => ActionFn(114);
                 let __sym4 = __pop_NtFieldType(__symbols);
                 let __sym3 = __pop_Term_22_3a_22(__symbols);
                 let __sym2 = __pop_Term_22_29_22(__symbols);
@@ -1893,11 +1814,11 @@ mod __parse__schema {
                 let __nt = super::__action114::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 5);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            56 => {
-                // Fields = Description+, Name, "(", ")", ":", FieldType => ActionFn(115);
+            50 => {
+                // Field = Description+, Name, "(", ")", ":", FieldType => ActionFn(115);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
                 let __sym3 = __pop_Term_22_29_22(__symbols);
@@ -1909,17 +1830,17 @@ mod __parse__schema {
                 let __nt = super::__action115::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 6);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            57 => {
-                // Fields = Name, "(", (<Arguments>)+, ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(116);
+            51 => {
+                // Field = Name, "(", (<Argument>)+, ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(116);
                 let __sym7 = __pop_NtDeprecatedReason(__symbols);
                 let __sym6 = __pop_NtDeprecated(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
                 let __sym3 = __pop_Term_22_29_22(__symbols);
-                let __sym2 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym2 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym1 = __pop_Term_22_28_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
                 let __start = __sym0.0.clone();
@@ -1927,17 +1848,17 @@ mod __parse__schema {
                 let __nt = super::__action116::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 8);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            58 => {
-                // Fields = Description+, Name, "(", (<Arguments>)+, ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(117);
+            52 => {
+                // Field = Description+, Name, "(", (<Argument>)+, ")", ":", FieldType, Deprecated, DeprecatedReason => ActionFn(117);
                 let __sym8 = __pop_NtDeprecatedReason(__symbols);
                 let __sym7 = __pop_NtDeprecated(__symbols);
                 let __sym6 = __pop_NtFieldType(__symbols);
                 let __sym5 = __pop_Term_22_3a_22(__symbols);
                 let __sym4 = __pop_Term_22_29_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_28_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtDescription_2b(__symbols);
@@ -1946,16 +1867,16 @@ mod __parse__schema {
                 let __nt = super::__action117::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7, __sym8);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 9);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            59 => {
-                // Fields = Name, "(", (<Arguments>)+, ")", ":", FieldType, Deprecated => ActionFn(118);
+            53 => {
+                // Field = Name, "(", (<Argument>)+, ")", ":", FieldType, Deprecated => ActionFn(118);
                 let __sym6 = __pop_NtDeprecated(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
                 let __sym3 = __pop_Term_22_29_22(__symbols);
-                let __sym2 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym2 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym1 = __pop_Term_22_28_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
                 let __start = __sym0.0.clone();
@@ -1963,16 +1884,16 @@ mod __parse__schema {
                 let __nt = super::__action118::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            60 => {
-                // Fields = Description+, Name, "(", (<Arguments>)+, ")", ":", FieldType, Deprecated => ActionFn(119);
+            54 => {
+                // Field = Description+, Name, "(", (<Argument>)+, ")", ":", FieldType, Deprecated => ActionFn(119);
                 let __sym7 = __pop_NtDeprecated(__symbols);
                 let __sym6 = __pop_NtFieldType(__symbols);
                 let __sym5 = __pop_Term_22_3a_22(__symbols);
                 let __sym4 = __pop_Term_22_29_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_28_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtDescription_2b(__symbols);
@@ -1981,16 +1902,16 @@ mod __parse__schema {
                 let __nt = super::__action119::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 8);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            61 => {
-                // Fields = Name, "(", (<Arguments>)+, ")", ":", FieldType, DeprecatedReason => ActionFn(120);
+            55 => {
+                // Field = Name, "(", (<Argument>)+, ")", ":", FieldType, DeprecatedReason => ActionFn(120);
                 let __sym6 = __pop_NtDeprecatedReason(__symbols);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
                 let __sym3 = __pop_Term_22_29_22(__symbols);
-                let __sym2 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym2 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym1 = __pop_Term_22_28_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
                 let __start = __sym0.0.clone();
@@ -1998,16 +1919,16 @@ mod __parse__schema {
                 let __nt = super::__action120::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            62 => {
-                // Fields = Description+, Name, "(", (<Arguments>)+, ")", ":", FieldType, DeprecatedReason => ActionFn(121);
+            56 => {
+                // Field = Description+, Name, "(", (<Argument>)+, ")", ":", FieldType, DeprecatedReason => ActionFn(121);
                 let __sym7 = __pop_NtDeprecatedReason(__symbols);
                 let __sym6 = __pop_NtFieldType(__symbols);
                 let __sym5 = __pop_Term_22_3a_22(__symbols);
                 let __sym4 = __pop_Term_22_29_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_28_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtDescription_2b(__symbols);
@@ -2016,15 +1937,15 @@ mod __parse__schema {
                 let __nt = super::__action121::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6, __sym7);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 8);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            63 => {
-                // Fields = Name, "(", (<Arguments>)+, ")", ":", FieldType => ActionFn(122);
+            57 => {
+                // Field = Name, "(", (<Argument>)+, ")", ":", FieldType => ActionFn(122);
                 let __sym5 = __pop_NtFieldType(__symbols);
                 let __sym4 = __pop_Term_22_3a_22(__symbols);
                 let __sym3 = __pop_Term_22_29_22(__symbols);
-                let __sym2 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym2 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym1 = __pop_Term_22_28_22(__symbols);
                 let __sym0 = __pop_NtName(__symbols);
                 let __start = __sym0.0.clone();
@@ -2032,15 +1953,15 @@ mod __parse__schema {
                 let __nt = super::__action122::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 6);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
-                21
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
             }
-            64 => {
-                // Fields = Description+, Name, "(", (<Arguments>)+, ")", ":", FieldType => ActionFn(123);
+            58 => {
+                // Field = Description+, Name, "(", (<Argument>)+, ")", ":", FieldType => ActionFn(123);
                 let __sym6 = __pop_NtFieldType(__symbols);
                 let __sym5 = __pop_Term_22_3a_22(__symbols);
                 let __sym4 = __pop_Term_22_29_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cArguments_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cArgument_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_28_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtDescription_2b(__symbols);
@@ -2049,7 +1970,86 @@ mod __parse__schema {
                 let __nt = super::__action123::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4, __sym5, __sym6);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 7);
-                __symbols.push((__start, __Symbol::NtFields(__nt), __end));
+                __symbols.push((__start, __Symbol::NtField(__nt), __end));
+                20
+            }
+            59 => {
+                // FieldType = Name, "!" => ActionFn(56);
+                let __sym1 = __pop_Term_22_21_22(__symbols);
+                let __sym0 = __pop_NtName(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym1.2.clone();
+                let __nt = super::__action56::<>(input, __sym0, __sym1);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 2);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
+                21
+            }
+            60 => {
+                // FieldType = Name => ActionFn(57);
+                let __sym0 = __pop_NtName(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym0.2.clone();
+                let __nt = super::__action57::<>(input, __sym0);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 1);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
+                21
+            }
+            61 => {
+                // FieldType = "[", Name, "!", "]", "!" => ActionFn(58);
+                let __sym4 = __pop_Term_22_21_22(__symbols);
+                let __sym3 = __pop_Term_22_5d_22(__symbols);
+                let __sym2 = __pop_Term_22_21_22(__symbols);
+                let __sym1 = __pop_NtName(__symbols);
+                let __sym0 = __pop_Term_22_5b_22(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym4.2.clone();
+                let __nt = super::__action58::<>(input, __sym0, __sym1, __sym2, __sym3, __sym4);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 5);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
+                21
+            }
+            62 => {
+                // FieldType = "[", Name, "!", "]" => ActionFn(59);
+                let __sym3 = __pop_Term_22_5d_22(__symbols);
+                let __sym2 = __pop_Term_22_21_22(__symbols);
+                let __sym1 = __pop_NtName(__symbols);
+                let __sym0 = __pop_Term_22_5b_22(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym3.2.clone();
+                let __nt = super::__action59::<>(input, __sym0, __sym1, __sym2, __sym3);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 4);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
+                21
+            }
+            63 => {
+                // FieldType = "[", Name, "]", "!" => ActionFn(60);
+                let __sym3 = __pop_Term_22_21_22(__symbols);
+                let __sym2 = __pop_Term_22_5d_22(__symbols);
+                let __sym1 = __pop_NtName(__symbols);
+                let __sym0 = __pop_Term_22_5b_22(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym3.2.clone();
+                let __nt = super::__action60::<>(input, __sym0, __sym1, __sym2, __sym3);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 4);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
+                21
+            }
+            64 => {
+                // FieldType = "[", Name, "]" => ActionFn(61);
+                let __sym2 = __pop_Term_22_5d_22(__symbols);
+                let __sym1 = __pop_NtName(__symbols);
+                let __sym0 = __pop_Term_22_5b_22(__symbols);
+                let __start = __sym0.0.clone();
+                let __end = __sym2.2.clone();
+                let __nt = super::__action61::<>(input, __sym0, __sym1, __sym2);
+                let __states_len = __states.len();
+                __states.truncate(__states_len - 3);
+                __symbols.push((__start, __Symbol::NtFieldType(__nt), __end));
                 21
             }
             65 => {
@@ -2107,9 +2107,9 @@ mod __parse__schema {
                 22
             }
             69 => {
-                // GraphQLType = "type", Name, "{", (<Fields>)+, "}" => ActionFn(128);
+                // GraphQLType = "type", Name, "{", (<Field>)+, "}" => ActionFn(128);
                 let __sym4 = __pop_Term_22_7d_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_7b_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_Term_22type_22(__symbols);
@@ -2122,9 +2122,9 @@ mod __parse__schema {
                 22
             }
             70 => {
-                // GraphQLType = Description+, "type", Name, "{", (<Fields>)+, "}" => ActionFn(129);
+                // GraphQLType = Description+, "type", Name, "{", (<Field>)+, "}" => ActionFn(129);
                 let __sym5 = __pop_Term_22_7d_22(__symbols);
-                let __sym4 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym4 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym3 = __pop_Term_22_7b_22(__symbols);
                 let __sym2 = __pop_NtName(__symbols);
                 let __sym1 = __pop_Term_22type_22(__symbols);
@@ -2171,9 +2171,9 @@ mod __parse__schema {
                 22
             }
             73 => {
-                // GraphQLType = "type", Name, "implements", Comma<Name>, "{", (<Fields>)+, "}" => ActionFn(132);
+                // GraphQLType = "type", Name, "implements", Comma<Name>, "{", (<Field>)+, "}" => ActionFn(132);
                 let __sym6 = __pop_Term_22_7d_22(__symbols);
-                let __sym5 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym5 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym4 = __pop_Term_22_7b_22(__symbols);
                 let __sym3 = __pop_NtComma_3cName_3e(__symbols);
                 let __sym2 = __pop_Term_22implements_22(__symbols);
@@ -2188,9 +2188,9 @@ mod __parse__schema {
                 22
             }
             74 => {
-                // GraphQLType = Description+, "type", Name, "implements", Comma<Name>, "{", (<Fields>)+, "}" => ActionFn(133);
+                // GraphQLType = Description+, "type", Name, "implements", Comma<Name>, "{", (<Field>)+, "}" => ActionFn(133);
                 let __sym7 = __pop_Term_22_7d_22(__symbols);
-                let __sym6 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym6 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym5 = __pop_Term_22_7b_22(__symbols);
                 let __sym4 = __pop_NtComma_3cName_3e(__symbols);
                 let __sym3 = __pop_Term_22implements_22(__symbols);
@@ -2206,9 +2206,9 @@ mod __parse__schema {
                 22
             }
             75 => {
-                // GraphQLType = "enum", Name, "{", (<Values>)+, "}" => ActionFn(134);
+                // GraphQLType = "enum", Name, "{", (<Value>)+, "}" => ActionFn(134);
                 let __sym4 = __pop_Term_22_7d_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cValues_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cValue_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_7b_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_Term_22enum_22(__symbols);
@@ -2221,9 +2221,9 @@ mod __parse__schema {
                 22
             }
             76 => {
-                // GraphQLType = Description+, "enum", Name, "{", (<Values>)+, "}" => ActionFn(135);
+                // GraphQLType = Description+, "enum", Name, "{", (<Value>)+, "}" => ActionFn(135);
                 let __sym5 = __pop_Term_22_7d_22(__symbols);
-                let __sym4 = __pop_Nt_28_3cValues_3e_29_2b(__symbols);
+                let __sym4 = __pop_Nt_28_3cValue_3e_29_2b(__symbols);
                 let __sym3 = __pop_Term_22_7b_22(__symbols);
                 let __sym2 = __pop_NtName(__symbols);
                 let __sym1 = __pop_Term_22enum_22(__symbols);
@@ -2266,9 +2266,9 @@ mod __parse__schema {
                 22
             }
             79 => {
-                // GraphQLType = "interface", Name, "{", (<Fields>)+, "}" => ActionFn(138);
+                // GraphQLType = "interface", Name, "{", (<Field>)+, "}" => ActionFn(138);
                 let __sym4 = __pop_Term_22_7d_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_7b_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_Term_22interface_22(__symbols);
@@ -2281,9 +2281,9 @@ mod __parse__schema {
                 22
             }
             80 => {
-                // GraphQLType = Description+, "interface", Name, "{", (<Fields>)+, "}" => ActionFn(139);
+                // GraphQLType = Description+, "interface", Name, "{", (<Field>)+, "}" => ActionFn(139);
                 let __sym5 = __pop_Term_22_7d_22(__symbols);
-                let __sym4 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym4 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym3 = __pop_Term_22_7b_22(__symbols);
                 let __sym2 = __pop_NtName(__symbols);
                 let __sym1 = __pop_Term_22interface_22(__symbols);
@@ -2355,9 +2355,9 @@ mod __parse__schema {
                 22
             }
             85 => {
-                // GraphQLType = "input", Name, "{", (<Fields>)+, "}" => ActionFn(144);
+                // GraphQLType = "input", Name, "{", (<Field>)+, "}" => ActionFn(144);
                 let __sym4 = __pop_Term_22_7d_22(__symbols);
-                let __sym3 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym3 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym2 = __pop_Term_22_7b_22(__symbols);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_Term_22input_22(__symbols);
@@ -2370,9 +2370,9 @@ mod __parse__schema {
                 22
             }
             86 => {
-                // GraphQLType = Description+, "input", Name, "{", (<Fields>)+, "}" => ActionFn(145);
+                // GraphQLType = Description+, "input", Name, "{", (<Field>)+, "}" => ActionFn(145);
                 let __sym5 = __pop_Term_22_7d_22(__symbols);
-                let __sym4 = __pop_Nt_28_3cFields_3e_29_2b(__symbols);
+                let __sym4 = __pop_Nt_28_3cField_3e_29_2b(__symbols);
                 let __sym3 = __pop_Term_22_7b_22(__symbols);
                 let __sym2 = __pop_NtName(__symbols);
                 let __sym1 = __pop_Term_22input_22(__symbols);
@@ -2507,18 +2507,18 @@ mod __parse__schema {
                 28
             }
             98 => {
-                // Values = Name => ActionFn(146);
+                // Value = Name => ActionFn(146);
                 let __sym0 = __pop_NtName(__symbols);
                 let __start = __sym0.0.clone();
                 let __end = __sym0.2.clone();
                 let __nt = super::__action146::<>(input, __sym0);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 1);
-                __symbols.push((__start, __Symbol::NtValues(__nt), __end));
+                __symbols.push((__start, __Symbol::NtValue(__nt), __end));
                 29
             }
             99 => {
-                // Values = Description+, Name => ActionFn(147);
+                // Value = Description+, Name => ActionFn(147);
                 let __sym1 = __pop_NtName(__symbols);
                 let __sym0 = __pop_NtDescription_2b(__symbols);
                 let __start = __sym0.0.clone();
@@ -2526,7 +2526,7 @@ mod __parse__schema {
                 let __nt = super::__action147::<>(input, __sym0, __sym1);
                 let __states_len = __states.len();
                 __states.truncate(__states_len - 2);
-                __symbols.push((__start, __Symbol::NtValues(__nt), __end));
+                __symbols.push((__start, __Symbol::NtValue(__nt), __end));
                 29
             }
             100 => {
@@ -2805,93 +2805,93 @@ mod __parse__schema {
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cArguments_3e_29<
+    fn __pop_Nt_28_3cArgument_3e_29<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, GraphQLArgument, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cArguments_3e_29(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cArgument_3e_29(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cArguments_3e_29_2a<
+    fn __pop_Nt_28_3cArgument_3e_29_2a<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<GraphQLArgument>, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cArguments_3e_29_2a(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cArgument_3e_29_2a(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cArguments_3e_29_2b<
+    fn __pop_Nt_28_3cArgument_3e_29_2b<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<GraphQLArgument>, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cArguments_3e_29_2b(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cArgument_3e_29_2b(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cFields_3e_29<
+    fn __pop_Nt_28_3cField_3e_29<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, GraphQLField, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cFields_3e_29(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cField_3e_29(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cFields_3e_29_2a<
+    fn __pop_Nt_28_3cField_3e_29_2a<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<GraphQLField>, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cFields_3e_29_2a(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cField_3e_29_2a(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cFields_3e_29_2b<
+    fn __pop_Nt_28_3cField_3e_29_2b<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<GraphQLField>, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cFields_3e_29_2b(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cField_3e_29_2b(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cValues_3e_29<
+    fn __pop_Nt_28_3cValue_3e_29<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, GraphQLValue, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cValues_3e_29(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cValue_3e_29(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_Nt_28_3cValues_3e_29_2b<
+    fn __pop_Nt_28_3cValue_3e_29_2b<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, ::std::vec::Vec<GraphQLValue>, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::Nt_28_3cValues_3e_29_2b(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::Nt_28_3cValue_3e_29_2b(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_NtArguments<
+    fn __pop_NtArgument<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, GraphQLArgument, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::NtArguments(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::NtArgument(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -2995,6 +2995,16 @@ mod __parse__schema {
             _ => panic!("symbol type mismatch")
         }
     }
+    fn __pop_NtField<
+      'input,
+    >(
+        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
+    ) -> (usize, GraphQLField, usize) {
+        match __symbols.pop().unwrap() {
+            (__l, __Symbol::NtField(__v), __r) => (__l, __v, __r),
+            _ => panic!("symbol type mismatch")
+        }
+    }
     fn __pop_NtFieldType<
       'input,
     >(
@@ -3002,16 +3012,6 @@ mod __parse__schema {
     ) -> (usize, FieldType, usize) {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::NtFieldType(__v), __r) => (__l, __v, __r),
-            _ => panic!("symbol type mismatch")
-        }
-    }
-    fn __pop_NtFields<
-      'input,
-    >(
-        __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, GraphQLField, usize) {
-        match __symbols.pop().unwrap() {
-            (__l, __Symbol::NtFields(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
@@ -3085,13 +3085,13 @@ mod __parse__schema {
             _ => panic!("symbol type mismatch")
         }
     }
-    fn __pop_NtValues<
+    fn __pop_NtValue<
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
     ) -> (usize, GraphQLValue, usize) {
         match __symbols.pop().unwrap() {
-            (__l, __Symbol::NtValues(__v), __r) => (__l, __v, __r),
+            (__l, __Symbol::NtValue(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
         }
     }
