@@ -4,6 +4,7 @@ use std::io::Read;
 use gqlidl;
 
 #[test]
+#[allow(unused)]
 fn sanity_check() {
     let mut file = File::open("test/file.graphql").expect("Unable to open file");
     let mut contents = String::new();
@@ -263,7 +264,7 @@ fn type_with_multiline_field_description() {
     }
     ").unwrap().pop().unwrap();
 
-    let mut field = def.fields().unwrap().remove(0);
+    let field = def.fields().unwrap().remove(0);
 
     assert_eq!("Identifies the recency of the change, from 1 (new) to 10 (old). This is calculated as a 2-quantile and determines the length of distance between the median age of all the changes in the file and the recency of the current range's change.", field.description().unwrap());
     assert_eq!("age", field.name());
