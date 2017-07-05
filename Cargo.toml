@@ -15,4 +15,5 @@ lalrpop = "0.13.0"
 
 [dependencies]
 lalrpop-util = "0.13.0"
+libc = "*"
 regex = "0.2.1"
