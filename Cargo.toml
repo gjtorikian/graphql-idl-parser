@@ -7,6 +7,9 @@ description = "A GraphQL IDL parser"
 license = "MIT"
 repository = "https://github.com/gjtorikian/graphql-idl-parser"
 
+[lib]
+crate-type = ["cdylib"]
+
 [build-dependencies]
 lalrpop = "0.13.0"
 
