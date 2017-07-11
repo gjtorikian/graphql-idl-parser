@@ -30,14 +30,14 @@ GraphQLType: GraphQLType = {
 };
 
 Field: GraphQLField = {
-    <d:Description*> <n:Name> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+    <d:Description*> <n:FieldName> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
                           Some(e) => true
                       };
         GraphQLField::new(d, n, t, vec![], deprecated, r)
     },
-    <d:Description*> <n:Name> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+    <d:Description*> <n:FieldName> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         let deprecated = match e {
                           None => false,
                           Some(e) => true
@@ -80,7 +80,7 @@ FieldType: FieldType = {
 };
 
 Argument: GraphQLArgument = {
-    <d:Description*> <n:Name> ":" <t:FieldType> => {
+    <d:Description*> <n:FieldName> ":" <t:FieldType> => {
       GraphQLArgument::new(d, n, t)
     }
 };
@@ -122,4 +122,14 @@ Pipe1<T>: Vec<T> = {
 };
 
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
+FieldName: String = {
+    r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),
+    "scalar"  => "scalar".to_owned(),
+    "type"  => "type".to_owned(),
+    "enum"  => "enum".to_owned(),
+    "interface"  => "interface".to_owned(),
+    "union"  => "union".to_owned(),
+    "input"  => "input".to_owned(),
+};
+
 Description: String = <s:r"#\s*.+"> => s[1..s.len()].trim().to_owned();

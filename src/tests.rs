@@ -373,3 +373,24 @@ fn input_object_with_descriptions() {
     assert_eq!("String", field.typeinfo().name());
     assert_eq!("[!]!", field.typeinfo().info());
 }
+
+#[test]
+fn input_object_with_special_field_name() {
+    let def = gqlidl::parse_schema("
+    input RequestReviewsInput {
+      # Add users to the set rather than replace.
+      union: Boolean
+    }
+    ").unwrap().pop().unwrap();
+
+    assert_eq!(None, def.description());
+    assert_eq!("input_object", def.typename());
+    assert_eq!("RequestReviewsInput", def.name());
+
+    let field = def.fields().unwrap().remove(0);
+
+    assert_eq!("Add users to the set rather than replace.", field.description().unwrap());
+    assert_eq!("union", field.name());
+    assert_eq!("Boolean", field.typeinfo().name());
+    assert_eq!("", field.typeinfo().info());
+}
