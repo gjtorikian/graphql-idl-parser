@@ -4,7 +4,11 @@ set -ex
 
 test_dir=$(pwd)/test
 
-cd graphql-idl-parser-ffi/test
+cd graphql-idl-parser-ffi
+
+cargo build
+
+cd test
 
 python generate.py .
 
