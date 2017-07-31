@@ -14,5 +14,4 @@ graphql-idl-parser = { path = "../" }
 libc = "^0.2"
 
 [workspace]
-
 exclude = ["example"]
