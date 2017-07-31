@@ -1,2 +1,6 @@
 target
 Cargo.lock
+graphql-idl-parser-ffi/example/main
+graphql-idl-parser-ffi/test/.clarcache
+graphql-idl-parser-ffi/test/clar.suite
+graphql-idl-parser-ffi/test/gql-idl-parser-test

@@ -1,0 +1,18 @@
+[package]
+name = "graphql-idl-parser-ffi"
+version = "0.0.1"
+repository = "https://github.com/gjtorikian/graphql-idl-parser"
+license = "MIT"
+authors = ["Garen Torikian <gjtorikian@gmail.com>"]
+
+[lib]
+name = "graphqlidlparser"
+crate_type = ["dylib"]
+
+[dependencies]
+graphql-idl-parser = { path = "../" }
+libc = "^0.2"
+
+[workspace]
+
+exclude = ["example"]

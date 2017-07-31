@@ -1,0 +1,4 @@
+scalar DateTime
+
+# An ISO-8601 encoded UTC date string.
+scalar DateTime

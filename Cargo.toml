@@ -6,14 +6,12 @@ build = "build.rs"
 description = "A GraphQL IDL parser"
 license = "MIT"
 repository = "https://github.com/gjtorikian/graphql-idl-parser"
-
-[lib]
-crate-type = ["cdylib"]
+categories = ["text-processing"]
 
 [build-dependencies]
 lalrpop = "0.13.0"
 
 [dependencies]
 lalrpop-util = "0.13.0"
-libc = "*"
+libc = "^0.2"
 regex = "0.2.1"

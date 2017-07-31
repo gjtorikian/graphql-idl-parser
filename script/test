@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -ex
+
+test_dir=$(pwd)/test
+
+cd graphql-idl-parser-ffi/test
+
+python generate.py .
+
+gcc -I. clar.c main.c helpers.c basic.c -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
+
+./gql-idl-parser-test
+
+valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./gql-idl-parser-test  >/dev/null
