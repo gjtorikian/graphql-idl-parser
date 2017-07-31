@@ -44,8 +44,8 @@ mod __parse__schema {
         NtComma1_3cName_3e(Vec<String>),
         NtComma1_3cName_3e_3f(::std::option::Option<Vec<String>>),
         NtComma_3cName_3e(Vec<String>),
-        NtDeprecated(String),
-        NtDeprecated_3f(::std::option::Option<String>),
+        NtDeprecated(bool),
+        NtDeprecated_3f(::std::option::Option<bool>),
         NtDeprecatedReason(String),
         NtDeprecatedReason_3f(::std::option::Option<String>),
         NtDescription(String),
@@ -3082,7 +3082,7 @@ mod __parse__schema {
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, String, usize) {
+    ) -> (usize, bool, usize) {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::NtDeprecated(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
@@ -3092,7 +3092,7 @@ mod __parse__schema {
       'input,
     >(
         __symbols: &mut ::std::vec::Vec<(usize,__Symbol<'input>,usize)>
-    ) -> (usize, ::std::option::Option<String>, usize) {
+    ) -> (usize, ::std::option::Option<bool>, usize) {
         match __symbols.pop().unwrap() {
             (__l, __Symbol::NtDeprecated_3f(__v), __r) => (__l, __v, __r),
             _ => panic!("symbol type mismatch")
@@ -3427,7 +3427,7 @@ pub fn __action2<
 ) -> GraphQLType
 {
     {
-        GraphQLType::ScalarType(GraphQLScalar::new(d, n))
+        GraphQLType::ScalarType(GraphQLScalar::new(check_desc(d), n))
     }
 }
 
@@ -3445,7 +3445,7 @@ pub fn __action3<
 ) -> GraphQLType
 {
     {
-        GraphQLType::ObjectType(GraphQLObject::new(d, n, vec![], f))
+        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
     }
 }
 
@@ -3465,7 +3465,7 @@ pub fn __action4<
 ) -> GraphQLType
 {
     {
-        GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
+        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
     }
 }
 
@@ -3483,7 +3483,7 @@ pub fn __action5<
 ) -> GraphQLType
 {
     {
-        GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
+        GraphQLType::EnumType(GraphQLEnum::new(check_desc(d), n, f))
     }
 }
 
@@ -3501,7 +3501,7 @@ pub fn __action6<
 ) -> GraphQLType
 {
     {
-        GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
+        GraphQLType::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
     }
 }
 
@@ -3518,7 +3518,7 @@ pub fn __action7<
 ) -> GraphQLType
 {
     {
-        GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
+        GraphQLType::UnionType(GraphQLUnion::new(check_desc(d), n, t))
     }
 }
 
@@ -3536,7 +3536,7 @@ pub fn __action8<
 ) -> GraphQLType
 {
     {
-        GraphQLType::InputObjectType(GraphQLInputObject::new(d, n, f))
+        GraphQLType::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
     }
 }
 
@@ -3549,16 +3549,12 @@ pub fn __action9<
     (_, n, _): (usize, String, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, t, _): (usize, FieldType, usize),
-    (_, e, _): (usize, ::std::option::Option<String>, usize),
+    (_, e, _): (usize, ::std::option::Option<bool>, usize),
     (_, r, _): (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
     {
-        let deprecated = match e {
-                          None => false,
-                          Some(e) => true
-                      };
-        GraphQLField::new(d, n, t, vec![], deprecated, r)
+        GraphQLField::new(check_desc(d), n, t, vec![], check_deprecated(e), r)
     }
 }
 
@@ -3574,16 +3570,12 @@ pub fn __action10<
     (_, _, _): (usize, &'input str, usize),
     (_, _, _): (usize, &'input str, usize),
     (_, t, _): (usize, FieldType, usize),
-    (_, e, _): (usize, ::std::option::Option<String>, usize),
+    (_, e, _): (usize, ::std::option::Option<bool>, usize),
     (_, r, _): (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
     {
-        let deprecated = match e {
-                          None => false,
-                          Some(e) => true
-                      };
-        GraphQLField::new(d, n, t, a, deprecated, r)
+        GraphQLField::new(check_desc(d), n, t, a, check_deprecated(e), r)
     }
 }
 
@@ -3597,7 +3589,7 @@ pub fn __action11<
 ) -> GraphQLValue
 {
     {
-        GraphQLValue::new(d, n)
+        GraphQLValue::new(check_desc(d), n)
     }
 }
 
@@ -3662,7 +3654,7 @@ pub fn __action14<
 ) -> GraphQLArgument
 {
     {
-      GraphQLArgument::new(d, n, t)
+      GraphQLArgument::new(check_desc(d), n, t)
     }
 }
 
@@ -3672,9 +3664,9 @@ pub fn __action15<
 >(
     input: &'input str,
     (_, __0, _): (usize, &'input str, usize),
-) -> String
+) -> bool
 {
-    __0.to_string()
+    true
 }
 
 #[allow(unused_variables)]
@@ -3876,8 +3868,8 @@ pub fn __action33<
     'input,
 >(
     input: &'input str,
-    (_, __0, _): (usize, String, usize),
-) -> ::std::option::Option<String>
+    (_, __0, _): (usize, bool, usize),
+) -> ::std::option::Option<bool>
 {
     Some(__0)
 }
@@ -3889,7 +3881,7 @@ pub fn __action34<
     input: &'input str,
     __lookbehind: &usize,
     __lookahead: &usize,
-) -> ::std::option::Option<String>
+) -> ::std::option::Option<bool>
 {
     None
 }
@@ -4469,7 +4461,7 @@ pub fn __action71<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, ::std::option::Option<String>, usize),
+    __6: (usize, ::std::option::Option<bool>, usize),
     __7: (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
@@ -4507,7 +4499,7 @@ pub fn __action72<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, ::std::option::Option<String>, usize),
+    __7: (usize, ::std::option::Option<bool>, usize),
     __8: (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
@@ -4929,7 +4921,7 @@ pub fn __action87<
     __1: (usize, String, usize),
     __2: (usize, &'input str, usize),
     __3: (usize, FieldType, usize),
-    __4: (usize, String, usize),
+    __4: (usize, bool, usize),
     __5: (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
@@ -4993,7 +4985,7 @@ pub fn __action89<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
     __7: (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
@@ -5064,7 +5056,7 @@ pub fn __action91<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, String, usize),
+    __7: (usize, bool, usize),
     __8: (usize, ::std::option::Option<String>, usize),
 ) -> GraphQLField
 {
@@ -5135,7 +5127,7 @@ pub fn __action93<
     __1: (usize, String, usize),
     __2: (usize, &'input str, usize),
     __3: (usize, FieldType, usize),
-    __4: (usize, String, usize),
+    __4: (usize, bool, usize),
     __5: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5166,7 +5158,7 @@ pub fn __action94<
     __1: (usize, String, usize),
     __2: (usize, &'input str, usize),
     __3: (usize, FieldType, usize),
-    __4: (usize, String, usize),
+    __4: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __4.2.clone();
@@ -5257,7 +5249,7 @@ pub fn __action97<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
     __7: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5292,7 +5284,7 @@ pub fn __action98<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __6.2.clone();
@@ -5394,7 +5386,7 @@ pub fn __action101<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, String, usize),
+    __7: (usize, bool, usize),
     __8: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5431,7 +5423,7 @@ pub fn __action102<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, String, usize),
+    __7: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __7.2.clone();
@@ -5588,7 +5580,7 @@ pub fn __action107<
     __0: (usize, String, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, FieldType, usize),
-    __3: (usize, String, usize),
+    __3: (usize, bool, usize),
     __4: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5620,7 +5612,7 @@ pub fn __action108<
     __1: (usize, String, usize),
     __2: (usize, &'input str, usize),
     __3: (usize, FieldType, usize),
-    __4: (usize, String, usize),
+    __4: (usize, bool, usize),
     __5: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5650,7 +5642,7 @@ pub fn __action109<
     __0: (usize, String, usize),
     __1: (usize, &'input str, usize),
     __2: (usize, FieldType, usize),
-    __3: (usize, String, usize),
+    __3: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();
@@ -5680,7 +5672,7 @@ pub fn __action110<
     __1: (usize, String, usize),
     __2: (usize, &'input str, usize),
     __3: (usize, FieldType, usize),
-    __4: (usize, String, usize),
+    __4: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();
@@ -5822,7 +5814,7 @@ pub fn __action115<
     __2: (usize, &'input str, usize),
     __3: (usize, &'input str, usize),
     __4: (usize, FieldType, usize),
-    __5: (usize, String, usize),
+    __5: (usize, bool, usize),
     __6: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5858,7 +5850,7 @@ pub fn __action116<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
     __7: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -5892,7 +5884,7 @@ pub fn __action117<
     __2: (usize, &'input str, usize),
     __3: (usize, &'input str, usize),
     __4: (usize, FieldType, usize),
-    __5: (usize, String, usize),
+    __5: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();
@@ -5926,7 +5918,7 @@ pub fn __action118<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();
@@ -6087,7 +6079,7 @@ pub fn __action123<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
     __7: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -6125,7 +6117,7 @@ pub fn __action124<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, String, usize),
+    __7: (usize, bool, usize),
     __8: (usize, String, usize),
 ) -> GraphQLField
 {
@@ -6161,7 +6153,7 @@ pub fn __action125<
     __3: (usize, &'input str, usize),
     __4: (usize, &'input str, usize),
     __5: (usize, FieldType, usize),
-    __6: (usize, String, usize),
+    __6: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();
@@ -6197,7 +6189,7 @@ pub fn __action126<
     __4: (usize, &'input str, usize),
     __5: (usize, &'input str, usize),
     __6: (usize, FieldType, usize),
-    __7: (usize, String, usize),
+    __7: (usize, bool, usize),
 ) -> GraphQLField
 {
     let __start0 = __0.0.clone();

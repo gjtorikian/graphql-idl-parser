@@ -7,48 +7,40 @@ pub schema: Vec<GraphQLType> =
 
 GraphQLType: GraphQLType = {
     <d:Description*> "scalar" <n:Name> => {
-        GraphQLType::ScalarType(GraphQLScalar::new(d, n))
+        GraphQLType::ScalarType(GraphQLScalar::new(check_desc(d), n))
     },
     <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::ObjectType(GraphQLObject::new(d, n, vec![], f))
+        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
     },
     <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::ObjectType(GraphQLObject::new(d, n, i, f))
+        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
     },
     <d:Description*> "enum" <n:Name> "{" <f:(<Value>)+> "}" => {
-        GraphQLType::EnumType(GraphQLEnum::new(d, n, f))
+        GraphQLType::EnumType(GraphQLEnum::new(check_desc(d), n, f))
     },
     <d:Description*> "interface" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::InterfaceType(GraphQLInterface::new(d, n, f))
+        GraphQLType::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
     },
     <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        GraphQLType::UnionType(GraphQLUnion::new(d, n, t))
+        GraphQLType::UnionType(GraphQLUnion::new(check_desc(d), n, t))
     },
     <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::InputObjectType(GraphQLInputObject::new(d, n, f))
+        GraphQLType::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
     },
 };
 
 Field: GraphQLField = {
     <d:Description*> <n:FieldName> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        let deprecated = match e {
-                          None => false,
-                          Some(e) => true
-                      };
-        GraphQLField::new(d, n, t, vec![], deprecated, r)
+        GraphQLField::new(check_desc(d), n, t, vec![], check_deprecated(e), r)
     },
     <d:Description*> <n:FieldName> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        let deprecated = match e {
-                          None => false,
-                          Some(e) => true
-                      };
-        GraphQLField::new(d, n, t, a, deprecated, r)
+        GraphQLField::new(check_desc(d), n, t, a, check_deprecated(e), r)
     },
 };
 
 Value: GraphQLValue = {
     <d:Description*> <n:Name> => {
-        GraphQLValue::new(d, n)
+        GraphQLValue::new(check_desc(d), n)
     }
 };
 
@@ -81,12 +73,12 @@ FieldType: FieldType = {
 
 Argument: GraphQLArgument = {
     <d:Description*> <n:FieldName> ":" <t:FieldType> => {
-      GraphQLArgument::new(d, n, t)
+      GraphQLArgument::new(check_desc(d), n, t)
     }
 };
 
-Deprecated: String = {
-    "@deprecated" => <>.to_string()
+Deprecated: bool = {
+    "@deprecated" => true
 };
 
 DeprecatedReason: String = {

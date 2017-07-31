@@ -30,6 +30,16 @@ fn scalar_with_description() {
     assert_eq!("DateTime", def.name());
 }
 
+
+#[test]
+fn scalar_with_tricky_description() {
+    let def = gqlidl::parse_schema("# An ISO-8601 encoded UTC, scalar, date string.\nscalar DateTime").unwrap().pop().unwrap();
+
+    assert_eq!("An ISO-8601 encoded UTC, scalar, date string.", def.description().unwrap());
+    assert_eq!("scalar", def.typename());
+    assert_eq!("DateTime", def.name());
+}
+
 #[test]
 fn type_no_description() {
     let def = gqlidl::parse_schema("type CodeOfConduct {}").unwrap().pop().unwrap();
