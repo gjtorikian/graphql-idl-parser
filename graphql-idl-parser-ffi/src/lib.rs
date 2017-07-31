@@ -20,38 +20,32 @@ pub struct Scalar {
 
 #[no_mangle]
 #[allow(unused)]
-pub extern fn gqlidl_parse_schema(s: *const c_char, types: *mut *mut Scalar, types_len: *mut size_t) -> u8 {
-    let c_str = unsafe {
-        assert!(!s.is_null());
-
-        CStr::from_ptr(s)
+pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut Scalar, types_len: *mut size_t) -> u8 {
+    // Convert C string to Rust string
+    let c_schema = unsafe {
+        assert!(!schema.is_null());
+        CStr::from_ptr(schema)
     };
+    let r_schema = c_schema.to_str().unwrap();
 
-    let filename = c_str.to_str().unwrap();
-
-    let mut file = File::open(filename).expect("Unable to open file");
-    let mut contents = String::new();
-    file.read_to_string(&mut contents);
-    match graphql_idl_parser::gqlidl::parse_schema(contents.as_str()) {
+    match graphql_idl_parser::gqlidl::parse_schema(r_schema) {
         Ok(vec) => {
             let mut tmp_vec: Vec<Scalar> = vec.into_iter().map(|mut v| {
                 // v.shrink_to_fit();
-                let d = match v.description() {
-                    Some(desc) => vec![desc],
-                    None       => Vec::new()
-                };
 
                 let s = Scalar {
-                    description: CString::new(d.join(" ")).unwrap().into_raw(),
+                    description: match v.description() {
+                        Some(d) => CString::new(v.description().unwrap()).unwrap().into_raw(),
+                        None => CString::new("").unwrap().into_raw()
+                    },
                     name: CString::new(v.name()).unwrap().into_raw()
                 };
                 mem::forget(v);
                 s
             }).collect();
-            // tmp_vec.shrink_to_fit();
+            tmp_vec.shrink_to_fit();
             assert!(tmp_vec.len() == tmp_vec.capacity());
 
-            // println!("WOW: {}", tmp_vec[0].name.into_string.unwrap());
             // Return number of types
             unsafe { *types_len = tmp_vec.len() as size_t; }
 

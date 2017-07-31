@@ -4,5 +4,7 @@ set -ex
 
 cd graphql-idl-parser-ffi
 
-cargo build --manifest-path ../Cargo.toml
-gcc -O3 -DDEBUG -o example/main example/main.c -ansi -Wall -I../include -Ltarget/debug -lgraphqlidlparser
+cargo build
+gcc -O3 -DDEBUG -o example/example example/example.c -ansi -Wall -I../include -Ltarget/debug -lgraphqlidlparser
+
+./example/example
