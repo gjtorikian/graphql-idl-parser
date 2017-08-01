@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct GraphQLScalar {
+  const char* typename;
   const char* description;
   const char* name;
 } GraphQLScalar;
@@ -15,7 +17,7 @@ int main() {
   size_t types_len = 0;
   uint8_t err;
 
-  err = gqlidl_parse_schema("# Meow meow \n scalar DateTime", &types, &types_len);
+  err = gqlidl_parse_schema("scalar DateTime", &types, &types_len);
 
   if (err > 0) {
     printf("Error: Return code %d", err);
@@ -23,8 +25,12 @@ int main() {
   }
 
   for (size_t i = 0; i < types_len; i++) {
+    printf("typename: %s\n", types[i].typename);
     printf("desc: %s\n", types[i].description);
     printf("name: %s\n", types[i].name);
+    if (strncmp(types[i].typename, "scalar", 6) == 0) {
+      printf("wahoo!");
+    }
   }
 
   return err;
