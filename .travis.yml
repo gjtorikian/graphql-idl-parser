@@ -6,6 +6,7 @@ git:
 script:
   - cargo build --verbose
   - cargo test --verbose
+  - script/test
 rust:
   - nightly
   - beta
