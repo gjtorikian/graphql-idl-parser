@@ -5,6 +5,6 @@ set -ex
 cd graphql-idl-parser-ffi
 
 cargo build
-gcc -O3 -DDEBUG -o example/example example/example.c -ansi -Wall -I../include -Ltarget/debug -lgraphqlidlparser
+gcc -O3 -DDEBUG -o example/example example/example.c -ansi -Wall -Iinclude -Ltarget/debug -lgraphqlidlparser
 
 ./example/example

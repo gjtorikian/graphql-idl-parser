@@ -1,0 +1,8 @@
+type CodeOfConduct {}
+
+# The Code of Conduct for a repository
+type CodeOfConduct {}
+
+type PushAllowance implements Node {}
+
+type Release implements Node, UniformResourceLocatable {}

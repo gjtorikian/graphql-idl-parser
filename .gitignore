@@ -4,3 +4,4 @@ graphql-idl-parser-ffi/example/example
 graphql-idl-parser-ffi/test/.clarcache
 graphql-idl-parser-ffi/test/clar.suite
 graphql-idl-parser-ffi/test/gql-idl-parser-test
+graphql-idl-parser-ffi/test/gql-idl-parser-test.dSYM/

@@ -1,17 +1,13 @@
-#![crate_type = "dylib"]
 extern crate libc;
 extern crate graphql_idl_parser;
 
-// use graphql_idl_parser::ast::{GraphQLScalar};
-
 use libc::{c_char, size_t};
 use std::ffi::CString;
-use std::fs::File;
-use std::io::Read;
 use std::ffi::CStr;
 use std::mem;
+use std::io::{self, Write};
 
-#[derive(Debug)]
+#[derive(Copy, Debug)]
 #[repr(C)]
 pub struct Scalar {
     typename: *const c_char,
@@ -19,23 +15,44 @@ pub struct Scalar {
     name: *const c_char,
 }
 
-#[derive(Debug)]
-#[repr(C)]
-pub struct Object {
-    description: *const c_char,
-    name: *const c_char,
-    implements: Vec<*const c_char>,
+impl Clone for Scalar {
+    fn clone(&self) -> Scalar { *self }
 }
 
-pub enum GraphQLType {
-    ScalarType(Scalar),
-    // ObjectType(Object),
+#[derive(Copy, Debug)]
+#[repr(C)]
+pub struct Object {
+    typename: *const c_char,
+    description: *const c_char,
+    name: *const c_char,
+    // implements: Vec<*const c_char>,
+}
+
+impl Clone for Object {
+    fn clone(&self) -> Object { *self }
+}
+
+pub union GraphQLType {
+    scalar: Scalar,
+    object: Object,
 }
 
 impl Scalar {
     pub fn new(typename: &str, description: Option<&str>, name: &str) -> Scalar {
-
       Scalar {
+          typename: CString::new(typename).unwrap().into_raw(),
+          description: match description {
+              Some(d) => CString::new(d).unwrap().into_raw(),
+              None => CString::new("").unwrap().into_raw()
+          },
+          name: CString::new(name).unwrap().into_raw(),
+      }
+    }
+}
+
+impl Object {
+    pub fn new(typename: &str, description: Option<&str>, name: &str) -> Object {
+      Object {
           typename: CString::new(typename).unwrap().into_raw(),
           description: match description {
               Some(d) => CString::new(d).unwrap().into_raw(),
@@ -63,11 +80,20 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
 
                 let s = match v.typename() {
                     "scalar" => {
-                        return GraphQLType::ScalarType(Scalar::new(
+                        let x = Scalar::new(
                             v.typename(),
                             v.description(),
-                            v.name())
+                            v.name()
                         );
+                        return GraphQLType { scalar: x };
+                    },
+                    "object" => {
+                        let x = Object::new(
+                            v.typename(),
+                            v.description(),
+                            v.name()
+                        );
+                        return GraphQLType { object: x };
                     },
                     _ => panic!("Unknown typename: {}", v.typename())
                 };
@@ -77,8 +103,6 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
             }).collect();
             tmp_vec.shrink_to_fit();
             assert!(tmp_vec.len() == tmp_vec.capacity());
-
-            // println!("WOW: {}", tmp_vec[0].name.into_string.unwrap());
 
             // Return number of types
             unsafe { *types_len = tmp_vec.len() as size_t; }
@@ -91,7 +115,10 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
 
             0
         },
-        Err(_) => 1
+        Err(err) => {
+            writeln!(io::stderr(), "Catastrophic error: {:?}", err).unwrap();
+            1
+        }
     }
 }
 

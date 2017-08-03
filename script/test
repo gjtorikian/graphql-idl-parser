@@ -10,10 +10,12 @@ cargo build
 
 cd test
 
+rm .clarcache
+
 python generate.py .
 
-gcc -I. clar.c main.c helpers.c basic.c -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
+gcc -I. -I../include clar.c main.c helpers.c scalars.c objects.c -L../target/debug -lgraphqlidlparser -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
 
 ./gql-idl-parser-test
 
-valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./gql-idl-parser-test  >/dev/null
+# valgrind --leak-check=full --dsymutil=yes --error-exitcode=1 ./gql-idl-parser-test  >/dev/null
