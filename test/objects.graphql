@@ -6,3 +6,12 @@ type CodeOfConduct {}
 type PushAllowance implements Node {}
 
 type Release implements Node, UniformResourceLocatable {}
+
+# The Code of Conduct for a repository
+type CodeOfConduct { body: String }
+
+# The Code of Conduct for a repository
+type CodeOfConduct {
+  # The body of the CoC
+  body: String
+}

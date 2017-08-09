@@ -281,7 +281,7 @@ macro_rules! impl_graphql_meta_methods {
     ($($type_: ty),*) => {
       $(
         impl $type_ {
-            pub fn description(&self) -> Option<&String> { self.description.as_ref() }
+            pub fn description(&self) -> Option<&str> { self.description.as_ref().map(|s| s.as_ref()) }
 
             pub fn name(&self) -> &str { self.name.as_ref() }
         }

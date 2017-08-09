@@ -1,19 +1,35 @@
 #include <stdint.h>
-
-typedef struct GraphQLScalar {
-  const char* description;
-  const char* name;
-} GraphQLScalar;
+#include <stdbool.h>
 
 typedef struct array_of_strings {
   int32_t length;
   const char** values;
 } array_and_size;
 
-typedef struct GraphQLObject {
-  const char* description;
+typedef struct GraphQLField {
   const char* name;
+  const char* description;
+  // typeinfo: FieldType,
+  // arguments: Vec<GraphQLArgument>,
+  bool deprecated;
+  const char* deprecation_reason;
+} GraphQLField;
+
+typedef struct array_of_fields {
+  int32_t length;
+  const GraphQLField* values;
+} array_of_fields;
+
+typedef struct GraphQLScalar {
+  const char* name;
+  const char* description;
+} GraphQLScalar;
+
+typedef struct GraphQLObject {
+  const char* name;
+  const char* description;
   struct array_of_strings implements;
+  struct array_of_fields fields;
 } GraphQLObject;
 
 typedef struct GraphQLTypes {

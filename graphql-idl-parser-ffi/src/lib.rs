@@ -1,6 +1,8 @@
 extern crate libc;
 extern crate graphql_idl_parser;
 
+use graphql_idl_parser::ast::GraphQLField;
+
 use libc::{c_char, size_t, int32_t, int64_t, c_void};
 use std::ffi::CString;
 use std::ffi::CStr;
@@ -11,12 +13,53 @@ use std::io::{self, Write};
 #[repr(C)]
 pub struct Scalar {
     typename: *const c_char,
-    description: *const c_char,
     name: *const c_char,
+    description: *const c_char,
 }
 
 impl Clone for Scalar {
     fn clone(&self) -> Scalar { *self }
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct Field {
+    name: *const c_char,
+    description: *const c_char,
+    deprecated: bool,
+    deprecation_reason: *const c_char,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct ArrayOfFields {
+    length: int32_t,
+    values: *const *const c_void
+}
+
+impl ArrayOfFields {
+    fn from_vec(vec: Vec<GraphQLField>) -> ArrayOfFields {
+        let mut field_vec: Vec<Field> = vec![];
+        for v in vec {
+            field_vec.push(
+                Field {
+                    description: convert_optional_string_to_cstr(v.description()),
+                    name: CString::new(v.name()).unwrap().into_raw() as *const c_char,
+                    deprecated: v.deprecated(),
+                    deprecation_reason: convert_optional_string_to_cstr(v.deprecation_reason())
+                }
+            );
+        }
+        field_vec.shrink_to_fit();
+
+        let array = ArrayOfFields {
+            length: field_vec.len() as int32_t,
+            values: field_vec.as_ptr() as *const *const c_void
+        };
+
+        std::mem::forget(field_vec);
+        array
+    }
 }
 
 #[repr(C)]
@@ -49,9 +92,10 @@ impl ArrayOfCStrings {
 #[repr(C)]
 pub struct Object {
     typename: *const c_char,
-    description: *const c_char,
     name: *const c_char,
+    description: *const c_char,
     implements: ArrayOfCStrings,
+    fields: ArrayOfFields,
 }
 
 impl Clone for Object {
@@ -68,35 +112,44 @@ impl Scalar {
     pub fn new(typename: &str, description: Option<&str>, name: &str) -> Scalar {
       Scalar {
           typename: CString::new(typename).unwrap().into_raw(),
-          description: match description {
-              Some(d) => CString::new(d).unwrap().into_raw(),
-              None => CString::new("").unwrap().into_raw()
-          },
+          description: convert_optional_string_to_cstr(description),
           name: CString::new(name).unwrap().into_raw(),
       }
     }
 }
 
 impl Object {
-    pub fn new(typename: &str, description: Option<&str>, name: &str, implements: Option<Vec<String>>) -> Object {
-      Object {
-          typename: CString::new(typename).unwrap().into_raw(),
-          description: match description {
-              Some(d) => CString::new(d).unwrap().into_raw(),
-              None => CString::new("").unwrap().into_raw()
-          },
-          name: CString::new(name).unwrap().into_raw(),
-          implements: match implements {
-                      None => {
-                          ArrayOfCStrings::from_vec(vec![])
-                      }
-                      Some(vec) => {
-                          ArrayOfCStrings::from_vec(vec)
-                      }
-                  }
-              }
-          }
-      }
+    pub fn new(typename: &str, description: Option<&str>, name: &str, implements: Option<Vec<String>>, fields: Option<Vec<graphql_idl_parser::ast::GraphQLField>>) -> Object {
+        Object {
+            typename: CString::new(typename).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
+            implements: match implements {
+                None => {
+                    ArrayOfCStrings::from_vec(vec![])
+                }
+                Some(implements) => {
+                    ArrayOfCStrings::from_vec(implements)
+                }
+            },
+            fields: match fields {
+                None => {
+                    ArrayOfFields::from_vec(vec![])
+                }
+                Some(fields) => {
+                    ArrayOfFields::from_vec(fields)
+                }
+            }
+        }
+    }
+}
+
+fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
+    match string {
+        Some(string) => CString::new(string).unwrap().into_raw(),
+        None => CString::new("").unwrap().into_raw()
+    }
+}
 
 #[no_mangle]
 #[allow(unused)]
@@ -127,7 +180,8 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
                             v.typename(),
                             v.description(),
                             v.name(),
-                            v.implements()
+                            v.implements(),
+                            v.fields()
                         );
                         return GraphQLType { object: x };
                     },
