@@ -5,10 +5,15 @@ typedef struct GraphQLScalar {
   const char* name;
 } GraphQLScalar;
 
+typedef struct array_of_strings {
+  int32_t length;
+  const char** values;
+} array_and_size;
+
 typedef struct GraphQLObject {
   const char* description;
   const char* name;
-  // const char* implements;
+  struct array_of_strings implements;
 } GraphQLObject;
 
 typedef struct GraphQLTypes {
