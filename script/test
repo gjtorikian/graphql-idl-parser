@@ -7,6 +7,7 @@ test_dir=$(pwd)/test
 cd graphql-idl-parser-ffi
 
 lib_dir=$(pwd)/target/debug
+includes_dir=$(pwd)/includes
 
 cargo update
 cargo build
@@ -15,7 +16,14 @@ cd test
 
 python generate.py .
 
-gcc -I. -I../includes -L$lib_dir -lgraphqlidlparser clar.c main.c helpers.c scalars.c objects.c enums.c interfaces.c unions.c input_objects.c -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  ld_extra="-Wl,-rpath,$lib_dir"
+else
+  ld_extra="-Wl,-rpath=$lib_dir"
+fi
+
+ #
+gcc -I. -I$includes_dir -L$lib_dir $ld_extra -Wall -o gql-idl-parser-test clar.c main.c helpers.c scalars.c objects.c enums.c interfaces.c unions.c input_objects.c -lgraphqlidlparser  -DCLAR_FIXTURE_PATH=\"$test_dir\"
 
 ./gql-idl-parser-test
 

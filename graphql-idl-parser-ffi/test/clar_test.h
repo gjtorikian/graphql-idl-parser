@@ -14,5 +14,6 @@
 extern int global_test_counter;
 
 #include "helpers.h"
+#include "gql-idl-parser.h"
 
 #endif

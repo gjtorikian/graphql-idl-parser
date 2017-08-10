@@ -1,10 +1,7 @@
 #include "clar.h"
 #include "clar_test.h"
-#include "helpers.h"
 #include <stdio.h>
 #include <string.h>
-
-#include "gql-idl-parser.h"
 
 static char *fixture;
 
