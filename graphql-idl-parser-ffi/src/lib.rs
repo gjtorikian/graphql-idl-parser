@@ -2,6 +2,7 @@ extern crate libc;
 extern crate graphql_idl_parser;
 
 use graphql_idl_parser::ast::GraphQLField;
+use graphql_idl_parser::ast::GraphQLValue;
 
 use libc::{c_char, size_t, int32_t, c_void};
 use std::ffi::CString;
@@ -160,27 +161,81 @@ impl Clone for Object {
 }
 
 #[repr(C)]
+#[derive(Copy, Clone)]
+struct Value {
+    name: *const c_char,
+    description: *const c_char
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct ArrayOfValues {
+    length: int32_t,
+    values: *const *const c_void
+}
+
+
+impl ArrayOfValues {
+    fn from_vec(vec: Vec<GraphQLValue>) -> ArrayOfValues {
+        let mut value_vec: Vec<Value> = vec![];
+
+        for v in vec {
+            value_vec.push(
+                Value {
+                    name: CString::new(v.name()).unwrap().into_raw(),
+                    description: convert_optional_string_to_cstr(v.description())
+                }
+            );
+        }
+        value_vec.shrink_to_fit();
+
+        let array = ArrayOfValues {
+            length: value_vec.len() as int32_t,
+            values: value_vec.as_ptr() as *const *const c_void
+        };
+
+        std::mem::forget(value_vec);
+
+        array
+    }
+}
+
+#[derive(Copy)]
+#[repr(C)]
+pub struct Enum {
+    typename: *const c_char,
+    name: *const c_char,
+    description: *const c_char,
+    values: ArrayOfValues,
+}
+
+impl Clone for Enum {
+    fn clone(&self) -> Enum { *self }
+}
+
+#[repr(C)]
 pub union GraphQLType {
     scalar: Scalar,
     object: Object,
+    enum_type: Enum,
 }
 
 impl Scalar {
-    pub fn new(typename: &str, description: Option<&str>, name: &str) -> Scalar {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, ) -> Scalar {
       Scalar {
           typename: CString::new(typename).unwrap().into_raw(),
-          description: convert_optional_string_to_cstr(description),
           name: CString::new(name).unwrap().into_raw(),
+          description: convert_optional_string_to_cstr(description),
       }
     }
 }
 
 impl Object {
-    pub fn new(typename: &str, description: Option<&str>, name: &str, implements: Option<Vec<String>>, fields: Option<Vec<graphql_idl_parser::ast::GraphQLField>>) -> Object {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, implements: Option<Vec<String>>, fields: Option<Vec<graphql_idl_parser::ast::GraphQLField>>) -> Object {
         Object {
             typename: CString::new(typename).unwrap().into_raw(),
-            description: convert_optional_string_to_cstr(description),
             name: CString::new(name).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
             implements: match implements {
                 None => {
                     ArrayOfCStrings::from_vec(vec![])
@@ -195,6 +250,24 @@ impl Object {
                 }
                 Some(fields) => {
                     ArrayOfFields::from_vec(fields)
+                }
+            }
+        }
+    }
+}
+
+impl Enum {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, values: Option<Vec<graphql_idl_parser::ast::GraphQLValue>>) -> Enum {
+        Enum {
+            typename: CString::new(typename).unwrap().into_raw(),
+            name: CString::new(name).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
+            values: match values {
+                None => {
+                    ArrayOfValues::from_vec(vec![])
+                }
+                Some(values) => {
+                    ArrayOfValues::from_vec(values)
                 }
             }
         }
@@ -221,26 +294,33 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
     match graphql_idl_parser::gqlidl::parse_schema(r_schema) {
         Ok(vec) => {
             let mut tmp_vec: Vec<GraphQLType> = vec.into_iter().map(|mut v| {
-                // v.shrink_to_fit();
-
                 let s = match v.typename() {
                     "scalar" => {
                         let x = Scalar::new(
                             v.typename(),
+                            v.name(),
                             v.description(),
-                            v.name()
                         );
                         return GraphQLType { scalar: x };
                     },
                     "object" => {
                         let x = Object::new(
                             v.typename(),
-                            v.description(),
                             v.name(),
+                            v.description(),
                             v.implements(),
                             v.fields()
                         );
                         return GraphQLType { object: x };
+                    },
+                    "enum" => {
+                        let x = Enum::new(
+                            v.typename(),
+                            v.name(),
+                            v.description(),
+                            v.values()
+                        );
+                        return GraphQLType { enum_type: x };
                     },
                     _ => panic!("Unknown typename: {}", v.typename())
                 };

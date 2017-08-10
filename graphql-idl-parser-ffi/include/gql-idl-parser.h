@@ -31,10 +31,20 @@ typedef struct GraphQLField {
   const char* deprecation_reason;
 } GraphQLField;
 
+typedef struct GraphQLValue {
+  const char* name;
+  const char* description;
+} GraphQLValue;
+
 typedef struct array_of_fields {
   int32_t length;
   const GraphQLField* values;
 } array_of_fields;
+
+typedef struct array_of_values {
+  int32_t length;
+  const GraphQLValue* values;
+} array_of_values;
 
 typedef struct GraphQLScalar {
   const char* name;
@@ -48,12 +58,19 @@ typedef struct GraphQLObject {
   struct array_of_fields fields;
 } GraphQLObject;
 
+typedef struct GraphQLEnum {
+  const char* name;
+  const char* description;
+  struct array_of_values values;
+} GraphQLEnum;
+
 typedef struct GraphQLTypes {
   const char* typename;
   union
   {
     GraphQLScalar scalar;
     GraphQLObject object;
+    GraphQLEnum enum_type;
   };
 } GraphQLTypes;
 

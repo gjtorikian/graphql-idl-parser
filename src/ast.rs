@@ -59,18 +59,18 @@ pub struct GraphQLInputObject {
 
 #[derive(Clone)]
 pub struct GraphQLField {
-  description: Option<String>,
-  name: String,
-  typeinfo: FieldType,
-  arguments: Vec<GraphQLArgument>,
-  deprecated: bool,
-  deprecation_reason: Option<String>,
+    description: Option<String>,
+    name: String,
+    typeinfo: FieldType,
+    arguments: Vec<GraphQLArgument>,
+    deprecated: bool,
+    deprecation_reason: Option<String>,
 }
 
 #[derive(Clone)]
 pub struct GraphQLValue {
-  description: Option<String>,
-  name: String
+    name: String,
+    description: Option<String>
 }
 
 #[derive(Clone)]

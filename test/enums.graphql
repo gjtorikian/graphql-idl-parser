@@ -1,0 +1,8 @@
+# State of the project; either 'open' or 'closed'
+enum ProjectState {
+  # The project is closed.
+  CLOSED
+
+  # The project is open.
+  OPEN
+}
