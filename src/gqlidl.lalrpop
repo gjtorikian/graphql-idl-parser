@@ -8,43 +8,43 @@ pub schema: Vec<TypeDefinition> =
 TypeDefinition: TypeDefinition = {
     ScalarTypeDefinition,
     <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, vec![], f))
     },
     <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
     },
     <d:Description*> "enum" <n:Name> "{" <f:(<Value>)+> "}" => {
-        TypeDefinition::EnumType(GraphQLEnum::new(check_desc(d), n, f))
+        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
     },
     <d:Description*> "interface" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
+        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
     },
     <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        TypeDefinition::UnionType(GraphQLUnion::new(check_desc(d), n, t))
+        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
     },
     <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
     },
 };
 
 ScalarTypeDefinition: TypeDefinition = {
     <d:Description*> "scalar" <n:Name> => {
-        TypeDefinition::ScalarType(GraphQLScalar::new(check_desc(d), n))
+        TypeDefinition::ScalarType(GraphQLScalar::new(d, n))
     }
 };
 
 Field: GraphQLField = {
     <d:Description*> <n:FieldName> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(check_desc(d), n, t, vec![], check_deprecated(e), r)
+        GraphQLField::new(d, n, t, vec![], check_deprecated(e), r)
     },
     <d:Description*> <n:FieldName> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(check_desc(d), n, t, a, check_deprecated(e), r)
+        GraphQLField::new(d, n, t, a, check_deprecated(e), r)
     },
 };
 
 Value: GraphQLValue = {
     <d:Description*> <n:Name> => {
-        GraphQLValue::new(check_desc(d), n)
+        GraphQLValue::new(d, n)
     }
 };
 
@@ -77,7 +77,7 @@ FieldType: FieldType = {
 
 Argument: GraphQLArgument = {
     <d:Description*> <n:FieldName> ":" <t:FieldType> => {
-      GraphQLArgument::new(check_desc(d), n, t)
+      GraphQLArgument::new(d, n, t)
     }
 };
 

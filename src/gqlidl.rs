@@ -3468,7 +3468,7 @@ pub fn __action3<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, vec![], f))
     }
 }
 
@@ -3488,7 +3488,7 @@ pub fn __action4<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
     }
 }
 
@@ -3506,7 +3506,7 @@ pub fn __action5<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::EnumType(GraphQLEnum::new(check_desc(d), n, f))
+        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
     }
 }
 
@@ -3524,7 +3524,7 @@ pub fn __action6<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
+        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
     }
 }
 
@@ -3541,7 +3541,7 @@ pub fn __action7<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::UnionType(GraphQLUnion::new(check_desc(d), n, t))
+        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
     }
 }
 
@@ -3559,7 +3559,7 @@ pub fn __action8<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
     }
 }
 
@@ -3574,7 +3574,7 @@ pub fn __action9<
 ) -> TypeDefinition
 {
     {
-        TypeDefinition::ScalarType(GraphQLScalar::new(check_desc(d), n))
+        TypeDefinition::ScalarType(GraphQLScalar::new(d, n))
     }
 }
 
@@ -3592,7 +3592,7 @@ pub fn __action10<
 ) -> GraphQLField
 {
     {
-        GraphQLField::new(check_desc(d), n, t, vec![], check_deprecated(e), r)
+        GraphQLField::new(d, n, t, vec![], check_deprecated(e), r)
     }
 }
 
@@ -3613,7 +3613,7 @@ pub fn __action11<
 ) -> GraphQLField
 {
     {
-        GraphQLField::new(check_desc(d), n, t, a, check_deprecated(e), r)
+        GraphQLField::new(d, n, t, a, check_deprecated(e), r)
     }
 }
 
@@ -3627,7 +3627,7 @@ pub fn __action12<
 ) -> GraphQLValue
 {
     {
-        GraphQLValue::new(check_desc(d), n)
+        GraphQLValue::new(d, n)
     }
 }
 
@@ -3692,7 +3692,7 @@ pub fn __action15<
 ) -> GraphQLArgument
 {
     {
-      GraphQLArgument::new(check_desc(d), n, t)
+      GraphQLArgument::new(d, n, t)
     }
 }
 
