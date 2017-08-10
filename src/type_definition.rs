@@ -13,13 +13,6 @@ fn convert_description(description: Vec<String>) -> Option<String> {
     }
 }
 
-fn check_deprecated(e: Option<bool>) -> bool {
-    match e {
-        None => false,
-        Some(_) => true,
-    }
-}
-
 pub struct GraphQLScalar {
     description: Option<String>,
     name: String,
@@ -273,7 +266,7 @@ impl GraphQLField {
         name: String,
         typeinfo: FieldType,
         arguments: Option<Vec<GraphQLArgument>>,
-        deprecated: bool,
+        deprecated: Option<bool>,
         deprecation_reason: Option<String>,
     ) -> GraphQLField {
         GraphQLField {
@@ -281,7 +274,10 @@ impl GraphQLField {
             name: name,
             typeinfo: typeinfo,
             arguments: arguments,
-            deprecated: deprecated,
+            deprecated: match deprecated {
+                None => false,
+                Some(_) => true
+            },
             deprecation_reason: deprecation_reason,
         }
     }

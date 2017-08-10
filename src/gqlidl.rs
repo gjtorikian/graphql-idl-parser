@@ -3682,7 +3682,7 @@ pub fn __action15<
 ) -> GraphQLField
 {
     {
-        GraphQLField::new(d, n, t, a, check_deprecated(e), r)
+        GraphQLField::new(d, n, t, a, e, r)
     }
 }
 

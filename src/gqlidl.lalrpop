@@ -66,7 +66,7 @@ ImplementsInterfaces: Vec<String> = {
 // TODO: missing directives
 FieldDefinition: GraphQLField = {
     <d:Description*> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(d, n, t, a, check_deprecated(e), r)
+        GraphQLField::new(d, n, t, a, e, r)
     },
 };
 
