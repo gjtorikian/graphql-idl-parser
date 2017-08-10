@@ -10,7 +10,7 @@ name = "graphqlidlparser"
 crate_type = ["dylib"]
 
 [dependencies]
-graphql-idl-parser = { path = "../" }
+graphql-idl-parser = { version = "0.1.0", path = "../" }
 libc = "^0.2"
 
 [workspace]
