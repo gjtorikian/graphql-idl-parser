@@ -13,7 +13,7 @@ fn convert_description(description: Vec<String>) -> Option<String> {
     }
 }
 
-pub fn check_deprecated(e: Option<bool>) -> bool {
+fn check_deprecated(e: Option<bool>) -> bool {
     match e {
         None => false,
         Some(_) => true,
@@ -56,6 +56,15 @@ pub struct GraphQLInputObject {
     fields: Vec<GraphQLField>,
 }
 
+pub enum TypeDefinition {
+    ScalarType(GraphQLScalar),
+    ObjectType(GraphQLObject),
+    EnumType(GraphQLEnum),
+    InterfaceType(GraphQLInterface),
+    UnionType(GraphQLUnion),
+    InputObjectType(GraphQLInputObject),
+}
+
 #[derive(Clone)]
 pub struct GraphQLField {
     description: Option<String>,
@@ -83,15 +92,6 @@ pub struct GraphQLArgument {
 pub struct FieldType {
     pub name: String,
     pub info: TypeInfo,
-}
-
-pub enum TypeDefinition {
-    ScalarType(GraphQLScalar),
-    ObjectType(GraphQLObject),
-    EnumType(GraphQLEnum),
-    InterfaceType(GraphQLInterface),
-    UnionType(GraphQLUnion),
-    InputObjectType(GraphQLInputObject),
 }
 
 impl GraphQLScalar {
@@ -170,7 +170,6 @@ impl GraphQLInputObject {
         }
     }
 }
-
 
 #[derive(Clone)]
 pub enum TypeInfo {
@@ -265,12 +264,7 @@ impl TypeDefinition {
 }
 
 impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
-
-
 impl_graphql_deprecated_methods! { GraphQLField }
-
-
-
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {

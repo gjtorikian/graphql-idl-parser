@@ -12,7 +12,7 @@ fn sanity_check() {
         let mut file = File::open(format!("test/{}.graphql", f)).expect("Unable to open file");
         file.read_to_string(&mut contents);
     }
-    gqlidl::parse_schema(contents.as_str()).unwrap();
+    let definitions = gqlidl::parse_schema(contents.as_str()).unwrap();
 }
 
 #[test]
