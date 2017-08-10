@@ -19,8 +19,8 @@ int main()
 
   for (size_t i = 0; i < types_len; i++) {
     printf("typename: %s\n", types[i].typename);
-    printf("desc: %s\n", types[i].scalar.description);
-    printf("name: %s\n", types[i].scalar.name);
+    printf("desc: %s\n", types[i].scalar_type.description);
+    printf("name: %s\n", types[i].scalar_type.name);
     if (strncmp(types[i].typename, "scalar", 6) == 0) {
       printf("a scalar!");
     }
