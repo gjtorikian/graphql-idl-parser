@@ -1,6 +1,6 @@
 [package]
 name = "graphql-idl-parser"
-version = "0.0.1"
+version = "0.1.0"
 authors = ["Garen Torikian <gjtorikian@gmail.com>"]
 build = "build.rs"
 description = "A GraphQL IDL parser"
