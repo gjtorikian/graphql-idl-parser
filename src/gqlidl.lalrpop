@@ -12,9 +12,7 @@ TypeDefinition: TypeDefinition = {
     EnumTypeDefinition,
     InterfaceTypeDefinition,
     UnionTypeDefinition,
-    // <d:Description*> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
-    //     TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
-    // },
+    InputObjectTypeDefinition,
 };
 
 ScalarTypeDefinition: TypeDefinition = {
@@ -50,6 +48,13 @@ UnionTypeDefinition: TypeDefinition = {
     <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
         TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
     }
+};
+
+// TODO: missing directives
+InputObjectTypeDefinition: TypeDefinition = {
+    <d:Description*> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
+    },
 };
 
 ImplementsInterfaces: Vec<String> = {
@@ -148,6 +153,7 @@ Pipe1<T>: Vec<T> = {
     }
 };
 
+// NOTE: This is gross, can it be improved?
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
 FieldName: String = {
     r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),
