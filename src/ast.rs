@@ -85,7 +85,7 @@ pub struct FieldType {
     pub info: TypeInfo,
 }
 
-pub enum GraphQLType {
+pub enum TypeDefinition {
     ScalarType(GraphQLScalar),
     ObjectType(GraphQLObject),
     EnumType(GraphQLEnum),
@@ -204,7 +204,7 @@ macro_rules! impl_graphql_objects_common_methods {
         pub fn description(&self) -> Option<&str> {
             match *self {
                 $(
-                    GraphQLType::$x($y{ ref description, .. }) => {
+                    TypeDefinition::$x($y{ ref description, .. }) => {
                         description.as_ref().map(|s| s.as_ref())
                     }
                 ),*
@@ -214,22 +214,22 @@ macro_rules! impl_graphql_objects_common_methods {
         pub fn name(&self) -> &str {
             match *self {
                 $(
-                    GraphQLType::$x($y{ ref name, .. }) => &name
+                    TypeDefinition::$x($y{ ref name, .. }) => &name
                 ),*
             }
         }
     }
 }
 
-impl GraphQLType {
+impl TypeDefinition {
     pub fn typename(&self) -> &str {
         match *self {
-            GraphQLType::ScalarType { .. } => SCALAR,
-            GraphQLType::ObjectType { .. } => OBJECT,
-            GraphQLType::EnumType { .. } => ENUM,
-            GraphQLType::InterfaceType { .. } => INTERFACE,
-            GraphQLType::UnionType { .. } => UNION,
-            GraphQLType::InputObjectType { .. } => INPUT_OBJECT,
+            TypeDefinition::ScalarType { .. } => SCALAR,
+            TypeDefinition::ObjectType { .. } => OBJECT,
+            TypeDefinition::EnumType { .. } => ENUM,
+            TypeDefinition::InterfaceType { .. } => INTERFACE,
+            TypeDefinition::UnionType { .. } => UNION,
+            TypeDefinition::InputObjectType { .. } => INPUT_OBJECT,
         }
     }
 
@@ -244,7 +244,7 @@ impl GraphQLType {
 
     pub fn implements(&self) -> Option<Vec<String>> {
         match *self {
-            GraphQLType::ObjectType(GraphQLObject { ref implements, .. }) => {
+            TypeDefinition::ObjectType(GraphQLObject { ref implements, .. }) => {
                 if implements.len() > 0 {
                     return Some(implements.to_vec());
                 }
@@ -256,9 +256,9 @@ impl GraphQLType {
 
     pub fn fields(&self) -> Option<Vec<GraphQLField>> {
         match *self {
-            GraphQLType::ObjectType(GraphQLObject { ref fields, .. }) |
-            GraphQLType::InterfaceType(GraphQLInterface { ref fields, .. }) |
-            GraphQLType::InputObjectType(GraphQLInputObject { ref fields, .. }) => {
+            TypeDefinition::ObjectType(GraphQLObject { ref fields, .. }) |
+            TypeDefinition::InterfaceType(GraphQLInterface { ref fields, .. }) |
+            TypeDefinition::InputObjectType(GraphQLInputObject { ref fields, .. }) => {
                 if fields.len() > 0 {
                     return Some(fields.to_vec());
                 }
@@ -270,7 +270,7 @@ impl GraphQLType {
 
     pub fn values(&self) -> Option<Vec<GraphQLValue>> {
         match *self {
-            GraphQLType::EnumType(GraphQLEnum { ref values, .. }) => {
+            TypeDefinition::EnumType(GraphQLEnum { ref values, .. }) => {
                 if values.len() > 0 {
                     return Some(values.to_vec());
                 }
@@ -282,7 +282,7 @@ impl GraphQLType {
 
     pub fn types(&self) -> Option<Vec<String>> {
         match *self {
-            GraphQLType::UnionType(GraphQLUnion { ref types, .. }) => {
+            TypeDefinition::UnionType(GraphQLUnion { ref types, .. }) => {
                 if types.len() > 0 {
                     return Some(types.to_vec());
                 }

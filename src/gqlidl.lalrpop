@@ -2,30 +2,30 @@ use ast::*;
 
 grammar;
 
-pub schema: Vec<GraphQLType> =
-    <GraphQLType*> => <>;
+pub schema: Vec<TypeDefinition> =
+    <TypeDefinition*> => <>;
 
-GraphQLType: GraphQLType = {
+TypeDefinition: TypeDefinition = {
     <d:Description*> "scalar" <n:Name> => {
-        GraphQLType::ScalarType(GraphQLScalar::new(check_desc(d), n))
+        TypeDefinition::ScalarType(GraphQLScalar::new(check_desc(d), n))
     },
     <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
+        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
     },
     <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
+        TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, i, f))
     },
     <d:Description*> "enum" <n:Name> "{" <f:(<Value>)+> "}" => {
-        GraphQLType::EnumType(GraphQLEnum::new(check_desc(d), n, f))
+        TypeDefinition::EnumType(GraphQLEnum::new(check_desc(d), n, f))
     },
     <d:Description*> "interface" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
+        TypeDefinition::InterfaceType(GraphQLInterface::new(check_desc(d), n, f))
     },
     <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        GraphQLType::UnionType(GraphQLUnion::new(check_desc(d), n, t))
+        TypeDefinition::UnionType(GraphQLUnion::new(check_desc(d), n, t))
     },
     <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
-        GraphQLType::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
     },
 };
 

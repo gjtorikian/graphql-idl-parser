@@ -11,11 +11,11 @@ use libc::c_char;
 use std::fs::File;
 use std::io::Read;
 use std::ffi::CStr;
-use ast::GraphQLType;
+use ast::TypeDefinition;
 
 #[no_mangle]
 #[allow(unused)]
-pub extern "C" fn parse(s: *const c_char) -> Vec<GraphQLType> {
+pub extern "C" fn parse(s: *const c_char) -> Vec<TypeDefinition> {
     let c_str = unsafe {
         assert!(!s.is_null());
 
