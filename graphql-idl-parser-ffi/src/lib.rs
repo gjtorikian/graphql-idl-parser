@@ -160,6 +160,19 @@ impl Clone for Object {
     fn clone(&self) -> Object { *self }
 }
 
+#[derive(Copy)]
+#[repr(C)]
+pub struct Interface {
+    typename: *const c_char,
+    name: *const c_char,
+    description: *const c_char,
+    fields: ArrayOfFields,
+}
+
+impl Clone for Interface {
+    fn clone(&self) -> Interface { *self }
+}
+
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct Value {
@@ -218,6 +231,7 @@ pub union GraphQLType {
     scalar: Scalar,
     object: Object,
     enum_type: Enum,
+    interface: Interface,
 }
 
 impl Scalar {
@@ -274,6 +288,24 @@ impl Enum {
     }
 }
 
+impl Interface {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, fields: Option<Vec<graphql_idl_parser::ast::GraphQLField>>) -> Interface {
+        Interface {
+            typename: CString::new(typename).unwrap().into_raw(),
+            name: CString::new(name).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
+            fields: match fields {
+                None => {
+                    ArrayOfFields::from_vec(vec![])
+                }
+                Some(fields) => {
+                    ArrayOfFields::from_vec(fields)
+                }
+            }
+        }
+    }
+}
+
 fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
     match string {
         Some(string) => CString::new(string).unwrap().into_raw(),
@@ -321,6 +353,15 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
                             v.values()
                         );
                         return GraphQLType { enum_type: x };
+                    },
+                    "interface" => {
+                        let x = Interface::new(
+                            v.typename(),
+                            v.name(),
+                            v.description(),
+                            v.fields()
+                        );
+                        return GraphQLType { interface: x };
                     },
                     _ => panic!("Unknown typename: {}", v.typename())
                 };

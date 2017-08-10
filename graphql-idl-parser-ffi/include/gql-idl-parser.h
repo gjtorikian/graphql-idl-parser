@@ -64,6 +64,12 @@ typedef struct GraphQLEnum {
   struct array_of_values values;
 } GraphQLEnum;
 
+typedef struct GraphQLInterface {
+  const char* name;
+  const char* description;
+  struct array_of_fields fields;
+} GraphQLInterface;
+
 typedef struct GraphQLTypes {
   const char* typename;
   union
@@ -71,6 +77,7 @@ typedef struct GraphQLTypes {
     GraphQLScalar scalar;
     GraphQLObject object;
     GraphQLEnum enum_type;
+    GraphQLInterface interface;
   };
 } GraphQLTypes;
 
