@@ -28,7 +28,7 @@ pub struct GraphQLScalar {
 pub struct GraphQLObject {
     description: Option<String>,
     name: String,
-    implements: Vec<String>,
+    implements: Option<Vec<String>>,
     fields: Vec<GraphQLField>,
 }
 
@@ -61,7 +61,7 @@ pub struct GraphQLField {
     description: Option<String>,
     name: String,
     typeinfo: FieldType,
-    arguments: Vec<GraphQLArgument>,
+    arguments: Option<Vec<GraphQLArgument>>,
     deprecated: bool,
     deprecation_reason: Option<String>,
 }
@@ -107,7 +107,7 @@ impl GraphQLObject {
     pub fn new(
         description: Vec<String>,
         name: String,
-        implements: Vec<String>,
+        implements: Option<Vec<String>>,
         fields: Vec<GraphQLField>,
     ) -> GraphQLObject {
         GraphQLObject {
@@ -245,10 +245,7 @@ impl TypeDefinition {
     pub fn implements(&self) -> Option<Vec<String>> {
         match *self {
             TypeDefinition::ObjectType(GraphQLObject { ref implements, .. }) => {
-                if implements.len() > 0 {
-                    return Some(implements.to_vec());
-                }
-                None
+                implements.clone()
             }
             _ => panic!("That method does not exist for this type."),
         }
@@ -344,7 +341,7 @@ impl GraphQLField {
         description: Vec<String>,
         name: String,
         typeinfo: FieldType,
-        arguments: Vec<GraphQLArgument>,
+        arguments: Option<Vec<GraphQLArgument>>,
         deprecated: bool,
         deprecation_reason: Option<String>,
     ) -> GraphQLField {
@@ -359,10 +356,10 @@ impl GraphQLField {
     }
 
     pub fn arguments(&self) -> Option<Vec<GraphQLArgument>> {
-        if self.arguments.len() > 0 {
-            return Some(self.arguments.to_vec());
+        match self.arguments {
+            None => None,
+            Some(ref arguments) => self.arguments.clone()
         }
-        None
     }
 }
 

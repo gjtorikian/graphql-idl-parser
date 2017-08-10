@@ -3,14 +3,14 @@ use std::io::Read;
 
 use gqlidl;
 
-#[test]
-#[allow(unused)]
-fn sanity_check() {
-    let mut file = File::open("test/file.graphql").expect("Unable to open file");
-    let mut contents = String::new();
-    file.read_to_string(&mut contents);
-    gqlidl::parse_schema(contents.as_str()).unwrap();
-}
+// #[test]
+// #[allow(unused)]
+// fn sanity_check() {
+//     let mut file = File::open("test/file.graphql").expect("Unable to open file");
+//     let mut contents = String::new();
+//     file.read_to_string(&mut contents);
+//     gqlidl::parse_schema(contents.as_str()).unwrap();
+// }
 
 #[test]
 fn scalar_no_description() {
@@ -38,7 +38,6 @@ fn scalar_with_description() {
     assert_eq!("scalar", def.typename());
     assert_eq!("DateTime", def.name());
 }
-
 
 #[test]
 fn scalar_with_tricky_description() {

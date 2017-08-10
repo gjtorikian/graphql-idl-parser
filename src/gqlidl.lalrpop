@@ -2,29 +2,19 @@ use type_definition::*;
 
 grammar;
 
+// TODO: missing others types
 pub schema: Vec<TypeDefinition> =
     <TypeDefinition*> => <>;
 
 TypeDefinition: TypeDefinition = {
     ScalarTypeDefinition,
-    <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(d, n, vec![], f))
-    },
-    <d:Description*> "type" <n:Name> "implements" <i:Comma<Name>> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
-    },
-    <d:Description*> "enum" <n:Name> "{" <f:(<Value>)+> "}" => {
-        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
-    },
-    <d:Description*> "interface" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
-    },
-    <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
-    },
-    <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
-        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
-    },
+    ObjectTypeDefinition,
+    EnumTypeDefinition,
+    InterfaceTypeDefinition,
+    UnionTypeDefinition,
+    // <d:Description*> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
+    //     TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
+    // },
 };
 
 ScalarTypeDefinition: TypeDefinition = {
@@ -33,16 +23,50 @@ ScalarTypeDefinition: TypeDefinition = {
     }
 };
 
-Field: GraphQLField = {
-    <d:Description*> <n:FieldName> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(d, n, t, vec![], check_deprecated(e), r)
+// TODO: missing directives
+ObjectTypeDefinition: TypeDefinition = {
+    <d:Description*> "type" <n:Name> <i:(ImplementsInterfaces?)> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
     },
-    <d:Description*> <n:FieldName> "(" <a:(<Argument>)*> ")" ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
+};
+
+// TODO: missing directives
+EnumTypeDefinition: TypeDefinition = {
+    <d:Description*> "enum" <n:Name> "{" <f:(<EnumValueDefinition>)+> "}" => {
+        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
+    }
+};
+
+// TODO: missing directives
+InterfaceTypeDefinition: TypeDefinition = {
+    <d:Description*> "interface" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
+    },
+
+};
+
+// TODO: missing directives
+UnionTypeDefinition: TypeDefinition = {
+    <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
+        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
+    }
+};
+
+ImplementsInterfaces: Vec<String> = {
+    "implements" <i:Comma<Name>> => {
+        i
+    }
+};
+
+// TODO: missing directives
+FieldDefinition: GraphQLField = {
+    <d:Description*> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
         GraphQLField::new(d, n, t, a, check_deprecated(e), r)
     },
 };
 
-Value: GraphQLValue = {
+// TODO: missing directives
+EnumValueDefinition: GraphQLValue = {
     <d:Description*> <n:Name> => {
         GraphQLValue::new(d, n)
     }
@@ -75,9 +99,16 @@ FieldType: FieldType = {
     }
 };
 
-Argument: GraphQLArgument = {
+ArgumentsDefinition: Vec<GraphQLArgument> = {
+    "(" <i:InputValueDefinition+> ")" => {
+        i
+    }
+};
+
+// TODO: missing directives
+InputValueDefinition: GraphQLArgument = {
     <d:Description*> <n:FieldName> ":" <t:FieldType> => {
-      GraphQLArgument::new(d, n, t)
+        GraphQLArgument::new(d, n, t)
     }
 };
 
