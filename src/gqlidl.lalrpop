@@ -6,9 +6,7 @@ pub schema: Vec<TypeDefinition> =
     <TypeDefinition*> => <>;
 
 TypeDefinition: TypeDefinition = {
-    <d:Description*> "scalar" <n:Name> => {
-        TypeDefinition::ScalarType(GraphQLScalar::new(check_desc(d), n))
-    },
+    ScalarTypeDefinition,
     <d:Description*> "type" <n:Name> "{" <f:(<Field>)*> "}" => {
         TypeDefinition::ObjectType(GraphQLObject::new(check_desc(d), n, vec![], f))
     },
@@ -27,6 +25,12 @@ TypeDefinition: TypeDefinition = {
     <d:Description*> "input" <n:Name> "{" <f:(<Field>)*> "}" => {
         TypeDefinition::InputObjectType(GraphQLInputObject::new(check_desc(d), n, f))
     },
+};
+
+ScalarTypeDefinition: TypeDefinition = {
+    <d:Description*> "scalar" <n:Name> => {
+        TypeDefinition::ScalarType(GraphQLScalar::new(check_desc(d), n))
+    }
 };
 
 Field: GraphQLField = {
