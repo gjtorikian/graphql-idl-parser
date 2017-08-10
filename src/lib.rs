@@ -1,11 +1,14 @@
+extern crate regex;
+extern crate libc;
+
+#[macro_use]
+mod macros;
 pub mod gqlidl; // synthesized by LALRPOP
 pub mod type_definition;
 
+
 #[cfg(test)]
 mod tests;
-
-extern crate regex;
-extern crate libc;
 
 use libc::c_char;
 use std::fs::File;
