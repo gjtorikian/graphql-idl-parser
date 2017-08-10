@@ -239,13 +239,27 @@ impl Clone for Union {
     fn clone(&self) -> Union { *self }
 }
 
+#[derive(Copy)]
+#[repr(C)]
+pub struct InputObject {
+    typename: *const c_char,
+    name: *const c_char,
+    description: *const c_char,
+    fields: ArrayOfFields,
+}
+
+impl Clone for InputObject {
+    fn clone(&self) -> InputObject { *self }
+}
+
 #[repr(C)]
 pub union GraphQLType {
     scalar: Scalar,
     object: Object,
     enum_type: Enum,
     interface: Interface,
-    union: Union
+    union: Union,
+    input_object: InputObject
 }
 
 impl Scalar {
@@ -338,6 +352,23 @@ impl Union {
     }
 }
 
+impl InputObject {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, fields: Option<Vec<graphql_idl_parser::ast::GraphQLField>>) -> InputObject {
+        InputObject {
+            typename: CString::new(typename).unwrap().into_raw(),
+            name: CString::new(name).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
+            fields: match fields {
+                None => {
+                    ArrayOfFields::from_vec(vec![])
+                }
+                Some(fields) => {
+                    ArrayOfFields::from_vec(fields)
+                }
+            }
+        }
+    }
+}
 
 fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
     match string {
@@ -404,6 +435,15 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
                             v.types()
                         );
                         return GraphQLType { union: x };
+                    },
+                    "input_object" => {
+                        let x = InputObject::new(
+                            v.typename(),
+                            v.name(),
+                            v.description(),
+                            v.fields()
+                        );
+                        return GraphQLType { input_object: x };
                     },
                     _ => panic!("Unknown typename: {}", v.typename())
                 };
