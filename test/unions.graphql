@@ -1,0 +1,2 @@
+# Any referencable object
+union ReferencedSubject = Issue | PullRequest

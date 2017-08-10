@@ -226,12 +226,26 @@ impl Clone for Enum {
     fn clone(&self) -> Enum { *self }
 }
 
+#[derive(Copy)]
+#[repr(C)]
+pub struct Union {
+    typename: *const c_char,
+    name: *const c_char,
+    description: *const c_char,
+    types: ArrayOfCStrings,
+}
+
+impl Clone for Union {
+    fn clone(&self) -> Union { *self }
+}
+
 #[repr(C)]
 pub union GraphQLType {
     scalar: Scalar,
     object: Object,
     enum_type: Enum,
     interface: Interface,
+    union: Union
 }
 
 impl Scalar {
@@ -306,6 +320,25 @@ impl Interface {
     }
 }
 
+impl Union {
+    pub fn new(typename: &str, name: &str, description: Option<&str>, types: Option< Vec<String>>) -> Union {
+        Union {
+            typename: CString::new(typename).unwrap().into_raw(),
+            name: CString::new(name).unwrap().into_raw(),
+            description: convert_optional_string_to_cstr(description),
+            types: match types {
+                None => {
+                    ArrayOfCStrings::from_vec(vec![])
+                }
+                Some(types) => {
+                    ArrayOfCStrings::from_vec(types)
+                }
+            }
+        }
+    }
+}
+
+
 fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
     match string {
         Some(string) => CString::new(string).unwrap().into_raw(),
@@ -362,6 +395,15 @@ pub extern fn gqlidl_parse_schema(schema: *const c_char, types: *mut *mut GraphQ
                             v.fields()
                         );
                         return GraphQLType { interface: x };
+                    },
+                    "union" => {
+                        let x = Union::new(
+                            v.typename(),
+                            v.name(),
+                            v.description(),
+                            v.types()
+                        );
+                        return GraphQLType { union: x };
                     },
                     _ => panic!("Unknown typename: {}", v.typename())
                 };
