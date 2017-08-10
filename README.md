@@ -31,7 +31,7 @@ graphql-idl-parser = "^0.1"
 and this to your crate root:
 
 ``` rust
-extern crate gqlidl;
+extern crate graphql_idl_parser;
 ```
 
 After that, simply feed in a GraphQL IDL string to `gqlidl::parse_schema`, like:
