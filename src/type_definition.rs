@@ -295,7 +295,7 @@ impl GraphQLField {
     pub fn arguments(&self) -> Option<Vec<GraphQLArgument>> {
         match self.arguments {
             None => None,
-            Some(ref arguments) => self.arguments.clone()
+            Some(ref arguments) => Some(arguments.clone())
         }
     }
 }

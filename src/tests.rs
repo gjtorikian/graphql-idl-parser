@@ -3,14 +3,17 @@ use std::io::Read;
 
 use gqlidl;
 
-// #[test]
-// #[allow(unused)]
-// fn sanity_check() {
-//     let mut file = File::open("test/file.graphql").expect("Unable to open file");
-//     let mut contents = String::new();
-//     file.read_to_string(&mut contents);
-//     gqlidl::parse_schema(contents.as_str()).unwrap();
-// }
+#[test]
+#[allow(unused)]
+fn sanity_check() {
+    let mut array = ["scalars", "objects", "enums", "interfaces", "unions", "input_objects"];
+    let mut contents = String::new();
+    for (_, f) in array.iter_mut().enumerate() {
+        let mut file = File::open(format!("test/{}.graphql", f)).expect("Unable to open file");
+        file.read_to_string(&mut contents);
+    }
+    gqlidl::parse_schema(contents.as_str()).unwrap();
+}
 
 #[test]
 fn scalar_no_description() {
