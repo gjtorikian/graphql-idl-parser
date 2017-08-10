@@ -3,7 +3,7 @@ extern crate graphql_idl_parser;
 
 use graphql_idl_parser::ast::GraphQLField;
 
-use libc::{c_char, size_t, int32_t, int64_t, c_void};
+use libc::{c_char, size_t, int32_t, c_void};
 use std::ffi::CString;
 use std::ffi::CStr;
 use std::mem;
@@ -23,9 +23,33 @@ impl Clone for Scalar {
 
 #[repr(C)]
 #[derive(Copy, Clone)]
+struct FieldType {
+    name: *const c_char,
+    type_info: *const c_char,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct Argument {
+    name: *const c_char,
+    description: *const c_char,
+    type_info: FieldType
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct ArrayOfArguments {
+    length: int32_t,
+    values: *const *const c_void
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
 struct Field {
     name: *const c_char,
     description: *const c_char,
+    type_info: FieldType,
+    arguments: ArrayOfArguments,
     deprecated: bool,
     deprecation_reason: *const c_char,
 }
@@ -40,11 +64,43 @@ struct ArrayOfFields {
 impl ArrayOfFields {
     fn from_vec(vec: Vec<GraphQLField>) -> ArrayOfFields {
         let mut field_vec: Vec<Field> = vec![];
+        let mut argument_vec: Vec<Argument> = vec![];
+
         for v in vec {
+            match v.arguments() {
+                None => { }
+                Some(arguments) => {
+                    for arg in arguments {
+                        argument_vec.push(
+                            Argument {
+                                name: CString::new(arg.name()).unwrap().into_raw(),
+                                description: convert_optional_string_to_cstr(arg.description()),
+                                type_info: FieldType {
+                                    name: CString::new(arg.typeinfo().name()).unwrap().into_raw(),
+                                    type_info: CString::new(arg.typeinfo().info()).unwrap().into_raw(),
+                                }
+                            }
+                        );
+                    }
+                }
+            }
+
+            argument_vec.shrink_to_fit();
+
+            let arguments = ArrayOfArguments {
+                length: argument_vec.len() as int32_t,
+                values: argument_vec.as_ptr() as *const *const c_void
+            };
+
             field_vec.push(
                 Field {
                     description: convert_optional_string_to_cstr(v.description()),
-                    name: CString::new(v.name()).unwrap().into_raw() as *const c_char,
+                    name: CString::new(v.name()).unwrap().into_raw(),
+                    type_info: FieldType {
+                        name: CString::new(v.typeinfo().name()).unwrap().into_raw(),
+                        type_info: CString::new(v.typeinfo().info()).unwrap().into_raw(),
+                    },
+                    arguments: arguments,
                     deprecated: v.deprecated(),
                     deprecation_reason: convert_optional_string_to_cstr(v.deprecation_reason())
                 }
@@ -58,6 +114,7 @@ impl ArrayOfFields {
         };
 
         std::mem::forget(field_vec);
+        std::mem::forget(argument_vec);
         array
     }
 }

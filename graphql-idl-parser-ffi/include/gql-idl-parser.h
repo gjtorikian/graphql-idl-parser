@@ -6,11 +6,27 @@ typedef struct array_of_strings {
   const char** values;
 } array_and_size;
 
+typedef struct FieldType {
+  const char* name;
+  const char* type_info;
+} FieldType;
+
+typedef struct GraphQLArgument {
+  const char* name;
+  const char* description;
+  FieldType type_info;
+} GraphQLArgument;
+
+typedef struct array_of_arguments {
+  int32_t length;
+  const GraphQLArgument* values;
+} array_of_arguments;
+
 typedef struct GraphQLField {
   const char* name;
   const char* description;
-  // typeinfo: FieldType,
-  // arguments: Vec<GraphQLArgument>,
+  FieldType type_info;
+  struct array_of_arguments arguments;
   bool deprecated;
   const char* deprecation_reason;
 } GraphQLField;

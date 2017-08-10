@@ -15,3 +15,31 @@ type CodeOfConduct {
   # The body of the CoC
   body: String
 }
+
+# The Code of Conduct for a repository
+type CodeOfConduct { key: String! }
+
+type CommitCommentConnection { edges: [CommitCommentEdge] }
+
+type PullRequest { suggestedReviewers: [SuggestedReviewer]! }
+
+type CommitComment { viewerCannotUpdateReasons: [CommentCannotUpdateReason!]! }
+
+type User {
+  # A list of users the given user is followed by.
+  followers(
+    # Returns the elements in the list that come after the specified global ID.
+    after: String
+
+    # Returns the first _n_ elements from the list.
+    first: Int!
+  ): FollowerConnection!
+}
+
+type User {
+  databaseId: Int @deprecated
+}
+
+type User {
+  databaseId: Int @deprecated(reason: "Exposed database IDs will eventually be removed in favor of global Relay IDs.")
+}
