@@ -102,7 +102,7 @@ typedef struct GraphQLTypes {
 } GraphQLTypes;
 
 /* This is the actual method exposed by Rust FFI */
-uint8_t gqlidl_parse_schema(char* schema, GraphQLTypes** types, size_t* types_len);
+uint8_t gqlidl_parse_schema(const char* schema, GraphQLTypes** types, size_t* types_len);
 
 #ifdef __cplusplus
 }
