@@ -1,10 +1,10 @@
-use ast::*;
+use type_definition::*;
 extern crate lalrpop_util as __lalrpop_util;
 
 mod __parse__schema {
     #![allow(non_snake_case, non_camel_case_types, unused_mut, unused_variables, unused_imports)]
 
-    use ast::*;
+    use type_definition::*;
     extern crate lalrpop_util as __lalrpop_util;
     #[allow(dead_code)]
     pub enum __Symbol<'input> {

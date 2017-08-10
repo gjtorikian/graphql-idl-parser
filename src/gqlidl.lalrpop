@@ -1,4 +1,4 @@
-use ast::*;
+use type_definition::*;
 
 grammar;
 

@@ -1,5 +1,5 @@
 pub mod gqlidl; // synthesized by LALRPOP
-pub mod ast;
+pub mod type_definition;
 
 #[cfg(test)]
 mod tests;
@@ -11,7 +11,7 @@ use libc::c_char;
 use std::fs::File;
 use std::io::Read;
 use std::ffi::CStr;
-use ast::TypeDefinition;
+use type_definition::TypeDefinition;
 
 #[no_mangle]
 #[allow(unused)]
