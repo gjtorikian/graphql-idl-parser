@@ -4,7 +4,8 @@
 #include <string.h>
 #include "gql-idl-parser.h"
 
-int main() {
+int main()
+{
   GraphQLTypes* types = NULL;
   size_t types_len = 0;
   uint8_t err;

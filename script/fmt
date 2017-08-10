@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+rustup default nightly
+
+echo "Formatting lib..."
+sudo cargo fmt
+
+echo "Formatting ffi..."
+cd graphql-idl-parser-ffi
+sudo cargo fmt
+cd ..
+
+echo "Formatting C..."
+for file in `find graphql-idl-parser-ffi/example graphql-idl-parser-ffi/include -name '*.c' -o -name '*.h'` ; do
+  astyle --indent=spaces=2 --style=1tbs --keep-one-line-blocks -n $file
+done
+
+rustup default stable

@@ -10,9 +10,9 @@
 #include <stdlib.h>
 
 enum cl_test_status {
-	CL_TEST_OK,
-	CL_TEST_FAILURE,
-	CL_TEST_SKIP
+  CL_TEST_OK,
+  CL_TEST_FAILURE,
+  CL_TEST_SKIP
 };
 
 void clar_test_init(int argc, char *argv[]);
@@ -46,20 +46,20 @@ void cl_fs_cleanup(void);
  *
  */
 typedef enum cl_trace_event {
-	CL_TRACE__SUITE_BEGIN,
-	CL_TRACE__SUITE_END,
-	CL_TRACE__TEST__BEGIN,
-	CL_TRACE__TEST__END,
-	CL_TRACE__TEST__RUN_BEGIN,
-	CL_TRACE__TEST__RUN_END,
-	CL_TRACE__TEST__LONGJMP,
+  CL_TRACE__SUITE_BEGIN,
+  CL_TRACE__SUITE_END,
+  CL_TRACE__TEST__BEGIN,
+  CL_TRACE__TEST__END,
+  CL_TRACE__TEST__RUN_BEGIN,
+  CL_TRACE__TEST__RUN_END,
+  CL_TRACE__TEST__LONGJMP,
 } cl_trace_event;
 
 typedef void (cl_trace_cb)(
-	cl_trace_event ev,
-	const char *suite_name,
-	const char *test_name,
-	void *payload);
+  cl_trace_event ev,
+  const char *suite_name,
+  const char *test_name,
+  void *payload);
 
 /**
  * Register a callback into CLAR to send global trace events.
@@ -136,26 +136,26 @@ void cl_fixture_cleanup(const char *fixture_name);
 void clar__skip(void);
 
 void clar__fail(
-	const char *file,
-	int line,
-	const char *error,
-	const char *description,
-	int should_abort);
+  const char *file,
+  int line,
+  const char *error,
+  const char *description,
+  int should_abort);
 
 void clar__assert(
-	int condition,
-	const char *file,
-	int line,
-	const char *error,
-	const char *description,
-	int should_abort);
+  int condition,
+  const char *file,
+  int line,
+  const char *error,
+  const char *description,
+  int should_abort);
 
 void clar__assert_equal(
-	const char *file,
-	int line,
-	const char *err,
-	int should_abort,
-	const char *fmt,
-	...);
+  const char *file,
+  int line,
+  const char *err,
+  int should_abort,
+  const char *fmt,
+  ...);
 
 #endif

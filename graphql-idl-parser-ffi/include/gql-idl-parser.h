@@ -84,8 +84,7 @@ typedef struct GraphQLInputObject {
 
 typedef struct GraphQLTypes {
   const char* typename;
-  union
-  {
+  union {
     GraphQLScalar scalar;
     GraphQLObject object;
     GraphQLEnum enum_type;

@@ -7,7 +7,7 @@ mod tests;
 extern crate regex;
 extern crate libc;
 
-use libc::{c_char};
+use libc::c_char;
 use std::fs::File;
 use std::io::Read;
 use std::ffi::CStr;
@@ -15,7 +15,7 @@ use ast::GraphQLType;
 
 #[no_mangle]
 #[allow(unused)]
-pub extern fn parse(s: *const c_char) -> Vec<GraphQLType> {
+pub extern "C" fn parse(s: *const c_char) -> Vec<GraphQLType> {
     let c_str = unsafe {
         assert!(!s.is_null());
 
@@ -31,4 +31,6 @@ pub extern fn parse(s: *const c_char) -> Vec<GraphQLType> {
 }
 
 #[allow(dead_code)]
-pub extern fn fix_linking_when_not_using_stdlib() { panic!() }
+pub extern "C" fn fix_linking_when_not_using_stdlib() {
+    panic!()
+}
