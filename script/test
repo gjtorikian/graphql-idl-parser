@@ -6,13 +6,14 @@ test_dir=$(pwd)/test
 
 cd graphql-idl-parser-ffi
 
+cargo update
 cargo build
 
 cd test
 
 python generate.py .
 
-gcc -I. -I../include clar.c main.c helpers.c scalars.c objects.c enums.c interfaces.c unions.c input_objects.c -L../target/debug -lgraphqlidlparser -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
+gcc -I. -I../includes clar.c main.c helpers.c scalars.c objects.c enums.c interfaces.c unions.c input_objects.c -L../target/debug -lgraphqlidlparser -o gql-idl-parser-test -DCLAR_FIXTURE_PATH=\"$test_dir\"
 
 ./gql-idl-parser-test
 

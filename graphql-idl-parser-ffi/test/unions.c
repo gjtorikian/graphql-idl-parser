@@ -36,6 +36,6 @@ void test_unions__inline(void)
   cl_assert_equal_s("ReferencedSubject", types[0].union_type.name);
   cl_assert_equal_s("Any referencable object", types[0].union_type.description);
   cl_assert_equal_i(2, types[0].union_type.values.length);
-  cl_assert_equal_s("Issue", types[0].union_type.values.values[0]);
-  cl_assert_equal_s("PullRequest", types[0].union_type.values.values[1]);
+  cl_assert_equal_s("Issue", types[0].union_type.values.data[0]);
+  cl_assert_equal_s("PullRequest", types[0].union_type.values.data[1]);
 }

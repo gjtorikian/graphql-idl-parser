@@ -36,8 +36,8 @@ void test_enums__inline(void)
   cl_assert_equal_s("ProjectState", types[0].enum_type.name);
   cl_assert_equal_s("State of the project; either 'open' or 'closed'", types[0].enum_type.description);
   cl_assert_equal_i(2, types[0].enum_type.values.length);
-  cl_assert_equal_s("CLOSED", types[0].enum_type.values.values[0].name);
-  cl_assert_equal_s("The project is closed.", types[0].enum_type.values.values[0].description);
-  cl_assert_equal_s("OPEN", types[0].enum_type.values.values[1].name);
-  cl_assert_equal_s("The project is open.", types[0].enum_type.values.values[1].description);
+  cl_assert_equal_s("CLOSED", types[0].enum_type.values.data[0].name);
+  cl_assert_equal_s("The project is closed.", types[0].enum_type.values.data[0].description);
+  cl_assert_equal_s("OPEN", types[0].enum_type.values.data[1].name);
+  cl_assert_equal_s("The project is open.", types[0].enum_type.values.data[1].description);
 }

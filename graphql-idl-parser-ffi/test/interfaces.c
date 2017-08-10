@@ -33,12 +33,12 @@ void test_interfaces__inline(void)
   cl_assert_equal_i(err, 0);
 
   cl_assert_equal_s(types[0].typename, "interface");
-  cl_assert_equal_s("Closable", types[0].interface.name);
-  cl_assert_equal_s("An object that can be closed", types[0].interface.description);
-  cl_assert_equal_i(1, types[0].interface.fields.length);
-  cl_assert_equal_s("closed", types[0].interface.fields.values[0].name);
-  cl_assert_equal_s("`true` if the object is closed (definition of closed may depend on type)", types[0].interface.fields.values[0].description);
-  cl_assert_equal_s("Boolean", types[0].interface.fields.values[0].type_info.name);
-  cl_assert_equal_s("!", types[0].interface.fields.values[0].type_info.type_info);
+  cl_assert_equal_s("Closable", types[0].interface_type.name);
+  cl_assert_equal_s("An object that can be closed", types[0].interface_type.description);
+  cl_assert_equal_i(1, types[0].interface_type.fields.length);
+  cl_assert_equal_s("closed", types[0].interface_type.fields.data[0].name);
+  cl_assert_equal_s("`true` if the object is closed (definition of closed may depend on type)", types[0].interface_type.fields.data[0].description);
+  cl_assert_equal_s("Boolean", types[0].interface_type.fields.data[0].type_info.name);
+  cl_assert_equal_s("!", types[0].interface_type.fields.data[0].type_info.info);
 
 }

@@ -1,14 +1,21 @@
+#ifndef _GQL_IDL_PARSER_H
+#define _GQL_IDL_PARSER_H
+
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct array_of_strings {
   int32_t length;
-  const char** values;
+  const char** data;
 } array_and_size;
 
 typedef struct FieldType {
   const char* name;
-  const char* type_info;
+  const char* info;
 } FieldType;
 
 typedef struct GraphQLArgument {
@@ -19,7 +26,7 @@ typedef struct GraphQLArgument {
 
 typedef struct array_of_arguments {
   int32_t length;
-  const GraphQLArgument* values;
+  const GraphQLArgument* data;
 } array_of_arguments;
 
 typedef struct GraphQLField {
@@ -31,19 +38,19 @@ typedef struct GraphQLField {
   const char* deprecation_reason;
 } GraphQLField;
 
+typedef struct array_of_fields {
+  int32_t length;
+  const GraphQLField* data;
+} array_of_fields;
+
 typedef struct GraphQLValue {
   const char* name;
   const char* description;
 } GraphQLValue;
 
-typedef struct array_of_fields {
-  int32_t length;
-  const GraphQLField* values;
-} array_of_fields;
-
 typedef struct array_of_values {
   int32_t length;
-  const GraphQLValue* values;
+  const GraphQLValue* data;
 } array_of_values;
 
 typedef struct GraphQLScalar {
@@ -85,14 +92,20 @@ typedef struct GraphQLInputObject {
 typedef struct GraphQLTypes {
   const char* typename;
   union {
-    GraphQLScalar scalar;
-    GraphQLObject object;
+    GraphQLScalar scalar_type;
+    GraphQLObject object_type;
     GraphQLEnum enum_type;
-    GraphQLInterface interface;
+    GraphQLInterface interface_type;
     GraphQLUnion union_type;
-    GraphQLInputObject input_object;
+    GraphQLInputObject input_object_type;
   };
 } GraphQLTypes;
 
 /* This is the actual method exposed by Rust FFI */
 uint8_t gqlidl_parse_schema(char* schema, GraphQLTypes** types, size_t* types_len);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

@@ -1,6 +1,6 @@
 [package]
 name = "graphql-idl-parser-ffi"
-version = "0.0.1"
+version = "0.1.0"
 repository = "https://github.com/gjtorikian/graphql-idl-parser"
 license = "MIT"
 authors = ["Garen Torikian <gjtorikian@gmail.com>"]

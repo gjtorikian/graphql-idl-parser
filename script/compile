@@ -4,7 +4,8 @@ set -ex
 
 cd graphql-idl-parser-ffi
 
+cargo update
 cargo build
-gcc -O3 -DDEBUG -o example/example example/example.c -ansi -Wall -Iinclude -Ltarget/debug -lgraphqlidlparser
+gcc -O3 -DDEBUG -o example/example example/example.c -ansi -Wall -Iincludes -Ltarget/debug -lgraphqlidlparser
 
 ./example/example
