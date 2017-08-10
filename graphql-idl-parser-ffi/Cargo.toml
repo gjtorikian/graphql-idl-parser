@@ -4,6 +4,7 @@ version = "0.1.0"
 repository = "https://github.com/gjtorikian/graphql-idl-parser"
 license = "MIT"
 authors = ["Garen Torikian <gjtorikian@gmail.com>"]
+description = "An FFI interface for the GraphQL IDL format parser."
 
 [lib]
 name = "graphqlidlparser"
