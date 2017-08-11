@@ -30,7 +30,7 @@ void test_objects__inline(void)
   cl_assert_equal_i(err, 0);
 
   cl_assert_equal_s(types[0].typename, "object");
-  cl_assert_equal_s("", types[0].object_type.description);
+  cl_assert_equal_s(NULL, types[0].object_type.description);
   cl_assert_equal_s("CodeOfConduct", types[0].object_type.name);
 
   cl_assert_equal_s(types[1].typename, "object");
@@ -38,13 +38,13 @@ void test_objects__inline(void)
   cl_assert_equal_s("CodeOfConduct", types[1].object_type.name);
 
   cl_assert_equal_s(types[2].typename, "object");
-  cl_assert_equal_s("", types[2].object_type.description);
+  cl_assert_equal_s(NULL, types[2].object_type.description);
   cl_assert_equal_s("PushAllowance", types[2].object_type.name);
   cl_assert_equal_i(1, types[2].object_type.implements.length);
   cl_assert_equal_s("Node", types[2].object_type.implements.data[0]);
 
   cl_assert_equal_s(types[3].typename, "object");
-  cl_assert_equal_s("", types[3].object_type.description);
+  cl_assert_equal_s(NULL, types[3].object_type.description);
   cl_assert_equal_s("Release", types[3].object_type.name);
   cl_assert_equal_i(2, types[3].object_type.implements.length);
   cl_assert_equal_s("Node", types[3].object_type.implements.data[0]);
@@ -55,7 +55,7 @@ void test_objects__inline(void)
   cl_assert_equal_s("CodeOfConduct", types[4].object_type.name);
   cl_assert_equal_i(1, types[4].object_type.fields.length);
   cl_assert_equal_s("body", types[4].object_type.fields.data[0].name);
-  cl_assert_equal_s("", types[4].object_type.fields.data[0].description);
+  cl_assert_equal_s(NULL, types[4].object_type.fields.data[0].description);
   cl_assert_equal_b(false, types[4].object_type.fields.data[0].deprecated);
 
   cl_assert_equal_s(types[5].typename, "object");
@@ -103,7 +103,7 @@ void test_objects__inline(void)
   cl_assert_equal_s(types[11].typename, "object");
   cl_assert_equal_s("User", types[11].object_type.name);
   cl_assert_equal_b(true, types[11].object_type.fields.data[0].deprecated);
-  cl_assert_equal_s("", types[11].object_type.fields.data[0].deprecation_reason);
+  cl_assert_equal_s(NULL, types[11].object_type.fields.data[0].deprecation_reason);
 
   cl_assert_equal_s(types[12].typename, "object");
   cl_assert_equal_s("User", types[12].object_type.name);

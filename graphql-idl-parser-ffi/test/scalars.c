@@ -30,7 +30,7 @@ void test_scalars__inline(void)
   cl_assert_equal_i(err, 0);
 
   cl_assert_equal_s(types[0].typename, "scalar");
-  cl_assert_equal_s("", types[0].scalar_type.description);
+  cl_assert_equal_s(NULL, types[0].scalar_type.description);
   cl_assert_equal_s("DateTime", types[0].scalar_type.name);
 
   cl_assert_equal_s(types[1].typename, "scalar");

@@ -4,12 +4,12 @@ use graphql_idl_parser::type_definition::{GraphQLField, GraphQLValue};
 
 use libc::{c_char, c_void, int32_t};
 use std::ffi::{CString};
-use std;
+use std::{ptr, mem};
 
 fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
     match string {
         Some(string) => CString::new(string).unwrap().into_raw(),
-        None => CString::new("").unwrap().into_raw(),
+        None => ptr::null()
     }
 }
 
@@ -300,8 +300,8 @@ impl ArrayOfFields {
             values: field_vec.as_ptr() as *const *const c_void,
         };
 
-        std::mem::forget(field_vec);
-        std::mem::forget(argument_vec);
+        mem::forget(field_vec);
+        mem::forget(argument_vec);
         array
     }
 }
@@ -314,7 +314,7 @@ struct ArrayOfCStrings {
 }
 
 impl ArrayOfCStrings {
-    fn from_vec(vec: Vec<std::string::String>) -> ArrayOfCStrings {
+    fn from_vec(vec: Vec<String>) -> ArrayOfCStrings {
         let mut cstr_vec: Vec<*const c_char> = vec![];
         for s in vec {
             let cstr = CString::new(s).unwrap();
@@ -327,7 +327,7 @@ impl ArrayOfCStrings {
             values: cstr_vec.as_ptr() as *const *const c_char,
         };
 
-        std::mem::forget(cstr_vec);
+        mem::forget(cstr_vec);
         array
     }
 }
@@ -364,7 +364,7 @@ impl ArrayOfValues {
             values: value_vec.as_ptr() as *const *const c_void,
         };
 
-        std::mem::forget(value_vec);
+        mem::forget(value_vec);
 
         array
     }
