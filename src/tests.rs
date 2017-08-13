@@ -6,7 +6,14 @@ use gqlidl;
 #[test]
 #[allow(unused)]
 fn sanity_check() {
-    let mut array = ["scalars", "objects", "enums", "interfaces", "unions", "input_objects"];
+    let mut array = [
+        "scalars",
+        "objects",
+        "enums",
+        "interfaces",
+        "unions",
+        "input_objects",
+    ];
     let mut contents = String::new();
     for (_, f) in array.iter_mut().enumerate() {
         let mut file = File::open(format!("test/{}.graphql", f)).expect("Unable to open file");
@@ -361,7 +368,10 @@ fn type_with_deprecated_field_and_reason() {
     assert_eq!("deprecated", directive.name());
     let arg = directive.arguments().unwrap().pop().unwrap();
     assert_eq!("reason", arg.name());
-    assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", arg.value().unwrap());
+    assert_eq!(
+        "Exposed database IDs will eventually be removed in favor of global Relay IDs.",
+        arg.value().unwrap()
+    );
 }
 
 #[test]

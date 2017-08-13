@@ -68,7 +68,7 @@ pub struct GraphQLField {
 pub struct GraphQLValue {
     description: Option<String>,
     name: String,
-    directives: Option<Vec<GraphQLDirective>>
+    directives: Option<Vec<GraphQLDirective>>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -89,7 +89,7 @@ pub struct GraphQLDirective {
 #[derive(Clone, Debug, PartialEq)]
 pub struct GraphQLDirectiveArgument {
     name: String,
-    value: Option<String>
+    value: Option<String>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -158,7 +158,12 @@ impl GraphQLInterface {
 }
 
 impl GraphQLUnion {
-    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>, types: Vec<String>) -> GraphQLUnion {
+    pub fn new(
+        description: Option<String>,
+        name: String,
+        directives: Option<Vec<GraphQLDirective>>,
+        types: Vec<String>,
+    ) -> GraphQLUnion {
         GraphQLUnion {
             description: description,
             name: name,
@@ -230,9 +235,7 @@ impl TypeDefinition {
 
     pub fn implements(&self) -> Option<Vec<String>> {
         match *self {
-            TypeDefinition::ObjectType(GraphQLObject { ref implements, .. }) => {
-                implements.clone()
-            }
+            TypeDefinition::ObjectType(GraphQLObject { ref implements, .. }) => implements.clone(),
             _ => panic!("That method does not exist for this type."),
         }
     }
@@ -241,9 +244,13 @@ impl TypeDefinition {
         match *self {
             TypeDefinition::ObjectType(GraphQLObject { ref directives, .. }) => directives.clone(),
             TypeDefinition::EnumType(GraphQLEnum { ref directives, .. }) => directives.clone(),
-            TypeDefinition::InterfaceType(GraphQLInterface { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InterfaceType(GraphQLInterface { ref directives, .. }) => {
+                directives.clone()
+            }
             TypeDefinition::UnionType(GraphQLUnion { ref directives, .. }) => directives.clone(),
-            TypeDefinition::InputObjectType(GraphQLInputObject { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InputObjectType(GraphQLInputObject { ref directives, .. }) => {
+                directives.clone()
+            }
             _ => panic!("That method does not exist for this type."),
         }
     }
@@ -308,13 +315,19 @@ impl GraphQLField {
     pub fn arguments(&self) -> Option<Vec<GraphQLArgument>> {
         match self.arguments {
             None => None,
-            Some(ref arguments) => Some(arguments.clone())
+            Some(ref arguments) => Some(arguments.clone()),
         }
     }
 }
 
 impl GraphQLArgument {
-    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, default: Option<String>, directives: Option<Vec<GraphQLDirective>>) -> GraphQLArgument {
+    pub fn new(
+        description: Option<String>,
+        name: String,
+        typeinfo: FieldType,
+        default: Option<String>,
+        directives: Option<Vec<GraphQLDirective>>,
+    ) -> GraphQLArgument {
         GraphQLArgument {
             description: description,
             name: name,
@@ -327,29 +340,30 @@ impl GraphQLArgument {
     pub fn default(&self) -> Option<&str> {
         match self.default {
             None => None,
-            Some(ref def) => Some(def.as_str())
+            Some(ref def) => Some(def.as_str()),
         }
     }
 }
 
 impl GraphQLValue {
-    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>) -> GraphQLValue {
+    pub fn new(
+        description: Option<String>,
+        name: String,
+        directives: Option<Vec<GraphQLDirective>>,
+    ) -> GraphQLValue {
         GraphQLValue {
             description: description,
             name: name,
-            directives: directives
+            directives: directives,
         }
     }
 }
 
 impl GraphQLDirective {
-    pub fn new(
-        name: String,
-        arguments: Option<Vec<GraphQLDirectiveArgument>>,
-    ) -> GraphQLDirective {
+    pub fn new(name: String, arguments: Option<Vec<GraphQLDirectiveArgument>>) -> GraphQLDirective {
         GraphQLDirective {
             name: name,
-            arguments: arguments
+            arguments: arguments,
         }
     }
 
@@ -360,7 +374,7 @@ impl GraphQLDirective {
     pub fn arguments(&self) -> Option<Vec<GraphQLDirectiveArgument>> {
         match self.arguments {
             None => None,
-            Some(ref arguments) => Some(arguments.clone())
+            Some(ref arguments) => Some(arguments.clone()),
         }
     }
 }

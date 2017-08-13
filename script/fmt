@@ -18,3 +18,6 @@ for file in `find graphql-idl-parser-ffi/example graphql-idl-parser-ffi/include 
 done
 
 rustup default stable
+
+git add .
+git commit -m "Formatting"

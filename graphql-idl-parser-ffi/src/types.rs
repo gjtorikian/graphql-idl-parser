@@ -1,15 +1,15 @@
 extern crate graphql_idl_parser;
 
-use graphql_idl_parser::type_definition::{GraphQLField, GraphQLValue, GraphQLDirective};
+use graphql_idl_parser::type_definition::{GraphQLDirective, GraphQLField, GraphQLValue};
 
 use libc::{c_char, c_void, int32_t};
-use std::ffi::{CString};
-use std::{ptr, mem};
+use std::ffi::CString;
+use std::{mem, ptr};
 
 fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
     match string {
         Some(string) => CString::new(string).unwrap().into_raw(),
-        None => ptr::null()
+        None => ptr::null(),
     }
 }
 
@@ -304,7 +304,7 @@ impl ArrayOfFields {
                         default: convert_optional_string_to_cstr(arg.default()),
                         directives: match v.directives() {
                             None => ArrayOfDirectives::from_vec(vec![]),
-                            Some(directives) => ArrayOfDirectives::from_vec(directives)
+                            Some(directives) => ArrayOfDirectives::from_vec(directives),
                         },
                     });
                 },
@@ -327,7 +327,7 @@ impl ArrayOfFields {
                 arguments: arguments,
                 directives: match v.directives() {
                     None => ArrayOfDirectives::from_vec(vec![]),
-                    Some(directives) => ArrayOfDirectives::from_vec(directives)
+                    Some(directives) => ArrayOfDirectives::from_vec(directives),
                 },
             });
         }
@@ -375,7 +375,7 @@ impl ArrayOfCStrings {
 struct Value {
     description: *const c_char,
     name: *const c_char,
-    directives: ArrayOfDirectives
+    directives: ArrayOfDirectives,
 }
 
 #[repr(C)]
@@ -395,7 +395,7 @@ impl ArrayOfValues {
                 description: convert_optional_string_to_cstr(v.description()),
                 directives: match v.directives() {
                     None => ArrayOfDirectives::from_vec(vec![]),
-                    Some(directives) => ArrayOfDirectives::from_vec(directives)
+                    Some(directives) => ArrayOfDirectives::from_vec(directives),
                 },
             });
         }
@@ -465,7 +465,7 @@ impl ArrayOfDirectives {
 
             value_vec.push(Directive {
                 name: CString::new(v.name()).unwrap().into_raw(),
-                arguments: arguments
+                arguments: arguments,
             });
         }
         value_vec.shrink_to_fit();

@@ -55,16 +55,33 @@ pub extern "C" fn gqlidl_parse_schema(
                             return GraphQLType { object: d };
                         }
                         "enum" => {
-                            let d = Enum::new(v.typename(), v.description(), v.name(), v.directives(), v.values());
+                            let d = Enum::new(
+                                v.typename(),
+                                v.description(),
+                                v.name(),
+                                v.directives(),
+                                v.values(),
+                            );
                             return GraphQLType { enum_type: d };
                         }
                         "interface" => {
-                            let d =
-                                Interface::new(v.typename(), v.description(), v.name(), v.directives(), v.fields());
+                            let d = Interface::new(
+                                v.typename(),
+                                v.description(),
+                                v.name(),
+                                v.directives(),
+                                v.fields(),
+                            );
                             return GraphQLType { interface: d };
                         }
                         "union" => {
-                            let d = Union::new(v.typename(), v.description(), v.name(), v.directives(), v.types());
+                            let d = Union::new(
+                                v.typename(),
+                                v.description(),
+                                v.name(),
+                                v.directives(),
+                                v.types(),
+                            );
                             return GraphQLType { union: d };
                         }
                         "input_object" => {
