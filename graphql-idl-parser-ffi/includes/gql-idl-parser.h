@@ -18,10 +18,32 @@ typedef struct FieldType {
   const char* info;
 } FieldType;
 
-typedef struct GraphQLArgument {
+typedef struct GraphQLDirectiveArgument {
   const char* name;
+  const char* value;
+} GraphQLDirectiveArgument;
+
+typedef struct array_of_directive_arguments {
+  int32_t length;
+  const GraphQLDirectiveArgument* data;
+} array_of_directive_arguments;
+
+typedef struct GraphQLDirective {
+  const char* name;
+  struct array_of_directive_arguments arguments;
+} GraphQLDirective;
+
+typedef struct array_of_directives {
+  int32_t length;
+  const GraphQLDirective* data;
+} array_of_directives;
+
+typedef struct GraphQLArgument {
   const char* description;
+  const char* name;
   FieldType type_info;
+  const char* default_value;
+  struct array_of_directives directives;
 } GraphQLArgument;
 
 typedef struct array_of_arguments {
@@ -30,12 +52,11 @@ typedef struct array_of_arguments {
 } array_of_arguments;
 
 typedef struct GraphQLField {
-  const char* name;
   const char* description;
+  const char* name;
   FieldType type_info;
   struct array_of_arguments arguments;
-  bool deprecated;
-  const char* deprecation_reason;
+  struct array_of_directives directives;
 } GraphQLField;
 
 typedef struct array_of_fields {
@@ -44,8 +65,9 @@ typedef struct array_of_fields {
 } array_of_fields;
 
 typedef struct GraphQLValue {
-  const char* name;
   const char* description;
+  const char* name;
+  struct array_of_directives directives;
 } GraphQLValue;
 
 typedef struct array_of_values {
@@ -54,38 +76,43 @@ typedef struct array_of_values {
 } array_of_values;
 
 typedef struct GraphQLScalar {
-  const char* name;
   const char* description;
+  const char* name;
 } GraphQLScalar;
 
 typedef struct GraphQLObject {
-  const char* name;
   const char* description;
+  const char* name;
   struct array_of_strings implements;
+  struct array_of_directives directives;
   struct array_of_fields fields;
 } GraphQLObject;
 
 typedef struct GraphQLEnum {
-  const char* name;
   const char* description;
+  const char* name;
+  struct array_of_directives directives;
   struct array_of_values values;
 } GraphQLEnum;
 
 typedef struct GraphQLInterface {
-  const char* name;
   const char* description;
+  const char* name;
+  struct array_of_directives directives;
   struct array_of_fields fields;
 } GraphQLInterface;
 
 typedef struct GraphQLUnion {
-  const char* name;
   const char* description;
+  const char* name;
+  struct array_of_directives directives;
   struct array_of_strings values;
 } GraphQLUnion;
 
 typedef struct GraphQLInputObject {
-  const char* name;
   const char* description;
+  const char* name;
+  struct array_of_directives directives;
   struct array_of_fields fields;
 } GraphQLInputObject;
 

@@ -15,7 +15,7 @@ pub struct GraphQLObject {
     name: String,
     implements: Option<Vec<String>>,
     directives: Option<Vec<GraphQLDirective>>,
-    fields: Vec<GraphQLField>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub struct GraphQLEnum {
@@ -29,7 +29,7 @@ pub struct GraphQLInterface {
     description: Option<String>,
     name: String,
     directives: Option<Vec<GraphQLDirective>>,
-    fields: Vec<GraphQLField>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub struct GraphQLUnion {
@@ -43,7 +43,7 @@ pub struct GraphQLInputObject {
     description: Option<String>,
     name: String,
     directives: Option<Vec<GraphQLDirective>>,
-    fields: Vec<GraphQLField>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub enum TypeDefinition {
@@ -66,8 +66,8 @@ pub struct GraphQLField {
 
 #[derive(Clone)]
 pub struct GraphQLValue {
-    name: String,
     description: Option<String>,
+    name: String,
     directives: Option<Vec<GraphQLDirective>>
 }
 
@@ -89,7 +89,7 @@ pub struct GraphQLDirective {
 #[derive(Clone, Debug, PartialEq)]
 pub struct GraphQLDirectiveArgument {
     name: String,
-    value: String
+    value: Option<String>
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -113,14 +113,14 @@ impl GraphQLObject {
         name: String,
         implements: Option<Vec<String>>,
         directives: Option<Vec<GraphQLDirective>>,
-        fields: Vec<GraphQLField>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLObject {
         GraphQLObject {
             description: description,
             name: name,
             implements: implements,
-            fields: fields,
             directives: directives,
+            fields: fields,
         }
     }
 }
@@ -146,7 +146,7 @@ impl GraphQLInterface {
         description: Option<String>,
         name: String,
         directives: Option<Vec<GraphQLDirective>>,
-        fields: Vec<GraphQLField>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLInterface {
         GraphQLInterface {
             description: description,
@@ -173,7 +173,7 @@ impl GraphQLInputObject {
         description: Option<String>,
         name: String,
         directives: Option<Vec<GraphQLDirective>>,
-        fields: Vec<GraphQLField>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLInputObject {
         GraphQLInputObject {
             description: description,
@@ -237,15 +237,23 @@ impl TypeDefinition {
         }
     }
 
+    pub fn directives(&self) -> Option<Vec<GraphQLDirective>> {
+        match *self {
+            TypeDefinition::ObjectType(GraphQLObject { ref directives, .. }) => directives.clone(),
+            TypeDefinition::EnumType(GraphQLEnum { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InterfaceType(GraphQLInterface { ref directives, .. }) => directives.clone(),
+            TypeDefinition::UnionType(GraphQLUnion { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InputObjectType(GraphQLInputObject { ref directives, .. }) => directives.clone(),
+            _ => panic!("That method does not exist for this type."),
+        }
+    }
+
     pub fn fields(&self) -> Option<Vec<GraphQLField>> {
         match *self {
             TypeDefinition::ObjectType(GraphQLObject { ref fields, .. }) |
             TypeDefinition::InterfaceType(GraphQLInterface { ref fields, .. }) |
             TypeDefinition::InputObjectType(GraphQLInputObject { ref fields, .. }) => {
-                if fields.len() > 0 {
-                    return Some(fields.to_vec());
-                }
-                None
+                fields.to_owned()
             }
             _ => panic!("That method does not exist for this type."),
         }
@@ -277,7 +285,7 @@ impl TypeDefinition {
 }
 
 impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
-impl_graphql_directive_methods! { GraphQLObject, GraphQLEnum, GraphQLInterface, GraphQLUnion, GraphQLInputObject, GraphQLField, GraphQLArgument, GraphQLValue }
+impl_graphql_directive_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
@@ -358,7 +366,7 @@ impl GraphQLDirective {
 }
 
 impl GraphQLDirectiveArgument {
-    pub fn new(name: String, value: String) -> GraphQLDirectiveArgument {
+    pub fn new(name: String, value: Option<String>) -> GraphQLDirectiveArgument {
         GraphQLDirectiveArgument {
             name: name,
             value: value,
@@ -369,8 +377,8 @@ impl GraphQLDirectiveArgument {
         &self.name
     }
 
-    pub fn value(&self) -> &str {
-        &self.value
+    pub fn value(&self) -> Option<&str> {
+        self.value.as_ref().map(|s| s.as_ref())
     }
 }
 

@@ -22,7 +22,7 @@ ScalarTypeDefinition: TypeDefinition = {
 };
 
 ObjectTypeDefinition: TypeDefinition = {
-    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
         TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, r, f))
     },
 };
@@ -34,7 +34,7 @@ EnumTypeDefinition: TypeDefinition = {
 };
 
 InterfaceTypeDefinition: TypeDefinition = {
-    <d:Description?> "interface" <n:Name> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "interface" <n:Name> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
         TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, r, f))
     },
 
@@ -49,7 +49,7 @@ UnionTypeDefinition: TypeDefinition = {
 };
 
 InputObjectTypeDefinition: TypeDefinition = {
-    <d:Description?> "input" <n:Name> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "input" <n:Name> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
         TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, r, f))
     },
 };
@@ -60,10 +60,16 @@ ImplementsInterfaces: Vec<String> = {
     }
 };
 
+Fields: Vec<GraphQLField> = {
+    <f:FieldDefinition+> => {
+      f
+    }
+};
+
 FieldDefinition: GraphQLField = {
-    <d:Description?> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <r:(Directives?)> => {
-        GraphQLField::new(d, n, t, a, r)
-    },
+  <d:Description?> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <r:(Directives?)> => {
+      GraphQLField::new(d, n, t, a, r)
+  }
 };
 
 EnumValueDefinition: GraphQLValue = {
@@ -130,9 +136,15 @@ DirectiveArgumentsDefinition: Vec<GraphQLDirectiveArgument> = {
 };
 
 DirectiveArgumentDefinition: GraphQLDirectiveArgument = {
-    <n:FieldName> ":" <q:QuotedString> => {
+    <n:FieldName> <q:DirectiveArgumentTypeDefinition?> => {
         GraphQLDirectiveArgument::new(n, q)
     },
+};
+
+DirectiveArgumentTypeDefinition: String = {
+    ":" <q:QuotedString> => {
+        q
+    }
 };
 
 Comma<T>: Vec<T> = {

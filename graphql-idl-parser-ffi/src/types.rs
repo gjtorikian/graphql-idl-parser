@@ -1,6 +1,6 @@
 extern crate graphql_idl_parser;
 
-use graphql_idl_parser::type_definition::{GraphQLField, GraphQLValue};
+use graphql_idl_parser::type_definition::{GraphQLField, GraphQLValue, GraphQLDirective};
 
 use libc::{c_char, c_void, int32_t};
 use std::ffi::{CString};
@@ -17,8 +17,8 @@ fn convert_optional_string_to_cstr(string: Option<&str>) -> *const c_char {
 #[repr(C)]
 pub struct Scalar {
     pub typename: *const c_char,
-    pub name: *const c_char,
     pub description: *const c_char,
+    pub name: *const c_char,
 }
 
 impl Clone for Scalar {
@@ -28,11 +28,11 @@ impl Clone for Scalar {
 }
 
 impl Scalar {
-    pub fn new(typename: &str, name: &str, description: Option<&str>) -> Scalar {
+    pub fn new(typename: &str, description: Option<&str>, name: &str) -> Scalar {
         Scalar {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
         }
     }
 }
@@ -41,9 +41,10 @@ impl Scalar {
 #[repr(C)]
 pub struct Object {
     typename: *const c_char,
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
     implements: ArrayOfCStrings,
+    directives: ArrayOfDirectives,
     fields: ArrayOfFields,
 }
 
@@ -56,18 +57,23 @@ impl Clone for Object {
 impl Object {
     pub fn new(
         typename: &str,
-        name: &str,
         description: Option<&str>,
+        name: &str,
         implements: Option<Vec<String>>,
-        fields: Option<Vec<graphql_idl_parser::type_definition::GraphQLField>>,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> Object {
         Object {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
             implements: match implements {
                 None => ArrayOfCStrings::from_vec(vec![]),
                 Some(implements) => ArrayOfCStrings::from_vec(implements),
+            },
+            directives: match directives {
+                None => ArrayOfDirectives::from_vec(vec![]),
+                Some(directives) => ArrayOfDirectives::from_vec(directives),
             },
             fields: match fields {
                 None => ArrayOfFields::from_vec(vec![]),
@@ -82,8 +88,9 @@ impl Object {
 #[repr(C)]
 pub struct Enum {
     typename: *const c_char,
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
+    directives: ArrayOfDirectives,
     values: ArrayOfValues,
 }
 
@@ -96,14 +103,19 @@ impl Clone for Enum {
 impl Enum {
     pub fn new(
         typename: &str,
-        name: &str,
         description: Option<&str>,
-        values: Option<Vec<graphql_idl_parser::type_definition::GraphQLValue>>,
+        name: &str,
+        directives: Option<Vec<GraphQLDirective>>,
+        values: Option<Vec<GraphQLValue>>,
     ) -> Enum {
         Enum {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
+            directives: match directives {
+                None => ArrayOfDirectives::from_vec(vec![]),
+                Some(directives) => ArrayOfDirectives::from_vec(directives),
+            },
             values: match values {
                 None => ArrayOfValues::from_vec(vec![]),
                 Some(values) => ArrayOfValues::from_vec(values),
@@ -116,8 +128,9 @@ impl Enum {
 #[repr(C)]
 pub struct Interface {
     typename: *const c_char,
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
+    directives: ArrayOfDirectives,
     fields: ArrayOfFields,
 }
 
@@ -130,14 +143,19 @@ impl Clone for Interface {
 impl Interface {
     pub fn new(
         typename: &str,
-        name: &str,
         description: Option<&str>,
-        fields: Option<Vec<graphql_idl_parser::type_definition::GraphQLField>>,
+        name: &str,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> Interface {
         Interface {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
+            directives: match directives {
+                None => ArrayOfDirectives::from_vec(vec![]),
+                Some(directives) => ArrayOfDirectives::from_vec(directives),
+            },
             fields: match fields {
                 None => ArrayOfFields::from_vec(vec![]),
                 Some(fields) => ArrayOfFields::from_vec(fields),
@@ -150,8 +168,9 @@ impl Interface {
 #[repr(C)]
 pub struct Union {
     typename: *const c_char,
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
+    directives: ArrayOfDirectives,
     types: ArrayOfCStrings,
 }
 
@@ -164,14 +183,19 @@ impl Clone for Union {
 impl Union {
     pub fn new(
         typename: &str,
-        name: &str,
         description: Option<&str>,
+        name: &str,
+        directives: Option<Vec<GraphQLDirective>>,
         types: Option<Vec<String>>,
     ) -> Union {
         Union {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
+            directives: match directives {
+                None => ArrayOfDirectives::from_vec(vec![]),
+                Some(directives) => ArrayOfDirectives::from_vec(directives),
+            },
             types: match types {
                 None => ArrayOfCStrings::from_vec(vec![]),
                 Some(types) => ArrayOfCStrings::from_vec(types),
@@ -184,8 +208,9 @@ impl Union {
 #[repr(C)]
 pub struct InputObject {
     typename: *const c_char,
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
+    directives: ArrayOfDirectives,
     fields: ArrayOfFields,
 }
 
@@ -198,14 +223,19 @@ impl Clone for InputObject {
 impl InputObject {
     pub fn new(
         typename: &str,
-        name: &str,
         description: Option<&str>,
-        fields: Option<Vec<graphql_idl_parser::type_definition::GraphQLField>>,
+        name: &str,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> InputObject {
         InputObject {
             typename: CString::new(typename).unwrap().into_raw(),
-            name: CString::new(name).unwrap().into_raw(),
             description: convert_optional_string_to_cstr(description),
+            name: CString::new(name).unwrap().into_raw(),
+            directives: match directives {
+                None => ArrayOfDirectives::from_vec(vec![]),
+                Some(directives) => ArrayOfDirectives::from_vec(directives),
+            },
             fields: match fields {
                 None => ArrayOfFields::from_vec(vec![]),
                 Some(fields) => ArrayOfFields::from_vec(fields),
@@ -224,9 +254,11 @@ struct FieldType {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct Argument {
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
     type_info: FieldType,
+    default: *const c_char,
+    directives: ArrayOfDirectives,
 }
 
 #[repr(C)]
@@ -239,12 +271,11 @@ struct ArrayOfArguments {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct Field {
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
     type_info: FieldType,
     arguments: ArrayOfArguments,
-    deprecated: bool,
-    deprecation_reason: *const c_char,
+    directives: ArrayOfDirectives,
 }
 
 #[repr(C)]
@@ -270,6 +301,11 @@ impl ArrayOfFields {
                             name: CString::new(arg.typeinfo().name()).unwrap().into_raw(),
                             type_info: CString::new(arg.typeinfo().info()).unwrap().into_raw(),
                         },
+                        default: convert_optional_string_to_cstr(arg.default()),
+                        directives: match v.directives() {
+                            None => ArrayOfDirectives::from_vec(vec![]),
+                            Some(directives) => ArrayOfDirectives::from_vec(directives)
+                        },
                     });
                 },
             }
@@ -289,8 +325,10 @@ impl ArrayOfFields {
                     type_info: CString::new(v.typeinfo().info()).unwrap().into_raw(),
                 },
                 arguments: arguments,
-                deprecated: v.deprecated(),
-                deprecation_reason: convert_optional_string_to_cstr(v.deprecation_reason()),
+                directives: match v.directives() {
+                    None => ArrayOfDirectives::from_vec(vec![]),
+                    Some(directives) => ArrayOfDirectives::from_vec(directives)
+                },
             });
         }
         field_vec.shrink_to_fit();
@@ -335,8 +373,9 @@ impl ArrayOfCStrings {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct Value {
-    name: *const c_char,
     description: *const c_char,
+    name: *const c_char,
+    directives: ArrayOfDirectives
 }
 
 #[repr(C)]
@@ -346,7 +385,6 @@ struct ArrayOfValues {
     values: *const *const c_void,
 }
 
-
 impl ArrayOfValues {
     fn from_vec(vec: Vec<GraphQLValue>) -> ArrayOfValues {
         let mut value_vec: Vec<Value> = vec![];
@@ -355,6 +393,10 @@ impl ArrayOfValues {
             value_vec.push(Value {
                 name: CString::new(v.name()).unwrap().into_raw(),
                 description: convert_optional_string_to_cstr(v.description()),
+                directives: match v.directives() {
+                    None => ArrayOfDirectives::from_vec(vec![]),
+                    Some(directives) => ArrayOfDirectives::from_vec(directives)
+                },
             });
         }
         value_vec.shrink_to_fit();
@@ -365,6 +407,76 @@ impl ArrayOfValues {
         };
 
         mem::forget(value_vec);
+
+        array
+    }
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct Directive {
+    name: *const c_char,
+    arguments: ArrayOfDirectiveArguments,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct ArrayOfDirectives {
+    length: int32_t,
+    values: *const *const c_void,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct DirectiveArgument {
+    name: *const c_char,
+    value: *const c_char,
+}
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+struct ArrayOfDirectiveArguments {
+    length: int32_t,
+    values: *const *const c_void,
+}
+
+impl ArrayOfDirectives {
+    fn from_vec(vec: Vec<GraphQLDirective>) -> ArrayOfDirectives {
+        let mut value_vec: Vec<Directive> = vec![];
+        let mut argument_vec: Vec<DirectiveArgument> = vec![];
+
+        for v in vec {
+            match v.arguments() {
+                None => {}
+                Some(arguments) => for arg in arguments {
+                    argument_vec.push(DirectiveArgument {
+                        name: CString::new(arg.name()).unwrap().into_raw(),
+                        value: convert_optional_string_to_cstr(arg.value()),
+                    });
+                },
+            }
+
+            argument_vec.shrink_to_fit();
+
+            let arguments = ArrayOfDirectiveArguments {
+                length: argument_vec.len() as int32_t,
+                values: argument_vec.as_ptr() as *const *const c_void,
+            };
+
+            value_vec.push(Directive {
+                name: CString::new(v.name()).unwrap().into_raw(),
+                arguments: arguments
+            });
+        }
+        value_vec.shrink_to_fit();
+
+        let array = ArrayOfDirectives {
+            length: value_vec.len() as int32_t,
+            values: value_vec.as_ptr() as *const *const c_void,
+        };
+
+        mem::forget(value_vec);
+        mem::forget(argument_vec);
 
         array
     }

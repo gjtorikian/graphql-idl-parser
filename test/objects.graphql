@@ -40,7 +40,7 @@ type User {
   databaseId: Int @deprecated
 }
 
-type User {
+type Issue {
   databaseId: Int @deprecated(reason: "Exposed database IDs will eventually be removed in favor of global Relay IDs.")
 }
 
