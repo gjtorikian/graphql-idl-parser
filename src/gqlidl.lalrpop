@@ -21,39 +21,36 @@ ScalarTypeDefinition: TypeDefinition = {
     }
 };
 
-// TODO: missing directives
 ObjectTypeDefinition: TypeDefinition = {
-    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
+    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, r, f))
     },
 };
 
-// TODO: missing directives
 EnumTypeDefinition: TypeDefinition = {
-    <d:Description?> "enum" <n:Name> "{" <f:(<EnumValueDefinition>)+> "}" => {
-        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
+    <d:Description?> "enum" <n:Name> <r:(Directives?)> "{" <f:(<EnumValueDefinition>)+> "}" => {
+        TypeDefinition::EnumType(GraphQLEnum::new(d, n, r, f))
     }
 };
 
-// TODO: missing directives
 InterfaceTypeDefinition: TypeDefinition = {
-    <d:Description?> "interface" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
+    <d:Description?> "interface" <n:Name> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, r, f))
     },
 
 };
 
-// TODO: missing directives
 UnionTypeDefinition: TypeDefinition = {
-    <d:Description?> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
+    <d:Description?> "union" <n:Name> <r:(Directives?)> <t:DefaultValue> => {
+        // This is dumb, but there seemes to be some ambiguity conflict with "="
+        let res: Vec<String> = t.split("|").map(|s| s.trim().to_string()).collect();
+        TypeDefinition::UnionType(GraphQLUnion::new(d, n, r, res))
     }
 };
 
-// TODO: missing directives
 InputObjectTypeDefinition: TypeDefinition = {
-    <d:Description?> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
+    <d:Description?> "input" <n:Name> <r:(Directives?)> "{" <f:(<FieldDefinition>)*> "}" => {
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, r, f))
     },
 };
 
@@ -69,10 +66,9 @@ FieldDefinition: GraphQLField = {
     },
 };
 
-// TODO: missing directives
 EnumValueDefinition: GraphQLValue = {
-    <d:Description?> <n:Name> => {
-        GraphQLValue::new(d, n)
+    <d:Description?> <n:Name> <r:(Directives?)> => {
+        GraphQLValue::new(d, n, r)
     }
 };
 
@@ -109,10 +105,9 @@ ArgumentsDefinition: Vec<GraphQLArgument> = {
     }
 };
 
-// TODO: missing directives
 InputValueDefinition: GraphQLArgument = {
-    <d:Description?> <n:FieldName> ":" <t:FieldType> <v:DefaultValue?> => {
-        GraphQLArgument::new(d, n, t, v)
+    <d:Description?> <n:FieldName> ":" <t:FieldType> <v:DefaultValue?> <r:(Directives?)> => {
+        GraphQLArgument::new(d, n, t, v, r)
     }
 };
 
@@ -167,7 +162,7 @@ Pipe1<T>: Vec<T> = {
 };
 
 Description: String = {
-    <d:Desc+> => {
+    <d:CommentedString+> => {
         d.join(" ")
     }
 };
@@ -175,9 +170,11 @@ Description: String = {
 // NOTE: These are all gross, can they be improved?
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
 
-DefaultValue: String = <s:r"~\s*.+">      => s[1..s.len()].trim().to_owned();
-Desc:  String = <s:r"#\s*.+">      => s[1..s.len()].trim().to_owned();
-QuotedString: String = <s:r#""[^"]*""#>   => s[1..s.len()-1].to_string();
+EQUALS_SIGN: String = => "".to_string();
+
+DefaultValue:      String = <s:r"=\s*.+">      => s[1..s.len()].trim().to_owned();
+CommentedString:  String = <s:r"#\s*.+">      => s[1..s.len()].trim().to_owned();
+QuotedString: String = <s:r#""[^"]*""#>   => s[1..s.len()-1].to_owned();
 
 FieldName: String = {
     r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),

@@ -14,30 +14,35 @@ pub struct GraphQLObject {
     description: Option<String>,
     name: String,
     implements: Option<Vec<String>>,
+    directives: Option<Vec<GraphQLDirective>>,
     fields: Vec<GraphQLField>,
 }
 
 pub struct GraphQLEnum {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     values: Vec<GraphQLValue>,
 }
 
 pub struct GraphQLInterface {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     fields: Vec<GraphQLField>,
 }
 
 pub struct GraphQLUnion {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     types: Vec<String>,
 }
 
 pub struct GraphQLInputObject {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     fields: Vec<GraphQLField>,
 }
 
@@ -63,6 +68,7 @@ pub struct GraphQLField {
 pub struct GraphQLValue {
     name: String,
     description: Option<String>,
+    directives: Option<Vec<GraphQLDirective>>
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -71,9 +77,10 @@ pub struct GraphQLArgument {
     name: String,
     typeinfo: FieldType,
     default: Option<String>,
+    directives: Option<Vec<GraphQLDirective>>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GraphQLDirective {
     name: String,
     arguments: Option<Vec<GraphQLDirectiveArgument>>,
@@ -105,6 +112,7 @@ impl GraphQLObject {
         description: Option<String>,
         name: String,
         implements: Option<Vec<String>>,
+        directives: Option<Vec<GraphQLDirective>>,
         fields: Vec<GraphQLField>,
     ) -> GraphQLObject {
         GraphQLObject {
@@ -112,6 +120,7 @@ impl GraphQLObject {
             name: name,
             implements: implements,
             fields: fields,
+            directives: directives,
         }
     }
 }
@@ -120,11 +129,13 @@ impl GraphQLEnum {
     pub fn new(
         description: Option<String>,
         name: String,
+        directives: Option<Vec<GraphQLDirective>>,
         values: Vec<GraphQLValue>,
     ) -> GraphQLEnum {
         GraphQLEnum {
             description: description,
             name: name,
+            directives: directives,
             values: values,
         }
     }
@@ -134,21 +145,24 @@ impl GraphQLInterface {
     pub fn new(
         description: Option<String>,
         name: String,
+        directives: Option<Vec<GraphQLDirective>>,
         fields: Vec<GraphQLField>,
     ) -> GraphQLInterface {
         GraphQLInterface {
             description: description,
             name: name,
+            directives: directives,
             fields: fields,
         }
     }
 }
 
 impl GraphQLUnion {
-    pub fn new(description: Option<String>, name: String, types: Vec<String>) -> GraphQLUnion {
+    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>, types: Vec<String>) -> GraphQLUnion {
         GraphQLUnion {
             description: description,
             name: name,
+            directives: directives,
             types: types,
         }
     }
@@ -158,11 +172,13 @@ impl GraphQLInputObject {
     pub fn new(
         description: Option<String>,
         name: String,
+        directives: Option<Vec<GraphQLDirective>>,
         fields: Vec<GraphQLField>,
     ) -> GraphQLInputObject {
         GraphQLInputObject {
             description: description,
             name: name,
+            directives: directives,
             fields: fields,
         }
     }
@@ -261,7 +277,7 @@ impl TypeDefinition {
 }
 
 impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
-impl_graphql_directive_methods! { GraphQLField }
+impl_graphql_directive_methods! { GraphQLObject, GraphQLEnum, GraphQLInterface, GraphQLUnion, GraphQLInputObject, GraphQLField, GraphQLArgument, GraphQLValue }
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
@@ -290,12 +306,13 @@ impl GraphQLField {
 }
 
 impl GraphQLArgument {
-    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, default: Option<String>) -> GraphQLArgument {
+    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, default: Option<String>, directives: Option<Vec<GraphQLDirective>>) -> GraphQLArgument {
         GraphQLArgument {
             description: description,
             name: name,
             typeinfo: typeinfo,
             default: default,
+            directives: directives,
         }
     }
 
@@ -308,10 +325,11 @@ impl GraphQLArgument {
 }
 
 impl GraphQLValue {
-    pub fn new(description: Option<String>, name: String) -> GraphQLValue {
+    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>) -> GraphQLValue {
         GraphQLValue {
             description: description,
             name: name,
+            directives: directives
         }
     }
 }
