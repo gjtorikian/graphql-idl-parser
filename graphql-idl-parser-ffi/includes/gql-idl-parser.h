@@ -9,7 +9,7 @@ extern "C" {
 #endif
 
 typedef struct array_of_strings {
-  int32_t length;
+  size_t length;
   const char** data;
 } array_and_size;
 
@@ -24,7 +24,7 @@ typedef struct GraphQLDirectiveArgument {
 } GraphQLDirectiveArgument;
 
 typedef struct array_of_directive_arguments {
-  int32_t length;
+  size_t length;
   const GraphQLDirectiveArgument* data;
 } array_of_directive_arguments;
 
@@ -34,7 +34,7 @@ typedef struct GraphQLDirective {
 } GraphQLDirective;
 
 typedef struct array_of_directives {
-  int32_t length;
+  size_t length;
   const GraphQLDirective* data;
 } array_of_directives;
 
@@ -47,7 +47,7 @@ typedef struct GraphQLArgument {
 } GraphQLArgument;
 
 typedef struct array_of_arguments {
-  int32_t length;
+  size_t length;
   const GraphQLArgument* data;
 } array_of_arguments;
 
@@ -60,7 +60,7 @@ typedef struct GraphQLField {
 } GraphQLField;
 
 typedef struct array_of_fields {
-  int32_t length;
+  size_t length;
   const GraphQLField* data;
 } array_of_fields;
 
@@ -71,7 +71,7 @@ typedef struct GraphQLValue {
 } GraphQLValue;
 
 typedef struct array_of_values {
-  int32_t length;
+  size_t length;
   const GraphQLValue* data;
 } array_of_values;
 
