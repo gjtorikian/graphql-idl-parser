@@ -5,14 +5,6 @@ static INTERFACE: &'static str = "interface";
 static UNION: &'static str = "union";
 static INPUT_OBJECT: &'static str = "input_object";
 
-fn convert_description(description: Vec<String>) -> Option<String> {
-    if description.len() > 0 {
-        return Some(description.join(" "));
-    } else {
-        None
-    }
-}
-
 pub struct GraphQLScalar {
     description: Option<String>,
     name: String,
@@ -88,9 +80,9 @@ pub struct FieldType {
 }
 
 impl GraphQLScalar {
-    pub fn new(description: Vec<String>, name: String) -> GraphQLScalar {
+    pub fn new(description: Option<String>, name: String) -> GraphQLScalar {
         GraphQLScalar {
-            description: convert_description(description),
+            description: description,
             name: name,
         }
     }
@@ -98,13 +90,13 @@ impl GraphQLScalar {
 
 impl GraphQLObject {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         implements: Option<Vec<String>>,
         fields: Vec<GraphQLField>,
     ) -> GraphQLObject {
         GraphQLObject {
-            description: convert_description(description),
+            description: description,
             name: name,
             implements: implements,
             fields: fields,
@@ -114,12 +106,12 @@ impl GraphQLObject {
 
 impl GraphQLEnum {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         values: Vec<GraphQLValue>,
     ) -> GraphQLEnum {
         GraphQLEnum {
-            description: convert_description(description),
+            description: description,
             name: name,
             values: values,
         }
@@ -128,12 +120,12 @@ impl GraphQLEnum {
 
 impl GraphQLInterface {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         fields: Vec<GraphQLField>,
     ) -> GraphQLInterface {
         GraphQLInterface {
-            description: convert_description(description),
+            description: description,
             name: name,
             fields: fields,
         }
@@ -141,9 +133,9 @@ impl GraphQLInterface {
 }
 
 impl GraphQLUnion {
-    pub fn new(description: Vec<String>, name: String, types: Vec<String>) -> GraphQLUnion {
+    pub fn new(description: Option<String>, name: String, types: Vec<String>) -> GraphQLUnion {
         GraphQLUnion {
-            description: convert_description(description),
+            description: description,
             name: name,
             types: types,
         }
@@ -152,12 +144,12 @@ impl GraphQLUnion {
 
 impl GraphQLInputObject {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         fields: Vec<GraphQLField>,
     ) -> GraphQLInputObject {
         GraphQLInputObject {
-            description: convert_description(description),
+            description: description,
             name: name,
             fields: fields,
         }
@@ -262,7 +254,7 @@ impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         typeinfo: FieldType,
         arguments: Option<Vec<GraphQLArgument>>,
@@ -270,7 +262,7 @@ impl GraphQLField {
         deprecation_reason: Option<String>,
     ) -> GraphQLField {
         GraphQLField {
-            description: convert_description(description),
+            description: description,
             name: name,
             typeinfo: typeinfo,
             arguments: arguments,

@@ -16,28 +16,28 @@ TypeDefinition: TypeDefinition = {
 };
 
 ScalarTypeDefinition: TypeDefinition = {
-    <d:Description*> "scalar" <n:Name> => {
+    <d:Description?> "scalar" <n:Name> => {
         TypeDefinition::ScalarType(GraphQLScalar::new(d, n))
     }
 };
 
 // TODO: missing directives
 ObjectTypeDefinition: TypeDefinition = {
-    <d:Description*> "type" <n:Name> <i:(ImplementsInterfaces?)> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> "{" <f:(<FieldDefinition>)*> "}" => {
         TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
     },
 };
 
 // TODO: missing directives
 EnumTypeDefinition: TypeDefinition = {
-    <d:Description*> "enum" <n:Name> "{" <f:(<EnumValueDefinition>)+> "}" => {
+    <d:Description?> "enum" <n:Name> "{" <f:(<EnumValueDefinition>)+> "}" => {
         TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
     }
 };
 
 // TODO: missing directives
 InterfaceTypeDefinition: TypeDefinition = {
-    <d:Description*> "interface" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "interface" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
         TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
     },
 
@@ -45,14 +45,14 @@ InterfaceTypeDefinition: TypeDefinition = {
 
 // TODO: missing directives
 UnionTypeDefinition: TypeDefinition = {
-    <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
+    <d:Description?> "union" <n:Name> "=" <t:Pipe<Name>> => {
         TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
     }
 };
 
 // TODO: missing directives
 InputObjectTypeDefinition: TypeDefinition = {
-    <d:Description*> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
+    <d:Description?> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
         TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
     },
 };
@@ -72,7 +72,7 @@ FieldDefinition: GraphQLField = {
 
 // TODO: missing directives
 EnumValueDefinition: GraphQLValue = {
-    <d:Description*> <n:Name> => {
+    <d:Description?> <n:Name> => {
         GraphQLValue::new(d, n)
     }
 };
@@ -153,8 +153,14 @@ Pipe1<T>: Vec<T> = {
     }
 };
 
-// NOTE: This is gross, can it be improved?
+Description: String = {
+    <d:Desc+> => {
+        d.join(" ")
+    }
+};
+
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
+Desc:  String = <s:r"#\s*.+">      => s[1..s.len()].trim().to_owned();
 FieldName: String = {
     r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),
     "scalar"  => "scalar".to_owned(),
@@ -164,5 +170,3 @@ FieldName: String = {
     "union"  => "union".to_owned(),
     "input"  => "input".to_owned(),
 };
-
-Description: String = <s:r"#\s*.+"> => s[1..s.len()].trim().to_owned();
