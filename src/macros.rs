@@ -10,16 +10,12 @@ macro_rules! impl_graphql_meta_methods {
     };
 }
 
-macro_rules! impl_graphql_deprecated_methods {
+macro_rules! impl_graphql_directive_methods {
     ($($type_: ty),*) => {
       $(
         impl $type_ {
-            pub fn deprecated(&self) -> bool {
-                self.deprecated
-            }
-
-            pub fn deprecation_reason(&self) -> Option<&str> {
-                self.deprecation_reason.as_ref().map(|s| s.as_ref())
+            pub fn directives(&self) -> Option<Vec<GraphQLDirective>> {
+                self.directives.clone()
             }
         }
       )*

@@ -56,7 +56,7 @@ void test_objects__inline(void)
   cl_assert_equal_i(1, types[4].object_type.fields.length);
   cl_assert_equal_s("body", types[4].object_type.fields.data[0].name);
   cl_assert_equal_s(NULL, types[4].object_type.fields.data[0].description);
-  cl_assert_equal_b(false, types[4].object_type.fields.data[0].deprecated);
+  cl_assert_equal_i(0, types[4].object_type.fields.data[0].directives.length);
 
   cl_assert_equal_s(types[5].typename, "object");
   cl_assert_equal_s("The Code of Conduct for a repository", types[5].object_type.description);
@@ -64,7 +64,7 @@ void test_objects__inline(void)
   cl_assert_equal_i(1, types[5].object_type.fields.length);
   cl_assert_equal_s("body", types[5].object_type.fields.data[0].name);
   cl_assert_equal_s("The body of the CoC", types[5].object_type.fields.data[0].description);
-  cl_assert_equal_b(false, types[5].object_type.fields.data[0].deprecated);
+  cl_assert_equal_i(0, types[5].object_type.fields.data[0].directives.length);
 
   cl_assert_equal_s(types[6].typename, "object");
   cl_assert_equal_s("key", types[6].object_type.fields.data[0].name);
@@ -102,12 +102,29 @@ void test_objects__inline(void)
 
   cl_assert_equal_s(types[11].typename, "object");
   cl_assert_equal_s("User", types[11].object_type.name);
-  cl_assert_equal_b(true, types[11].object_type.fields.data[0].deprecated);
-  cl_assert_equal_s(NULL, types[11].object_type.fields.data[0].deprecation_reason);
+  cl_assert_equal_i(1, types[11].object_type.fields.data[0].directives.length);
+  cl_assert_equal_s("deprecated", types[11].object_type.fields.data[0].directives.data[0].name);
+  cl_assert_equal_i(0, types[11].object_type.fields.data[0].directives.data[0].arguments.length);
 
   cl_assert_equal_s(types[12].typename, "object");
-  cl_assert_equal_s("User", types[12].object_type.name);
-  cl_assert_equal_b(true, types[12].object_type.fields.data[0].deprecated);
-  cl_assert_equal_s("Exposed database IDs will eventually be removed in favor of global Relay IDs.", types[12].object_type.fields.data[0].deprecation_reason);
+  cl_assert_equal_s("Issue", types[12].object_type.name);
+  cl_assert_equal_i(0, types[12].object_type.fields.data[0].arguments.length);
+  cl_assert_equal_i(1, types[12].object_type.fields.data[0].directives.length);
+  cl_assert_equal_s("deprecated", types[12].object_type.fields.data[0].directives.data[0].name);
+  cl_assert_equal_i(1, types[12].object_type.fields.data[0].directives.data[0].arguments.length);
+  cl_assert_equal_s("reason", types[12].object_type.fields.data[0].directives.data[0].arguments.data[0].name);
+  cl_assert_equal_s("Exposed database IDs will eventually be removed in favor of global Relay IDs.", types[12].object_type.fields.data[0].directives.data[0].arguments.data[0].value);
 
+  cl_assert_equal_s(types[13].typename, "object");
+  cl_assert_equal_s("Team", types[13].object_type.name);
+  cl_assert_equal_i(1, types[13].object_type.implements.length);
+  cl_assert_equal_s("Node", types[13].object_type.implements.data[0]);
+
+  cl_assert_equal_i(1, types[13].object_type.fields.length);
+  cl_assert_equal_s("childTeams", types[13].object_type.fields.data[0].name);
+  cl_assert_equal_i(1, types[13].object_type.fields.data[0].arguments.length);
+  cl_assert_equal_s("immediateOnly", types[13].object_type.fields.data[0].arguments.data[0].name);
+  cl_assert_equal_s("Boolean", types[13].object_type.fields.data[0].arguments.data[0].type_info.name);
+  cl_assert_equal_s("", types[13].object_type.fields.data[0].arguments.data[0].type_info.info);
+  cl_assert_equal_s("true", types[13].object_type.fields.data[0].arguments.data[0].default_value);
 }

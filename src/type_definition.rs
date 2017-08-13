@@ -5,14 +5,6 @@ static INTERFACE: &'static str = "interface";
 static UNION: &'static str = "union";
 static INPUT_OBJECT: &'static str = "input_object";
 
-fn convert_description(description: Vec<String>) -> Option<String> {
-    if description.len() > 0 {
-        return Some(description.join(" "));
-    } else {
-        None
-    }
-}
-
 pub struct GraphQLScalar {
     description: Option<String>,
     name: String,
@@ -22,31 +14,36 @@ pub struct GraphQLObject {
     description: Option<String>,
     name: String,
     implements: Option<Vec<String>>,
-    fields: Vec<GraphQLField>,
+    directives: Option<Vec<GraphQLDirective>>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub struct GraphQLEnum {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     values: Vec<GraphQLValue>,
 }
 
 pub struct GraphQLInterface {
     description: Option<String>,
     name: String,
-    fields: Vec<GraphQLField>,
+    directives: Option<Vec<GraphQLDirective>>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub struct GraphQLUnion {
     description: Option<String>,
     name: String,
+    directives: Option<Vec<GraphQLDirective>>,
     types: Vec<String>,
 }
 
 pub struct GraphQLInputObject {
     description: Option<String>,
     name: String,
-    fields: Vec<GraphQLField>,
+    directives: Option<Vec<GraphQLDirective>>,
+    fields: Option<Vec<GraphQLField>>,
 }
 
 pub enum TypeDefinition {
@@ -64,33 +61,47 @@ pub struct GraphQLField {
     name: String,
     typeinfo: FieldType,
     arguments: Option<Vec<GraphQLArgument>>,
-    deprecated: bool,
-    deprecation_reason: Option<String>,
+    directives: Option<Vec<GraphQLDirective>>,
 }
 
 #[derive(Clone)]
 pub struct GraphQLValue {
-    name: String,
     description: Option<String>,
+    name: String,
+    directives: Option<Vec<GraphQLDirective>>
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GraphQLArgument {
     description: Option<String>,
     name: String,
     typeinfo: FieldType,
+    default: Option<String>,
+    directives: Option<Vec<GraphQLDirective>>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
+pub struct GraphQLDirective {
+    name: String,
+    arguments: Option<Vec<GraphQLDirectiveArgument>>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct GraphQLDirectiveArgument {
+    name: String,
+    value: Option<String>
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldType {
     pub name: String,
     pub info: TypeInfo,
 }
 
 impl GraphQLScalar {
-    pub fn new(description: Vec<String>, name: String) -> GraphQLScalar {
+    pub fn new(description: Option<String>, name: String) -> GraphQLScalar {
         GraphQLScalar {
-            description: convert_description(description),
+            description: description,
             name: name,
         }
     }
@@ -98,15 +109,17 @@ impl GraphQLScalar {
 
 impl GraphQLObject {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         implements: Option<Vec<String>>,
-        fields: Vec<GraphQLField>,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLObject {
         GraphQLObject {
-            description: convert_description(description),
+            description: description,
             name: name,
             implements: implements,
+            directives: directives,
             fields: fields,
         }
     }
@@ -114,13 +127,15 @@ impl GraphQLObject {
 
 impl GraphQLEnum {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
+        directives: Option<Vec<GraphQLDirective>>,
         values: Vec<GraphQLValue>,
     ) -> GraphQLEnum {
         GraphQLEnum {
-            description: convert_description(description),
+            description: description,
             name: name,
+            directives: directives,
             values: values,
         }
     }
@@ -128,23 +143,26 @@ impl GraphQLEnum {
 
 impl GraphQLInterface {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
-        fields: Vec<GraphQLField>,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLInterface {
         GraphQLInterface {
-            description: convert_description(description),
+            description: description,
             name: name,
+            directives: directives,
             fields: fields,
         }
     }
 }
 
 impl GraphQLUnion {
-    pub fn new(description: Vec<String>, name: String, types: Vec<String>) -> GraphQLUnion {
+    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>, types: Vec<String>) -> GraphQLUnion {
         GraphQLUnion {
-            description: convert_description(description),
+            description: description,
             name: name,
+            directives: directives,
             types: types,
         }
     }
@@ -152,19 +170,21 @@ impl GraphQLUnion {
 
 impl GraphQLInputObject {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
-        fields: Vec<GraphQLField>,
+        directives: Option<Vec<GraphQLDirective>>,
+        fields: Option<Vec<GraphQLField>>,
     ) -> GraphQLInputObject {
         GraphQLInputObject {
-            description: convert_description(description),
+            description: description,
             name: name,
+            directives: directives,
             fields: fields,
         }
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TypeInfo {
     Nullable,
     NonNullable,
@@ -217,15 +237,23 @@ impl TypeDefinition {
         }
     }
 
+    pub fn directives(&self) -> Option<Vec<GraphQLDirective>> {
+        match *self {
+            TypeDefinition::ObjectType(GraphQLObject { ref directives, .. }) => directives.clone(),
+            TypeDefinition::EnumType(GraphQLEnum { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InterfaceType(GraphQLInterface { ref directives, .. }) => directives.clone(),
+            TypeDefinition::UnionType(GraphQLUnion { ref directives, .. }) => directives.clone(),
+            TypeDefinition::InputObjectType(GraphQLInputObject { ref directives, .. }) => directives.clone(),
+            _ => panic!("That method does not exist for this type."),
+        }
+    }
+
     pub fn fields(&self) -> Option<Vec<GraphQLField>> {
         match *self {
             TypeDefinition::ObjectType(GraphQLObject { ref fields, .. }) |
             TypeDefinition::InterfaceType(GraphQLInterface { ref fields, .. }) |
             TypeDefinition::InputObjectType(GraphQLInputObject { ref fields, .. }) => {
-                if fields.len() > 0 {
-                    return Some(fields.to_vec());
-                }
-                None
+                fields.to_owned()
             }
             _ => panic!("That method does not exist for this type."),
         }
@@ -257,28 +285,23 @@ impl TypeDefinition {
 }
 
 impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
-impl_graphql_deprecated_methods! { GraphQLField }
+impl_graphql_directive_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
     pub fn new(
-        description: Vec<String>,
+        description: Option<String>,
         name: String,
         typeinfo: FieldType,
         arguments: Option<Vec<GraphQLArgument>>,
-        deprecated: Option<bool>,
-        deprecation_reason: Option<String>,
+        directives: Option<Vec<GraphQLDirective>>,
     ) -> GraphQLField {
         GraphQLField {
-            description: convert_description(description),
+            description: description,
             name: name,
             typeinfo: typeinfo,
             arguments: arguments,
-            deprecated: match deprecated {
-                None => false,
-                Some(_) => true
-            },
-            deprecation_reason: deprecation_reason,
+            directives: directives,
         }
     }
 
@@ -291,21 +314,71 @@ impl GraphQLField {
 }
 
 impl GraphQLArgument {
-    pub fn new(description: Vec<String>, name: String, typeinfo: FieldType) -> GraphQLArgument {
+    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, default: Option<String>, directives: Option<Vec<GraphQLDirective>>) -> GraphQLArgument {
         GraphQLArgument {
-            description: convert_description(description),
+            description: description,
             name: name,
             typeinfo: typeinfo,
+            default: default,
+            directives: directives,
+        }
+    }
+
+    pub fn default(&self) -> Option<&str> {
+        match self.default {
+            None => None,
+            Some(ref def) => Some(def.as_str())
         }
     }
 }
 
 impl GraphQLValue {
-    pub fn new(description: Vec<String>, name: String) -> GraphQLValue {
+    pub fn new(description: Option<String>, name: String, directives: Option<Vec<GraphQLDirective>>) -> GraphQLValue {
         GraphQLValue {
-            description: convert_description(description),
+            description: description,
             name: name,
+            directives: directives
         }
+    }
+}
+
+impl GraphQLDirective {
+    pub fn new(
+        name: String,
+        arguments: Option<Vec<GraphQLDirectiveArgument>>,
+    ) -> GraphQLDirective {
+        GraphQLDirective {
+            name: name,
+            arguments: arguments
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn arguments(&self) -> Option<Vec<GraphQLDirectiveArgument>> {
+        match self.arguments {
+            None => None,
+            Some(ref arguments) => Some(arguments.clone())
+        }
+    }
+}
+
+impl GraphQLDirectiveArgument {
+    pub fn new(name: String, value: Option<String>) -> GraphQLDirectiveArgument {
+        GraphQLDirectiveArgument {
+            name: name,
+            value: value,
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn value(&self) -> Option<&str> {
+        self.value.as_ref().map(|s| s.as_ref())
     }
 }
 

@@ -16,44 +16,41 @@ TypeDefinition: TypeDefinition = {
 };
 
 ScalarTypeDefinition: TypeDefinition = {
-    <d:Description*> "scalar" <n:Name> => {
+    <d:Description?> "scalar" <n:Name> => {
         TypeDefinition::ScalarType(GraphQLScalar::new(d, n))
     }
 };
 
-// TODO: missing directives
 ObjectTypeDefinition: TypeDefinition = {
-    <d:Description*> "type" <n:Name> <i:(ImplementsInterfaces?)> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, f))
+    <d:Description?> "type" <n:Name> <i:(ImplementsInterfaces?)> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
+        TypeDefinition::ObjectType(GraphQLObject::new(d, n, i, r, f))
     },
 };
 
-// TODO: missing directives
 EnumTypeDefinition: TypeDefinition = {
-    <d:Description*> "enum" <n:Name> "{" <f:(<EnumValueDefinition>)+> "}" => {
-        TypeDefinition::EnumType(GraphQLEnum::new(d, n, f))
+    <d:Description?> "enum" <n:Name> <r:(Directives?)> "{" <f:(<EnumValueDefinition>)+> "}" => {
+        TypeDefinition::EnumType(GraphQLEnum::new(d, n, r, f))
     }
 };
 
-// TODO: missing directives
 InterfaceTypeDefinition: TypeDefinition = {
-    <d:Description*> "interface" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, f))
+    <d:Description?> "interface" <n:Name> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
+        TypeDefinition::InterfaceType(GraphQLInterface::new(d, n, r, f))
     },
 
 };
 
-// TODO: missing directives
 UnionTypeDefinition: TypeDefinition = {
-    <d:Description*> "union" <n:Name> "=" <t:Pipe<Name>> => {
-        TypeDefinition::UnionType(GraphQLUnion::new(d, n, t))
+    <d:Description?> "union" <n:Name> <r:(Directives?)> <t:DefaultValue> => {
+        // This is dumb, but there seemes to be some ambiguity conflict with "="
+        let res: Vec<String> = t.split("|").map(|s| s.trim().to_string()).collect();
+        TypeDefinition::UnionType(GraphQLUnion::new(d, n, r, res))
     }
 };
 
-// TODO: missing directives
 InputObjectTypeDefinition: TypeDefinition = {
-    <d:Description*> "input" <n:Name> "{" <f:(<FieldDefinition>)*> "}" => {
-        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, f))
+    <d:Description?> "input" <n:Name> <r:(Directives?)> "{" <f:(Fields?)> "}" => {
+        TypeDefinition::InputObjectType(GraphQLInputObject::new(d, n, r, f))
     },
 };
 
@@ -63,17 +60,21 @@ ImplementsInterfaces: Vec<String> = {
     }
 };
 
-// TODO: missing directives
-FieldDefinition: GraphQLField = {
-    <d:Description*> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(d, n, t, a, e, r)
-    },
+Fields: Vec<GraphQLField> = {
+    <f:FieldDefinition+> => {
+      f
+    }
 };
 
-// TODO: missing directives
+FieldDefinition: GraphQLField = {
+  <d:Description?> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <r:(Directives?)> => {
+      GraphQLField::new(d, n, t, a, r)
+  }
+};
+
 EnumValueDefinition: GraphQLValue = {
-    <d:Description*> <n:Name> => {
-        GraphQLValue::new(d, n)
+    <d:Description?> <n:Name> <r:(Directives?)> => {
+        GraphQLValue::new(d, n, r)
     }
 };
 
@@ -110,20 +111,39 @@ ArgumentsDefinition: Vec<GraphQLArgument> = {
     }
 };
 
-// TODO: missing directives
 InputValueDefinition: GraphQLArgument = {
-    <d:Description*> <n:FieldName> ":" <t:FieldType> => {
-        GraphQLArgument::new(d, n, t)
+    <d:Description?> <n:FieldName> ":" <t:FieldType> <v:DefaultValue?> <r:(Directives?)> => {
+        GraphQLArgument::new(d, n, t, v, r)
     }
 };
 
-Deprecated: bool = {
-    "@deprecated" => true
+Directives: Vec<GraphQLDirective> = {
+    <d:Directive+> => {
+        d
+    }
 };
 
-DeprecatedReason: String = {
-    "(reason: " <s:r#""[^"]*""#> ")" => {
-      s[1..s.len()-1].to_string()
+Directive: GraphQLDirective = {
+    "@" <n:Name> <d:(DirectiveArgumentsDefinition)?> => {
+        GraphQLDirective::new(n, d)
+    }
+};
+
+DirectiveArgumentsDefinition: Vec<GraphQLDirectiveArgument> = {
+    "(" <d:DirectiveArgumentDefinition+> ")" => {
+        d
+    }
+};
+
+DirectiveArgumentDefinition: GraphQLDirectiveArgument = {
+    <n:FieldName> <q:DirectiveArgumentTypeDefinition?> => {
+        GraphQLDirectiveArgument::new(n, q)
+    },
+};
+
+DirectiveArgumentTypeDefinition: String = {
+    ":" <q:QuotedString> => {
+        q
     }
 };
 
@@ -153,8 +173,21 @@ Pipe1<T>: Vec<T> = {
     }
 };
 
-// NOTE: This is gross, can it be improved?
+Description: String = {
+    <d:CommentedString+> => {
+        d.join(" ")
+    }
+};
+
+// NOTE: These are all gross, can they be improved?
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
+
+EQUALS_SIGN: String = => "".to_string();
+
+DefaultValue:      String = <s:r"=\s*.+">      => s[1..s.len()].trim().to_owned();
+CommentedString:  String = <s:r"#\s*.+">      => s[1..s.len()].trim().to_owned();
+QuotedString: String = <s:r#""[^"]*""#>   => s[1..s.len()-1].to_owned();
+
 FieldName: String = {
     r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),
     "scalar"  => "scalar".to_owned(),
@@ -164,5 +197,3 @@ FieldName: String = {
     "union"  => "union".to_owned(),
     "input"  => "input".to_owned(),
 };
-
-Description: String = <s:r"#\s*.+"> => s[1..s.len()].trim().to_owned();

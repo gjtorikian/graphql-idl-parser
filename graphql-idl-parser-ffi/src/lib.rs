@@ -40,37 +40,39 @@ pub extern "C" fn gqlidl_parse_schema(
                 .map(|mut v| {
                     let s = match v.typename() {
                         "scalar" => {
-                            let d = Scalar::new(v.typename(), v.name(), v.description());
+                            let d = Scalar::new(v.typename(), v.description(), v.name());
                             return GraphQLType { scalar: d };
                         }
                         "object" => {
                             let d = Object::new(
                                 v.typename(),
-                                v.name(),
                                 v.description(),
+                                v.name(),
                                 v.implements(),
+                                v.directives(),
                                 v.fields(),
                             );
                             return GraphQLType { object: d };
                         }
                         "enum" => {
-                            let d = Enum::new(v.typename(), v.name(), v.description(), v.values());
+                            let d = Enum::new(v.typename(), v.description(), v.name(), v.directives(), v.values());
                             return GraphQLType { enum_type: d };
                         }
                         "interface" => {
                             let d =
-                                Interface::new(v.typename(), v.name(), v.description(), v.fields());
+                                Interface::new(v.typename(), v.description(), v.name(), v.directives(), v.fields());
                             return GraphQLType { interface: d };
                         }
                         "union" => {
-                            let d = Union::new(v.typename(), v.name(), v.description(), v.types());
+                            let d = Union::new(v.typename(), v.description(), v.name(), v.directives(), v.types());
                             return GraphQLType { union: d };
                         }
                         "input_object" => {
                             let d = InputObject::new(
                                 v.typename(),
-                                v.name(),
                                 v.description(),
+                                v.name(),
+                                v.directives(),
                                 v.fields(),
                             );
                             return GraphQLType { input_object: d };
