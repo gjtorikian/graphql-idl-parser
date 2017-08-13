@@ -43,3 +43,12 @@ type User {
 type User {
   databaseId: Int @deprecated(reason: "Exposed database IDs will eventually be removed in favor of global Relay IDs.")
 }
+
+# A team of users in an organization.
+type Team implements Node {
+  # List of child teams belonging to this team
+  childTeams(
+    # Whether to list immediate child teams or all descendant child teams.
+    immediateOnly: Boolean = true
+  ): TeamConnection!
+}

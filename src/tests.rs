@@ -16,6 +16,16 @@ fn sanity_check() {
 }
 
 #[test]
+#[allow(unused)]
+fn github_sanity_check() {
+    let mut file = File::open("test/github.graphql").expect("Unable to open file");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents);
+
+    let definitions = gqlidl::parse_schema(contents.as_str()).unwrap();
+}
+
+#[test]
 fn scalar_no_description() {
     let def = gqlidl::parse_schema("scalar DateTime")
         .unwrap()
@@ -142,6 +152,7 @@ fn type_with_field() {
     assert_eq!("body", field.name());
     assert_eq!("String", field.typeinfo().name());
     assert_eq!("", field.typeinfo().info());
+    assert_eq!(None, field.arguments());
 }
 
 #[test]
@@ -321,8 +332,9 @@ fn type_with_deprecated_field() {
     assert_eq!("databaseId", field.name());
     assert_eq!("Int", field.typeinfo().name());
     assert_eq!("", field.typeinfo().info());
-    assert_eq!(true, field.deprecated());
-    assert_eq!(None, field.deprecation_reason());
+    let directive = field.directives().unwrap().pop().unwrap();
+    assert_eq!("deprecated", directive.name());
+    assert_eq!(None, directive.arguments());
 }
 
 #[test]
@@ -345,11 +357,11 @@ fn type_with_deprecated_field_and_reason() {
     assert_eq!("databaseId", field.name());
     assert_eq!("Int", field.typeinfo().name());
     assert_eq!("", field.typeinfo().info());
-    assert_eq!(true, field.deprecated());
-    assert_eq!(
-        "Exposed database IDs will eventually be removed in favor of global Relay IDs.",
-        field.deprecation_reason().unwrap()
-    );
+    let directive = field.directives().unwrap().pop().unwrap();
+    assert_eq!("deprecated", directive.name());
+    let arg = directive.arguments().unwrap().pop().unwrap();
+    assert_eq!("reason", arg.name());
+    assert_eq!("Exposed database IDs will eventually be removed in favor of global Relay IDs.", arg.value());
 }
 
 #[test]

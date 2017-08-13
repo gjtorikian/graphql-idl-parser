@@ -63,10 +63,9 @@ ImplementsInterfaces: Vec<String> = {
     }
 };
 
-// TODO: missing directives
 FieldDefinition: GraphQLField = {
-    <d:Description*> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <e:Deprecated?> <r:DeprecatedReason?> => {
-        GraphQLField::new(d, n, t, a, e, r)
+    <d:Description?> <n:FieldName> <a:(ArgumentsDefinition?)> ":" <t:FieldType> <r:(Directives?)> => {
+        GraphQLField::new(d, n, t, a, r)
     },
 };
 
@@ -112,19 +111,33 @@ ArgumentsDefinition: Vec<GraphQLArgument> = {
 
 // TODO: missing directives
 InputValueDefinition: GraphQLArgument = {
-    <d:Description*> <n:FieldName> ":" <t:FieldType> => {
-        GraphQLArgument::new(d, n, t)
+    <d:Description?> <n:FieldName> ":" <t:FieldType> <v:DefaultValue?> => {
+        GraphQLArgument::new(d, n, t, v)
     }
 };
 
-Deprecated: bool = {
-    "@deprecated" => true
+Directives: Vec<GraphQLDirective> = {
+    <d:Directive+> => {
+        d
+    }
 };
 
-DeprecatedReason: String = {
-    "(reason: " <s:r#""[^"]*""#> ")" => {
-      s[1..s.len()-1].to_string()
+Directive: GraphQLDirective = {
+    "@" <n:Name> <d:(DirectiveArgumentsDefinition)?> => {
+        GraphQLDirective::new(n, d)
     }
+};
+
+DirectiveArgumentsDefinition: Vec<GraphQLDirectiveArgument> = {
+    "(" <d:DirectiveArgumentDefinition+> ")" => {
+        d
+    }
+};
+
+DirectiveArgumentDefinition: GraphQLDirectiveArgument = {
+    <n:FieldName> ":" <q:QuotedString> => {
+        GraphQLDirectiveArgument::new(n, q)
+    },
 };
 
 Comma<T>: Vec<T> = {
@@ -159,8 +172,13 @@ Description: String = {
     }
 };
 
+// NOTE: These are all gross, can they be improved?
 Name: String = r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned();
+
+DefaultValue: String = <s:r"~\s*.+">      => s[1..s.len()].trim().to_owned();
 Desc:  String = <s:r"#\s*.+">      => s[1..s.len()].trim().to_owned();
+QuotedString: String = <s:r#""[^"]*""#>   => s[1..s.len()-1].to_string();
+
 FieldName: String = {
     r"[_A-Za-z][_0-9A-Za-z]*" => <>.to_owned(),
     "scalar"  => "scalar".to_owned(),

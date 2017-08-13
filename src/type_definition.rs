@@ -56,8 +56,7 @@ pub struct GraphQLField {
     name: String,
     typeinfo: FieldType,
     arguments: Option<Vec<GraphQLArgument>>,
-    deprecated: bool,
-    deprecation_reason: Option<String>,
+    directives: Option<Vec<GraphQLDirective>>,
 }
 
 #[derive(Clone)]
@@ -66,14 +65,27 @@ pub struct GraphQLValue {
     description: Option<String>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct GraphQLArgument {
     description: Option<String>,
     name: String,
     typeinfo: FieldType,
+    default: Option<String>,
 }
 
 #[derive(Clone)]
+pub struct GraphQLDirective {
+    name: String,
+    arguments: Option<Vec<GraphQLDirectiveArgument>>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct GraphQLDirectiveArgument {
+    name: String,
+    value: String
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub struct FieldType {
     pub name: String,
     pub info: TypeInfo,
@@ -156,7 +168,7 @@ impl GraphQLInputObject {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum TypeInfo {
     Nullable,
     NonNullable,
@@ -249,7 +261,7 @@ impl TypeDefinition {
 }
 
 impl_graphql_meta_methods! { GraphQLField, GraphQLArgument, GraphQLValue }
-impl_graphql_deprecated_methods! { GraphQLField }
+impl_graphql_directive_methods! { GraphQLField }
 impl_graphql_type_methods! { GraphQLField, GraphQLArgument }
 
 impl GraphQLField {
@@ -258,19 +270,14 @@ impl GraphQLField {
         name: String,
         typeinfo: FieldType,
         arguments: Option<Vec<GraphQLArgument>>,
-        deprecated: Option<bool>,
-        deprecation_reason: Option<String>,
+        directives: Option<Vec<GraphQLDirective>>,
     ) -> GraphQLField {
         GraphQLField {
             description: description,
             name: name,
             typeinfo: typeinfo,
             arguments: arguments,
-            deprecated: match deprecated {
-                None => false,
-                Some(_) => true
-            },
-            deprecation_reason: deprecation_reason,
+            directives: directives,
         }
     }
 
@@ -283,21 +290,69 @@ impl GraphQLField {
 }
 
 impl GraphQLArgument {
-    pub fn new(description: Vec<String>, name: String, typeinfo: FieldType) -> GraphQLArgument {
+    pub fn new(description: Option<String>, name: String, typeinfo: FieldType, default: Option<String>) -> GraphQLArgument {
         GraphQLArgument {
-            description: convert_description(description),
+            description: description,
             name: name,
             typeinfo: typeinfo,
+            default: default,
+        }
+    }
+
+    pub fn default(&self) -> Option<&str> {
+        match self.default {
+            None => None,
+            Some(ref def) => Some(def.as_str())
         }
     }
 }
 
 impl GraphQLValue {
-    pub fn new(description: Vec<String>, name: String) -> GraphQLValue {
+    pub fn new(description: Option<String>, name: String) -> GraphQLValue {
         GraphQLValue {
-            description: convert_description(description),
+            description: description,
             name: name,
         }
+    }
+}
+
+impl GraphQLDirective {
+    pub fn new(
+        name: String,
+        arguments: Option<Vec<GraphQLDirectiveArgument>>,
+    ) -> GraphQLDirective {
+        GraphQLDirective {
+            name: name,
+            arguments: arguments
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn arguments(&self) -> Option<Vec<GraphQLDirectiveArgument>> {
+        match self.arguments {
+            None => None,
+            Some(ref arguments) => Some(arguments.clone())
+        }
+    }
+}
+
+impl GraphQLDirectiveArgument {
+    pub fn new(name: String, value: String) -> GraphQLDirectiveArgument {
+        GraphQLDirectiveArgument {
+            name: name,
+            value: value,
+        }
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+
+    pub fn value(&self) -> &str {
+        &self.value
     }
 }
 
