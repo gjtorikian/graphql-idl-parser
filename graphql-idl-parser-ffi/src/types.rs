@@ -2,7 +2,7 @@ extern crate graphql_idl_parser;
 
 use graphql_idl_parser::type_definition::{GraphQLDirective, GraphQLField, GraphQLValue};
 
-use libc::{c_char, c_void, int32_t};
+use libc::{c_char, c_void, size_t};
 use std::ffi::CString;
 use std::{mem, ptr};
 
@@ -264,7 +264,7 @@ struct Argument {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfArguments {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_void,
 }
 
@@ -281,7 +281,7 @@ struct Field {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfFields {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_void,
 }
 
@@ -313,7 +313,7 @@ impl ArrayOfFields {
             argument_vec.shrink_to_fit();
 
             let arguments = ArrayOfArguments {
-                length: argument_vec.len() as int32_t,
+                length: argument_vec.len() as size_t,
                 values: argument_vec.as_ptr() as *const *const c_void,
             };
 
@@ -334,7 +334,7 @@ impl ArrayOfFields {
         field_vec.shrink_to_fit();
 
         let array = ArrayOfFields {
-            length: field_vec.len() as int32_t,
+            length: field_vec.len() as size_t,
             values: field_vec.as_ptr() as *const *const c_void,
         };
 
@@ -347,7 +347,7 @@ impl ArrayOfFields {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfCStrings {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_char,
 }
 
@@ -361,7 +361,7 @@ impl ArrayOfCStrings {
         cstr_vec.shrink_to_fit();
 
         let array = ArrayOfCStrings {
-            length: cstr_vec.len() as int32_t,
+            length: cstr_vec.len() as size_t,
             values: cstr_vec.as_ptr() as *const *const c_char,
         };
 
@@ -381,7 +381,7 @@ struct Value {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfValues {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_void,
 }
 
@@ -402,7 +402,7 @@ impl ArrayOfValues {
         value_vec.shrink_to_fit();
 
         let array = ArrayOfValues {
-            length: value_vec.len() as int32_t,
+            length: value_vec.len() as size_t,
             values: value_vec.as_ptr() as *const *const c_void,
         };
 
@@ -422,7 +422,7 @@ struct Directive {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfDirectives {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_void,
 }
 
@@ -436,7 +436,7 @@ struct DirectiveArgument {
 #[repr(C)]
 #[derive(Copy, Clone)]
 struct ArrayOfDirectiveArguments {
-    length: int32_t,
+    length: size_t,
     values: *const *const c_void,
 }
 
@@ -459,7 +459,7 @@ impl ArrayOfDirectives {
             argument_vec.shrink_to_fit();
 
             let arguments = ArrayOfDirectiveArguments {
-                length: argument_vec.len() as int32_t,
+                length: argument_vec.len() as size_t,
                 values: argument_vec.as_ptr() as *const *const c_void,
             };
 
@@ -471,7 +471,7 @@ impl ArrayOfDirectives {
         value_vec.shrink_to_fit();
 
         let array = ArrayOfDirectives {
-            length: value_vec.len() as int32_t,
+            length: value_vec.len() as size_t,
             values: value_vec.as_ptr() as *const *const c_void,
         };
 
