@@ -338,10 +338,7 @@ impl GraphQLArgument {
     }
 
     pub fn default(&self) -> Option<&str> {
-        match self.default {
-            None => None,
-            Some(ref def) => Some(def.as_str()),
-        }
+        self.default.as_ref().map(|s| s.as_ref())
     }
 }
 

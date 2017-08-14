@@ -257,7 +257,7 @@ struct Argument {
     description: *const c_char,
     name: *const c_char,
     type_info: FieldType,
-    default: *const c_char,
+    default_value: *const c_char,
     directives: ArrayOfDirectives,
 }
 
@@ -288,9 +288,9 @@ struct ArrayOfFields {
 impl ArrayOfFields {
     fn from_vec(vec: Vec<GraphQLField>) -> ArrayOfFields {
         let mut field_vec: Vec<Field> = vec![];
-        let mut argument_vec: Vec<Argument> = vec![];
 
         for v in vec {
+            let mut argument_vec: Vec<Argument> = vec![];
             match v.arguments() {
                 None => {}
                 Some(arguments) => for arg in arguments {
@@ -301,7 +301,7 @@ impl ArrayOfFields {
                             name: CString::new(arg.typeinfo().name()).unwrap().into_raw(),
                             type_info: CString::new(arg.typeinfo().info()).unwrap().into_raw(),
                         },
-                        default: convert_optional_string_to_cstr(arg.default()),
+                        default_value: convert_optional_string_to_cstr(arg.default()),
                         directives: match v.directives() {
                             None => ArrayOfDirectives::from_vec(vec![]),
                             Some(directives) => ArrayOfDirectives::from_vec(directives),
@@ -330,6 +330,8 @@ impl ArrayOfFields {
                     Some(directives) => ArrayOfDirectives::from_vec(directives),
                 },
             });
+
+            mem::forget(argument_vec);
         }
         field_vec.shrink_to_fit();
 
@@ -339,7 +341,6 @@ impl ArrayOfFields {
         };
 
         mem::forget(field_vec);
-        mem::forget(argument_vec);
         array
     }
 }
@@ -443,9 +444,9 @@ struct ArrayOfDirectiveArguments {
 impl ArrayOfDirectives {
     fn from_vec(vec: Vec<GraphQLDirective>) -> ArrayOfDirectives {
         let mut value_vec: Vec<Directive> = vec![];
-        let mut argument_vec: Vec<DirectiveArgument> = vec![];
 
         for v in vec {
+            let mut argument_vec: Vec<DirectiveArgument> = vec![];
             match v.arguments() {
                 None => {}
                 Some(arguments) => for arg in arguments {
@@ -467,6 +468,8 @@ impl ArrayOfDirectives {
                 name: CString::new(v.name()).unwrap().into_raw(),
                 arguments: arguments,
             });
+
+            mem::forget(argument_vec);
         }
         value_vec.shrink_to_fit();
 
@@ -476,7 +479,6 @@ impl ArrayOfDirectives {
         };
 
         mem::forget(value_vec);
-        mem::forget(argument_vec);
 
         array
     }
