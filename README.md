@@ -50,5 +50,4 @@ become irate if it comes across a malformed or unknown token.
 ## Todo:
 
 - [ ] More documentation?
-- [ ] Support directives in more places
 - [ ] Support more of the IDL besides just types
